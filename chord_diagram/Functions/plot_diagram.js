@@ -28,20 +28,19 @@ function Chord_initials(matrix){
     // Compute the chord layout
     const chords = chord(matrix);
     console.log(chords)
+   let chord2 =   chords;
 
 
-
-    const filteredGroups = chords.groups.filter(group => {
-        console.log("here is the group ", group)
-
-        // return chords.groups.find(g => g.source.index === group.index || g.target.index === group.index);
-    });
-
-
+//    here update the size of the ribben value 
+chord2.forEach(chord => {
+    return  chord.target.endAngle += 0.02;
+ });
+ 
+    console.log( "new chord " , chord2)
     // Add the groups
     const group = svg.append("g")
         .selectAll("g")
-        .data(chords.groups)
+        .data(chord2.groups)
         .join("g");
 
     // Add the arcs for the groups
@@ -52,7 +51,7 @@ function Chord_initials(matrix){
         .attr("fill", d => color(d.index))
         .attr("stroke", d => d3.rgb(color(d.index)).darker())
         .attr("d", d3.arc()
-            .innerRadius(innerRadius)
+            .innerRadius(innerRadius+05)
             .outerRadius(d => Math.max(minimumArcSize, outerRadius)) // Set the outer radius with a minimum size
         );
 
@@ -69,30 +68,17 @@ function Chord_initials(matrix){
         .text((d, i) => categories[i]);
 
     // Add the chords
-   // Define the minimum size for the ribbons
-const minimumRibbonSize = 2; // Adjust this value as needed
+    svg.append("g")
+        .attr("fill-opacity", 0.47)
+        .selectAll("path")
+        .data(chord2)
+        .join("path")
+        .attr("d", d3.ribbon()
+            .radius(innerRadius)
+        )
+        .attr("fill", d => color(d.source.index))
+        .attr("stroke", d => d3.rgb(color(d.source.index)).darker());
 
-// Add the chords
-svg.append("g")
-    .attr("fill-opacity", 0.4)
-    .selectAll("path")
-    .data(chords)
-    .join("path")
-    .attr("d", d3.ribbon()
-        .radius(innerRadius)
-        .source(d => {
-            // Check if the value is less than the minimum size, if so, adjust the value
-            d.source.value = Math.max(minimumRibbonSize, d.source.value);
-            return d.source;
-        })
-        .target(d => {
-            // Check if the value is less than the minimum size, if so, adjust the value
-            d.target.value = Math.max(minimumRibbonSize, d.target.value);
-            return d.target;
-        })
-    )
-    .attr("fill", d => color(d.source.index))
-    .attr("stroke", d => d3.rgb(color(d.source.index)).darker());
 
 
 }

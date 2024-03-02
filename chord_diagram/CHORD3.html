@@ -27,181 +27,133 @@
         ];
 
         // Define the data
-        // const matrix = [
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 5, 0, 6, 1, 1, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 13, 0, 0, 1, 18, 1, 3, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 8, 4, 21, 4],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 10, 0, 3, 9, 0, 3],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 1, 1, 4, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 3, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        // ];
 
-        // const matrix1= [
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 5, 0, 6, 1, 1, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 13, 0, 0, 1, 18, 1, 3, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 8, 4, 21, 4],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 10, 0, 3, 9, 0, 3],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 1, 1, 4, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 3, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0],
-        //     [7, 0, 5, 0, 6, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 6,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [12, 0, 10, 0, 3, 9, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [7, 0, 5, 0, 6, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        // ];
+        d3.csv("chord_plot_updated.csv")
+            .then(function (data) {
+                var rowHeaders = [];
+                var colHeaders = [];
+                var matrixData = [];
+
+                data.forEach(function (entry) {
+                    var keys = Object.keys(entry);
+                    var values = entry[keys[0]].split(';');
+
+                    var rowHeader = keys[0].trim();
+                    rowHeaders.push(rowHeader);
+
+                    values.forEach(function (value, index) {
+                        if (index > 0) {
+                            var colHeader = value.trim().split(';')[0];
+                            if (!colHeaders.includes(colHeader)) {
+                                colHeaders.push(colHeader);
+                            }
+                        }
+                    });
+
+                    matrixData.push(values.slice(1).map(Number));
+                });
+
+                // Creating n x n matrix
+                var n = rowHeaders.length;
+                var matrix = new Array(n).fill(0).map(() => new Array(n).fill(0));
+
+                matrixData.forEach(function (row, rowIndex) {
+                    row.forEach(function (value, colIndex) {
+                        matrix[rowIndex][colIndex] = value;
+                    });
+                });
+
+                console.log(matrix);
 
 
 
-        const data = `
-Patients data;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;7;0;5;0;6;1;1;0;
-Cell lines data;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;6;13;0;0;1;18;1;3;0;
-Drug combinations;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;4;0;0;0;4;0;0;0;
-Drug-target interactions;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;25;0;0;0;8;4;21;0;4;
-Drug-disease links;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;12;0;10;0;3;9;0;3;
-Gene-disease links;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;5;0;0;0;0;1;4;0;0;
-Cancer mutations;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;3;0;0;0;0;3;0;0;0;
-Chemical structures;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;3;0;0;0;0;0;3;0;0;
-Protein structures;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;4;0;0;0;0;0;4;0;0;
-Toxicities;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;8;8;0;0;0;8;0;0;
-Pathways;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;10;0;0;0;10;1;9;0;0;
-Docking;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;23;0;0;0;0;0;23;0;0;
-Homology modelling;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;8;0;0;0;0;0;8;0;0;
-Binding sites;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;7;0;0;0;0;0;7;0;0;
-Combination web-tools;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;3;0;0;0;3;0;0;0;
-Target based DR;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-Phenotypic DR;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-Toxicity assessment;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-Design new clinical trials;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-Mapping of diseases pathways;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-Disease-specific;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-Disease-agnostic;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-Biomarker identification;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-Predict adverse reactions;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
-`;
+                // Define dimensions for the plot
+                const width = 800;
+                const height = 800;
+                const outerRadius = Math.min(width, height) * 0.5 - 40;
+                const innerRadius = outerRadius - 30;
 
-        // Split the data into rows
-        const rows = data.trim().split('\n');
+                // Create the chord layout
+                const chord = d3.chord()
+                    .padAngle(0.05)
+                    .sortSubgroups(d3.descending)
+                    .sortChords(d3.descending);
 
-        // Initialize an empty matrix
-        const matrix = [];
+                // Create the SVG
+                const svg = d3.select("#chordDiagram")
+                    .append("svg")
+                    .attr("viewBox", [-width / 2, -height / 2, width * 2, height * 2])
+                    // .attr("width", "100%")
+                    // .attr("height", "auto")
+                    .attr("font-size", 12)
+                    .attr("font-family", "sans-serif");
 
-        // Parse the data into a matrix
-        rows.forEach(row => {
-            const rowData = row.split(';');
-            const values = rowData.slice(1).map(Number); // Convert string values to numbers
-            matrix.push(values);
-        });
+                // Define the colors
+                const color = d3.scaleOrdinal()
+                    .domain(d3.range(matrix.length))
+                    .range(d3.schemeCategory10);
 
-        console.log("new matric" , matrix);
+                // Compute the chord layout
+                const chords = chord(matrix);
+                console.log(chords)
 
 
+                const filteredGroups = chords.groups.filter(group => {
+                    console.log("here is the group ", group)
 
-        // Define dimensions for the plot
-        const width = 800;
-        const height = 800;
-        const outerRadius = Math.min(width, height) * 0.5 - 40;
-        const innerRadius = outerRadius - 30;
+                    // return chords.groups.find(g => g.source.index === group.index || g.target.index === group.index);
+                });
 
-        // Create the chord layout
-        const chord = d3.chord()
-            .padAngle(0.05)
-            .sortSubgroups(d3.descending)
-            .sortChords(d3.descending);
+                // Add the groups
+                const group = svg.append("g")
+                    .selectAll("g")
+                    .data(chords.groups)
+                    .join("g");
 
-        // Create the SVG
-        const svg = d3.select("#chordDiagram")
-            .append("svg")
-            .attr("viewBox", [-width / 2, -height / 2, width * 2, height * 2])
-            // .attr("width", "100%")
-            // .attr("height", "auto")
-            .attr("font-size", 12)
-            .attr("font-family", "sans-serif");
+                // Add the arcs for the groups
+                group.append("path")
+                    .attr("fill", d => color(d.index))
+                    .attr("stroke", d => d3.rgb(color(d.index)).darker())
+                    .attr("d", d3.arc()
+                        .innerRadius(innerRadius)
+                        .outerRadius(outerRadius)
+                    );
 
-        // Define the colors
-        const color = d3.scaleOrdinal()
-            .domain(d3.range(matrix.length))
-            .range(d3.schemeCategory10);
-
-        // Compute the chord layout
-        const chords = chord(matrix);
-        console.log(chords)
-
-
-        const filteredGroups = chords.groups.filter(group => {
-            console.log("here is the group ", group)
-
-            // return chords.groups.find(g => g.source.index === group.index || g.target.index === group.index);
-        });
-
-        // Add the groups
-        const group = svg.append("g")
-            .selectAll("g")
-            .data(chords.groups)
-            .join("g");
-
-        // Add the arcs for the groups
-        group.append("path")
-            .attr("fill", d => color(d.index))
-            .attr("stroke", d => d3.rgb(color(d.index)).darker())
-            .attr("d", d3.arc()
-                .innerRadius(innerRadius)
-                .outerRadius(outerRadius)
-            );
-
-        // Add the group labels
-        group.append("text")
-            .each(d => (d.angle = (d.startAngle + d.endAngle) / 2))
-            .attr("dy", ".35em")
-            .attr("transform", d => `
+                // Add the group labels
+                group.append("text")
+                    .each(d => (d.angle = (d.startAngle + d.endAngle) / 2))
+                    .attr("dy", ".35em")
+                    .attr("transform", d => `
                 rotate(${(d.angle * 180 / Math.PI - 90)})
                 translate(${innerRadius + 10})
                 ${d.angle > Math.PI ? "rotate(180)" : ""}
             `)
-            .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
-            .text((d, i) => categories[i]);
+                    .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
+                    .text((d, i) => categories[i]);
 
-        // Add the chords
-        svg.append("g")
-            .attr("fill-opacity", 0.67)
-            .selectAll("path")
-            .data(chords)
-            .join("path")
-            .attr("d", d3.ribbon()
-                .radius(innerRadius)
-            )
-            .attr("fill", d => color(d.source.index))
-            .attr("stroke", d => d3.rgb(color(d.source.index)).darker());
+                // Add the chords
+                svg.append("g")
+                    .attr("fill-opacity", 0.67)
+                    .selectAll("path")
+                    .data(chords)
+                    .join("path")
+                    .attr("d", d3.ribbon()
+                        .radius(innerRadius)
+                    )
+                    .attr("fill", d => color(d.source.index))
+                    .attr("stroke", d => d3.rgb(color(d.source.index)).darker());
+
+
+
+            })
+            .catch(error => {
+                console.error('Error fetching or parsing CSV data:', error);
+            });
+        // Split the data into rows
+
+
+
+
 
     </script>
 </body>

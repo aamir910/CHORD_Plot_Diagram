@@ -1,7 +1,10 @@
 function Chord_initials(matrix){  
+
+
+    
     const width = 800;
     const height = 800;
-    const outerRadius = Math.min(width, height) * 0.5 - 40;
+    const outerRadius = Math.min(width, height) * 0.5 - 30;
     const innerRadius = outerRadius - 30;
 
 
@@ -33,7 +36,10 @@ function Chord_initials(matrix){
 
 //    here update the size of the ribben value 
 chord2.forEach(chord => {
-    return  chord.target.endAngle += 0.02;
+     chord.target.value += 5;
+     
+     chord.source.value += 5;
+     
  });
  
     console.log( "new chord " , chord2)
@@ -48,13 +54,14 @@ chord2.forEach(chord => {
 
     // Add the arcs for the groups
     group.append("path")
-        .attr("fill", d => color(d.index))
-        .attr("stroke", d => d3.rgb(color(d.index)).darker())
-        .attr("d", d3.arc()
-            .innerRadius(innerRadius+05)
-            .outerRadius(d => Math.max(minimumArcSize, outerRadius)) // Set the outer radius with a minimum size
-        );
-
+    .attr("fill", d => color(d.index))
+    .attr("stroke", d => d3.rgb(color(d.index)).darker())
+    .attr("d", d3.arc()
+        .innerRadius(innerRadius+5) // Inner radius of the arc
+        .outerRadius(outerRadius) // Outer radius of the arc
+        .startAngle(d => d.startAngle) // Start angle of the arc
+        .endAngle(d => d.endAngle) // End angle of the arc
+    );
     // Add the group labels
     group.append("text")
         .each(d => (d.angle = (d.startAngle + d.endAngle) / 2))
@@ -78,7 +85,5 @@ chord2.forEach(chord => {
         )
         .attr("fill", d => color(d.source.index))
         .attr("stroke", d => d3.rgb(color(d.source.index)).darker());
-
-
 
 }

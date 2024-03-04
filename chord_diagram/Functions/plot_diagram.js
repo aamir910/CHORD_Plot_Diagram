@@ -5,12 +5,12 @@ function Chord_initials(matrix){
     const width = 800;
     const height = 800;
     const outerRadius = Math.min(width, height) * 0.5 - 30;
-    const innerRadius = outerRadius - 30;
+    const innerRadius = outerRadius - 70;
 
 
     // Create the chord layout
     const chord = d3.chord()
-        .padAngle(0.1)
+        .padAngle(0.05)
         .sortSubgroups(d3.descending)
         .sortChords(d3.descending);
 

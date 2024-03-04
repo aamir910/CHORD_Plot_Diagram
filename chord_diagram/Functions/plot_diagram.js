@@ -1,12 +1,9 @@
 function Chord_initials(matrix){  
 
-
-    
     const width = 700;
     const height = 700;
     const outerRadius = Math.min(width, height) * 0.5 - 30;
     const innerRadius = outerRadius - 70;
-
 
     // Create the chord layout
     const chord = d3.chord()
@@ -32,9 +29,9 @@ function Chord_initials(matrix){
         "#66FFFF", // Medium Cyan
         "#9999FF", // Medium Purple
         "#FF99FF", // Medium Magenta
-        "#FFDAB9", // PeachPuff
+        "#197278", // PeachPuff
         "#FFB6C1", // LightPink
-        "#FFD700", // Gold
+        "#734ec2", // Gold
         "#FF6347", // Tomato
         "#FF69B4", // HotPink
         "#00FA9A", // MediumSpringGreen
@@ -48,21 +45,20 @@ function Chord_initials(matrix){
         "#D2B48C", // Tan
         "#BDB76B", // DarkKhaki
         "#FFDEAD" ,  // NavajoWhite
-        
         "#FF8C00", // DarkOrange
       ];
       
   const color = [
-        "#FF0000", // Red
+        "#197278", // Red
         "#FFA500", // Orange
-        "#FFFF00", // Yellow
+        "#73610e", // brown
         "#008000", // Green
         "#4090ff", // Blue
         "#4B0082", // Indigo
-        "#9400D3", // Violet
+        "#7b755a", // Violet
         "#FF1493", // DeepPink
         "#FF4500", // OrangeRed
-        "#FFD700", // Gold
+        "#be5dc8", // Gold
         "#32CD32", // LimeGreen
         "#00FFFF", // Aqua
         "#000080", // Navy
@@ -78,13 +74,7 @@ function Chord_initials(matrix){
         "#FFFFFF", // White
         "#000000"  // Black
       ];
-
-
-
-
-
-
-
+    
     console.log(color ,"here are the color " ,matrix.length )
     // Compute the chord layout
     const chords = chord(matrix);
@@ -127,6 +117,25 @@ chord2.forEach(chord => {
     );
 
     // Add the group labels
+    // group.append("text")
+    // .each((d, i) => {
+    //     console.log("before " , d);
+    //     d.angle = (d.startAngle + d.endAngle) / 2;
+    //     d.bold = i >= 15; // Bold text from index 7 onwards
+    //     console.log("before " , d);
+    // })
+    // // .attr("dy", ".35em") 
+    // .attr("transform", d => `
+    //     rotate(${(d.angle * 180 / Math.PI - 90)})
+    //     translate(${innerRadius + 80})
+    //     ${d.angle > Math.PI ? "rotate(180)" : ""}
+    // `)
+    // .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
+    // .style("font-weight", d => d.bold ? "bold" : "normal")
+    // .style("font-size","09px")
+    
+    // .text((d, i) => categories[i]); 
+   
     group.append("text")
     .each((d, i) => {
         console.log("before " , d);
@@ -144,7 +153,53 @@ chord2.forEach(chord => {
     .style("font-weight", d => d.bold ? "bold" : "normal")
     .style("font-size","09px")
     
-    .text((d, i) => categories[i]);
+    .text((d, i) => categories[i]); 
+
+    // group.append("text")
+    // .each((d, i) => {
+    //     d.angle = (d.startAngle + d.endAngle) / 2;
+    //     d.bold = i >= 15; // Bold text from index 7 onwards
+    
+    // })
+    // .attr("transform", d => `
+    //     rotate(${(d.angle * 180 / Math.PI - 90)})
+    //     translate(${innerRadius + 80})
+    //     ${d.angle > Math.PI ? "rotate(180)" : ""}
+    // `)
+    // .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
+    // .style("font-weight", d => d.bold ? "bold" : "normal")
+    // .style("font-size","09px")
+    // .text((d, i) => categories[i]);
+
+// Define a function to calculate arrow line position
+// const arrowPosition = (d, innerRadius, outerRadius) => {
+//     const angle = (d.startAngle + d.endAngle) / 2;
+//     const x1 = Math.cos(angle) * (innerRadius + 80);
+//     const y1 = Math.sin(angle) * (innerRadius + 80);
+//     const x2 = Math.cos(angle) * outerRadius;
+//     const y2 = Math.sin(angle) * outerRadius;
+//     return { x1, y1, x2, y2 };
+// };
+
+// // Append arrow line and its name
+// group.append("line")
+//     .attr("x1", d => arrowPosition(d, innerRadius, outerRadius).x1)
+//     .attr("y1", d => arrowPosition(d, innerRadius, outerRadius).y1)
+//     .attr("x2", d => arrowPosition(d, innerRadius, outerRadius).x2)
+//     .attr("y2", d => arrowPosition(d, innerRadius, outerRadius).y2)
+//     .attr("stroke", "black")
+//     .attr("marker-end", "url(#arrowhead)");
+
+// group.append("text")
+//     .attr("x", d => arrowPosition(d, innerRadius, outerRadius).x2 + 10)
+//     .attr("y", d => arrowPosition(d, innerRadius, outerRadius).y2)
+//     .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
+//     .style("font-weight", d => d.bold ? "bold" : "normal")
+//     .style("font-size","09px")
+//     .text((d, i) => categories[i]);
+
+
+
 
 
     // Add the chords
@@ -157,6 +212,14 @@ chord2.forEach(chord => {
             .radius(innerRadius)
         )
         .attr("fill", d => color[d.source.index])
-        .attr("stroke", d => d3.rgb(color[d.source.index]).darker());
+        .attr("stroke", d => d3.rgb(color[d.source.index])
+        )  .on("mouseover", function() {
+            d3.select(this).attr("fill-opacity", 2); // Set opacity to 1 on hover
+        })
+        .on("mouseout", function() {
+            d3.select(this).attr("fill-opacity", 0.47); // Set opacity back to 0.47 when not hovered
+        });
+
+        
 
 }

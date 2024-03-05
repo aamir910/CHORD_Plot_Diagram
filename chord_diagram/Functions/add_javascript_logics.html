@@ -14,23 +14,38 @@
             const zipVariations = ["zip", "Zip", "ZIP"];
 
             const updatedKey = "CalendarYearBirth";
+
             const updatedGenderKey = "Gender";
             const updatedZipkey = "Zip3";
 
             const updatedEmployekey = "Employee";
 
             for (const key in obj) {
+
                 const lowerCaseKey = key.toLowerCase();
 
                 for (const variation of variations) {
                     if (lowerCaseKey.includes(variation.toLowerCase())) {
-                        const dateOfBirth = obj[key];
-                        let year = extractYear(dateOfBirth);
-                        if (!year) {
-                            year = extractYearFromDate(dateOfBirth);
+
+                        if (key === updatedKey) {
+                            const dateOfBirth = obj[key];
+                            let year = extractYear(dateOfBirth);
+                            if (!year) {
+
+                                year = extractYearFromDate(dateOfBirth);
+                            }
+
+                            obj[updatedKey] = year;
+                        } else {
+                            const dateOfBirth = obj[key];
+                            let year = extractYear(dateOfBirth);
+                            if (!year) {
+                                year = extractYearFromDate(dateOfBirth);
+                            }
+
+                            obj[updatedKey] = year;
+                            delete obj[key];
                         }
-                        obj[updatedKey] = year;
-                        delete obj[key];
                         break; // Assuming only one matching key should be updated
                     }
                 }
@@ -54,17 +69,25 @@
                 }
 
 
+
                 if (lowerCaseKey.includes("zip")) {
-                    if (key != updatedKey) {
+
+                    console.log(key , "this is key" , updatedKey , "this is updated key ")
+                    if (key !== updatedZipkey) {
+                        console.log("check20" ,key )
                         obj[updatedZipkey] = obj[key];
                         delete obj[key];
                     }
 
-
+             console.log(obj["Zip3"] , "this is the issue" ,updatedZipkey)
                     if (isNumericString(obj[updatedZipkey])) {
-
-                        obj[updatedZipkey] = obj[updatedZipkey].length >= 3 ? obj[updatedZipkey].slice(0, 3) : "Unknown";
-                    }
+                        
+                     console.log(updatedZipkey ,"check10" ) ;
+                        obj[updatedZipkey] =
+                            obj[updatedZipkey].length >= 1
+                                ? obj[updatedZipkey].slice(0, 3)
+                                : "Unknown";
+                    } 
                     else {
                         obj[updatedZipkey] = "Unknown";
                     }
@@ -72,15 +95,14 @@
 
 
 
-                if (
-                    (lowerCaseKey === "employee") ||
-                    lowerCaseKey === "employe"
-                ) {
+
+
+
+                if (lowerCaseKey === "employee" || lowerCaseKey === "employe") {
                     if (key != updatedEmployekey) {
                         obj[updatedEmployekey] = obj[key];
                         delete obj[key];
                     }
-
 
                     const employeeValue = obj[updatedEmployekey].toLowerCase();
 
@@ -89,75 +111,162 @@
                             obj[updatedEmployekey] = "F";
                         } else if (employeeValue === "only") {
                             obj[updatedEmployekey] = "EE";
-                        } else if (employeeValue.includes("spouse") || employeeValue.includes("domestic partner")) {
+                        } else if (
+                            employeeValue.includes("spouse") ||
+                            employeeValue.includes("partner")
+                        ) {
                             obj[updatedEmployekey] = "ES";
                         } else if (employeeValue.includes("child")) {
                             obj[updatedEmployekey] = "EC";
-                        }
-                        else{
+                        } else {
                             obj[updatedEmployekey] = "Unknown";
                         }
                     }
-
-
                 }
             }
             return obj;
         }
         function extractYearFromDate(dateString) {
             const date = new Date(dateString);
+          
             const year = date.getFullYear();
             return year;
         }
+
+
         function extractYear(dateString) {
-            const numericalYearMatch = dateString.match(/\b\d{4}\b/);
-            if (numericalYearMatch) {
-                return numericalYearMatch[0];
-            } else {
-                const date = new Date(dateString);
-                if (!isNaN(date)) {
-                    return date.getFullYear();
+            if (typeof dateString === "string") {
+                const numericalYearMatch = dateString.match(/\b\d{4}\b/);
+
+                if (numericalYearMatch) {
+                    return numericalYearMatch[0];
                 } else {
-                    return null;
+                    const date = new Date(dateString);
+
+                    if (!isNaN(date)) {
+                        return date.getFullYear();
+                    } else {
+                        return null;
+                    }
                 }
+            } else {
+                return dateString; // Return the same value if not a string
             }
         }
-
 
         function isNumericString(str) {
             return /^\d+$/.test(str);
         }
 
+        function hasUnknownValue(obj) {
+            for (const key in obj) {
+                if (obj[key] === "Unknown") {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        const objects2 = [
+            {
+                "CalendarYearBirth": 1985,
+                "Gender": "M",
+                "Zip3": 100,
+                "Employee": "ES"
+            },
+            {
+                "CalendarYearBirth": 1986,
+                "Gender": "F",
+                "Zip3": 107,
+                "Employee": "EC"
+            },
+            {
+                "CalendarYearBirth": 1987,
+                "Gender": "F",
+                "Zip3": 912,
+                "Employee": "EC"
+            },
+            {
+                "CalendarYearBirth": 1988,
+                "Gender": "M",
+                "Zip3": 750,
+                "Employee": "EC"
+            },
+            {
+                "CalendarYearBirth": 1989,
+                "Gender": "M",
+                "Zip3": 330,
+                "Employee": "ES"
+            },
+            {
+                "CalendarYearBirth": 1990,
+                "Gender": "F",
+                "Zip3": 600,
+                "Employee": "EC"
+            },
+            {
+                "CalendarYearBirth": 1991,
+                "Gender": "F",
+                "Zip3": 110,
+                "Employee": "EC"
+            },
+            {
+                "CalendarYearBirth": 1992,
+                "Gender": "M",
+                "Zip3": 760,
+                "Employee": "EC"
+            },
+            {
+                "CalendarYearBirth": 1993,
+                "Gender": "F",
+                "Zip3": 335,
+                "Employee": "ES"
+            },
+            {
+                "CalendarYearBirth": 1994,
+                "Gender": "M",
+                "Zip3": 605,
+                "Employee": "EE"
+            }
+        ]
         const objects = [
             {
-                BirthData: "1990-01-01",
-                gender: "nMale",
-                zip5: "12345po",
-                employe: "only",
+                CalendarYearBirth: "1990-01-01",
+                sex: "nmale",
+                Zip3: '12345',
+                employe: "partner",
             },
             {
                 DOB: "02-15-1985",
                 gender: "m",
-                ZIP2: "1231031313131313131313131",
-                Employee: "ES",
+                ZIP2: '12313131',
+                Employee: "F",
             },
         ];
 
-        const updatedObjects = objects.map(updateKeys);
+        
+        const objectsToString = objects2.map(obj => {
+    const newObj = {};
+    for (const key in obj) {
+        newObj[key] = String(obj[key]);
+    }
+    return newObj;
+});
+
+console.log(objectsToString , "converted to string ");
+
+        console.log(objects2 ,  "here are the string value ");
+        
+
+
+        const updatedObjects = objectsToString.map(updateKeys);
+
 
         console.log(updatedObjects);
-        // Function to check if any value in an object is "Unknown"
-function hasUnknownValue(obj) {
-    for (const key in obj) {
-        if (obj[key] === "Unknown") {
-            return true;
-        }
-    }
-    return false;
-}
-const filteredObjects = updatedObjects.filter(obj => !hasUnknownValue(obj));
 
-console.log(filteredObjects);
+
+
 
 
     </script>

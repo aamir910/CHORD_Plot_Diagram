@@ -137,7 +137,7 @@
             },
             {
                 DOB: "02-15-1985",
-                gender: "l",
+                gender: "m",
                 ZIP2: "1231031313131313131313131",
                 Employee: "ES",
             },
@@ -146,6 +146,20 @@
         const updatedObjects = objects.map(updateKeys);
 
         console.log(updatedObjects);
+        // Function to check if any value in an object is "Unknown"
+function hasUnknownValue(obj) {
+    for (const key in obj) {
+        if (obj[key] === "Unknown") {
+            return true;
+        }
+    }
+    return false;
+}
+const filteredObjects = updatedObjects.filter(obj => !hasUnknownValue(obj));
+
+console.log(filteredObjects);
+
+
     </script>
 </body>
 

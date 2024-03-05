@@ -1,123 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-  </head>
+</head>
 
-  <body>
+<body>
     <script>
-      function updateKeys(obj) {
-        const variations = ["dob", "birth"];
-        const zipVariations = ["zip", "Zip", "ZIP"];
+        function updateKeys(obj) {
+            const variations = ["dob", "birth"];
+            const zipVariations = ["zip", "Zip", "ZIP"];
 
-        const updatedKey = "CalendarYearBirth";
-        const updatedGenderKey = "Gender";
-        const updatedZipkey = "Zip3";
+            const updatedKey = "CalendarYearBirth";
+            const updatedGenderKey = "Gender";
+            const updatedZipkey = "Zip3";
 
-        const updatedEmployekey = "Employee";
+            const updatedEmployekey = "Employee";
 
-        for (const key in obj) {
-          const lowerCaseKey = key.toLowerCase();
-          console.log("key ", lowerCaseKey);
+            for (const key in obj) {
+                const lowerCaseKey = key.toLowerCase();
 
-          for (const variation of variations) {
-            if (
-              lowerCaseKey.includes(variation.toLowerCase())
-            ) {
-              const dateOfBirth = obj[key];
-              let year = extractYear(dateOfBirth);
-              if (!year) {
-                year = extractYearFromDate(dateOfBirth);
-              }
-              obj[updatedKey] = year;
-              delete obj[key];
-              break; // Assuming only one matching key should be updated
+                for (const variation of variations) {
+                    if (lowerCaseKey.includes(variation.toLowerCase())) {
+                        const dateOfBirth = obj[key];
+                        let year = extractYear(dateOfBirth);
+                        if (!year) {
+                            year = extractYearFromDate(dateOfBirth);
+                        }
+                        obj[updatedKey] = year;
+                        delete obj[key];
+                        break; // Assuming only one matching key should be updated
+                    }
+                }
+
+                if (lowerCaseKey === "gender" || lowerCaseKey === "sex") {
+                    if (key != updatedGenderKey) {
+                        obj[updatedGenderKey] = obj[key];
+                        delete obj[key];
+                    }
+                    const genderValue = obj[updatedGenderKey].toLowerCase();
+                    if (genderValue.includes("female") || genderValue.includes("f")) {
+                        obj[updatedGenderKey] = "F";
+                    } else if (
+                        genderValue.includes("male") ||
+                        genderValue.includes("m")
+                    ) {
+                        obj[updatedGenderKey] = "M";
+                    } else {
+                        obj[updatedGenderKey] = "Unknown";
+                    }
+                }
+
+
+                if (lowerCaseKey.includes("zip")) {
+                    if (key != updatedKey) {
+                        obj[updatedZipkey] = obj[key];
+                        delete obj[key];
+                    }
+
+
+                    if (isNumericString(obj[updatedZipkey])) {
+
+                        obj[updatedZipkey] = obj[updatedZipkey].length >= 3 ? obj[updatedZipkey].slice(0, 3) : "Unknown";
+                    }
+                    else {
+                        obj[updatedZipkey] = "Unknown";
+                    }
+                }
+
+
+
+                if (
+                    (lowerCaseKey === "employee") ||
+                    lowerCaseKey === "employe"
+                ) {
+                    if (key != updatedEmployekey) {
+                        obj[updatedEmployekey] = obj[key];
+                        delete obj[key];
+                    }
+
+
+                    const employeeValue = obj[updatedEmployekey].toLowerCase();
+
+                    if (employeeValue.length > 2) {
+                        if (employeeValue.includes("family")) {
+                            obj[updatedEmployekey] = "F";
+                        } else if (employeeValue === "only") {
+                            obj[updatedEmployekey] = "EE";
+                        } else if (employeeValue.includes("spouse") || employeeValue.includes("domestic partner")) {
+                            obj[updatedEmployekey] = "ES";
+                        } else if (employeeValue.includes("child")) {
+                            obj[updatedEmployekey] = "EC";
+                        }
+                        else{
+                            obj[updatedEmployekey] = "Unknown";
+                        }
+                    }
+
+
+                }
             }
-          }
-
-          if (
-            (lowerCaseKey === "gender" || lowerCaseKey === "sex")
-          ) {
-
-            if(key != updatedGenderKey)
-           {
-
-               obj[updatedGenderKey] = obj[key];
-               delete obj[key];
-           }
-            const genderValue = obj[updatedGenderKey].toLowerCase();
-            if (genderValue.includes("female") || genderValue.includes("f")) {
-                obj[updatedGenderKey] = "F";
-            } else if (genderValue.includes("male") || genderValue.includes("m") ) {
-                obj[updatedGenderKey] = "M";
+            return obj;
+        }
+        function extractYearFromDate(dateString) {
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            return year;
+        }
+        function extractYear(dateString) {
+            const numericalYearMatch = dateString.match(/\b\d{4}\b/);
+            if (numericalYearMatch) {
+                return numericalYearMatch[0];
             } else {
-                obj[updatedGenderKey] = "Unknown";
+                const date = new Date(dateString);
+                if (!isNaN(date)) {
+                    return date.getFullYear();
+                } else {
+                    return null;
+                }
             }
-
-          }
-
-          if (key != updatedKey && lowerCaseKey.includes("zip")) {
-
-            obj[updatedZipkey] = obj[key];
-            delete obj[key];
-
-          }
-
-          if (
-            (key != updatedEmployekey && lowerCaseKey === "employee") ||
-            lowerCaseKey === "employe"
-          ) {
-
-            obj[updatedEmployekey] = obj[key];
-            delete obj[key];
-
-          }
-       
-
         }
 
-        return obj;
-      }
 
-      function extractYearFromDate(dateString) {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        return year;
-      }
-
-      function extractYear(dateString) {
-        const numericalYearMatch = dateString.match(/\b\d{4}\b/);
-        if (numericalYearMatch) {
-          return numericalYearMatch[0];
-        } else {
-          const date = new Date(dateString);
-          if (!isNaN(date)) {
-            return date.getFullYear();
-          } else {
-            return null;
-          }
+        function isNumericString(str) {
+            return /^\d+$/.test(str);
         }
-      }
 
-      const objects = [
-        {
-          BirthData: "1990-01-01",
-          gender: "nMale",
-          zip5: "12345",
-          employe: "ES",
-        },
-        {
-          DOB: "02-15-1985",
-          gender: "l",
-          ZIP2: "123",
-          Employee: "ES",
-        },
-      ];
+        const objects = [
+            {
+                BirthData: "1990-01-01",
+                gender: "nMale",
+                zip5: "12345po",
+                employe: "only",
+            },
+            {
+                DOB: "02-15-1985",
+                gender: "l",
+                ZIP2: "1231031313131313131313131",
+                Employee: "ES",
+            },
+        ];
 
-      const updatedObjects = objects.map(updateKeys);
-      console.log(updatedObjects);
+        const updatedObjects = objects.map(updateKeys);
+
+        console.log(updatedObjects);
     </script>
-  </body>
+</body>
+
 </html>

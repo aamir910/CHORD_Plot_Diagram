@@ -117,6 +117,8 @@ chord2.forEach(chord => {
     );
 
     // Add the group labels
+  
+   
     // group.append("text")
     // .each((d, i) => {
     //     console.log("before " , d);
@@ -135,7 +137,11 @@ chord2.forEach(chord => {
     // .style("font-size","09px")
     
     // .text((d, i) => categories[i]); 
-   
+
+
+
+    // here are the new version of it 
+
     group.append("text")
     .each((d, i) => {
         console.log("before " , d);
@@ -144,61 +150,29 @@ chord2.forEach(chord => {
         console.log("before " , d);
     })
     // .attr("dy", ".35em") 
-    .attr("transform", d => `
-        rotate(${(d.angle * 180 / Math.PI - 90)})
+    .attr("transform", function(d){
+
+    console.log(d , "here is the console ") 
+
+    if(d.index === 15){
+
+    }
+    else{
+        
+    }
+    
+
+    return    `  rotate(${(d.angle * 180 / Math.PI - 90)})
         translate(${innerRadius + 80})
         ${d.angle > Math.PI ? "rotate(180)" : ""}
-    `)
+    `
+
+} )
     .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
     .style("font-weight", d => d.bold ? "bold" : "normal")
     .style("font-size","09px")
     
     .text((d, i) => categories[i]); 
-
-    // group.append("text")
-    // .each((d, i) => {
-    //     d.angle = (d.startAngle + d.endAngle) / 2;
-    //     d.bold = i >= 15; // Bold text from index 7 onwards
-    
-    // })
-    // .attr("transform", d => `
-    //     rotate(${(d.angle * 180 / Math.PI - 90)})
-    //     translate(${innerRadius + 80})
-    //     ${d.angle > Math.PI ? "rotate(180)" : ""}
-    // `)
-    // .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
-    // .style("font-weight", d => d.bold ? "bold" : "normal")
-    // .style("font-size","09px")
-    // .text((d, i) => categories[i]);
-
-// Define a function to calculate arrow line position
-// const arrowPosition = (d, innerRadius, outerRadius) => {
-//     const angle = (d.startAngle + d.endAngle) / 2;
-//     const x1 = Math.cos(angle) * (innerRadius + 80);
-//     const y1 = Math.sin(angle) * (innerRadius + 80);
-//     const x2 = Math.cos(angle) * outerRadius;
-//     const y2 = Math.sin(angle) * outerRadius;
-//     return { x1, y1, x2, y2 };
-// };
-
-// // Append arrow line and its name
-// group.append("line")
-//     .attr("x1", d => arrowPosition(d, innerRadius, outerRadius).x1)
-//     .attr("y1", d => arrowPosition(d, innerRadius, outerRadius).y1)
-//     .attr("x2", d => arrowPosition(d, innerRadius, outerRadius).x2)
-//     .attr("y2", d => arrowPosition(d, innerRadius, outerRadius).y2)
-//     .attr("stroke", "black")
-//     .attr("marker-end", "url(#arrowhead)");
-
-// group.append("text")
-//     .attr("x", d => arrowPosition(d, innerRadius, outerRadius).x2 + 10)
-//     .attr("y", d => arrowPosition(d, innerRadius, outerRadius).y2)
-//     .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
-//     .style("font-weight", d => d.bold ? "bold" : "normal")
-//     .style("font-size","09px")
-//     .text((d, i) => categories[i]);
-
-
 
 
 

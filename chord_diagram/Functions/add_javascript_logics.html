@@ -12,13 +12,11 @@
         function updateKeys(obj) {
             const variations = ["dob", "birth"];
             const zipVariations = ["zip", "Zip", "ZIP"];
-
             const updatedKey = "CalendarYearBirth";
-
             const updatedGenderKey = "Gender";
             const updatedZipkey = "Zip3";
-
             const updatedEmployekey = "Employee";
+
 
             for (const key in obj) {
 
@@ -27,17 +25,39 @@
                 for (const variation of variations) {
                     if (lowerCaseKey.includes(variation.toLowerCase())) {
 
+
+
                         if (key === updatedKey) {
-                            const dateOfBirth = obj[key];
+                            let dateOfBirth;  
+                            if (obj[key].length > 4 && isNumericString(obj[key])) {
+                                 dateOfBirth = convertSerialToDate(obj[key])
+                                // console.log(obj[key], "here is the key", dateOfBirth)
+
+                            }
+
+                            else {
+                                 dateOfBirth = obj[key];
+                                
+                            }
+
                             let year = extractYear(dateOfBirth);
                             if (!year) {
 
                                 year = extractYearFromDate(dateOfBirth);
                             }
-
                             obj[updatedKey] = year;
                         } else {
-                            const dateOfBirth = obj[key];
+let dateOfBirth ;
+                            if (obj[key].length > 4 && isNumericString(obj[key])) {
+                                 dateOfBirth = convertSerialToDate(obj[key])
+                                console.log(obj[key], "here is the key", convertSerialToDate(obj[key]))
+
+                            }
+                            else {
+                                 dateOfBirth = obj[key];
+                            }
+
+;
                             let year = extractYear(dateOfBirth);
                             if (!year) {
                                 year = extractYearFromDate(dateOfBirth);
@@ -71,33 +91,22 @@
 
 
                 if (lowerCaseKey.includes("zip")) {
-
-                    console.log(key , "this is key" , updatedKey , "this is updated key ")
                     if (key !== updatedZipkey) {
-                        console.log("check20" ,key )
                         obj[updatedZipkey] = obj[key];
                         delete obj[key];
                     }
 
-             console.log(obj["Zip3"] , "this is the issue" ,updatedZipkey)
                     if (isNumericString(obj[updatedZipkey])) {
-                        
-                     console.log(updatedZipkey ,"check10" ) ;
+
                         obj[updatedZipkey] =
                             obj[updatedZipkey].length >= 1
                                 ? obj[updatedZipkey].slice(0, 3)
                                 : "Unknown";
-                    } 
+                    }
                     else {
                         obj[updatedZipkey] = "Unknown";
                     }
                 }
-
-
-
-
-
-
                 if (lowerCaseKey === "employee" || lowerCaseKey === "employe") {
                     if (key != updatedEmployekey) {
                         obj[updatedEmployekey] = obj[key];
@@ -128,12 +137,10 @@
         }
         function extractYearFromDate(dateString) {
             const date = new Date(dateString);
-          
+
             const year = date.getFullYear();
             return year;
         }
-
-
         function extractYear(dateString) {
             if (typeof dateString === "string") {
                 const numericalYearMatch = dateString.match(/\b\d{4}\b/);
@@ -154,6 +161,8 @@
             }
         }
 
+
+
         function isNumericString(str) {
             return /^\d+$/.test(str);
         }
@@ -166,104 +175,120 @@
             }
             return false;
         }
+        function convertSerialToDate(serialNumberStr) {
+            // Convert the serial number string to a number
+            var serialNumber = parseInt(serialNumberStr);
+
+            // Convert serial number to milliseconds since epoch
+            var millisecondsSinceEpoch = (serialNumber - 1) * 24 * 60 * 60 * 1000;
+
+            // Create a new Date object
+            var date = new Date(millisecondsSinceEpoch + new Date('1899-12-30').getTime());
+
+            // Extract the date components
+            var day = date.getDate();
+            var month = date.getMonth() + 1; // Month is zero-indexed, so add 1
+            var year = date.getFullYear();
+
+            // Format the date
+            var formattedDate = month + '/' + day + '/' + year;
+
+            return formattedDate;
+        }
 
 
-        const objects2 = [
-            {
-                "CalendarYearBirth": 1985,
-                "Gender": "M",
-                "Zip3": 100,
-                "Employee": "ES"
-            },
-            {
-                "CalendarYearBirth": 1986,
-                "Gender": "F",
-                "Zip3": 107,
-                "Employee": "EC"
-            },
-            {
-                "CalendarYearBirth": 1987,
-                "Gender": "F",
-                "Zip3": 912,
-                "Employee": "EC"
-            },
-            {
-                "CalendarYearBirth": 1988,
-                "Gender": "M",
-                "Zip3": 750,
-                "Employee": "EC"
-            },
-            {
-                "CalendarYearBirth": 1989,
-                "Gender": "M",
-                "Zip3": 330,
-                "Employee": "ES"
-            },
-            {
-                "CalendarYearBirth": 1990,
-                "Gender": "F",
-                "Zip3": 600,
-                "Employee": "EC"
-            },
-            {
-                "CalendarYearBirth": 1991,
-                "Gender": "F",
-                "Zip3": 110,
-                "Employee": "EC"
-            },
-            {
-                "CalendarYearBirth": 1992,
-                "Gender": "M",
-                "Zip3": 760,
-                "Employee": "EC"
-            },
-            {
-                "CalendarYearBirth": 1993,
-                "Gender": "F",
-                "Zip3": 335,
-                "Employee": "ES"
-            },
-            {
-                "CalendarYearBirth": 1994,
-                "Gender": "M",
-                "Zip3": 605,
-                "Employee": "EE"
-            }
-        ]
+
         const objects = [
             {
-                CalendarYearBirth: "1990-01-01",
+                CalendarYearBirth: "12/24/1967",
                 sex: "nmale",
                 Zip3: '12345',
                 employe: "partner",
             },
             {
-                DOB: "02-15-1985",
+                DOB: "12/24/1967",
                 gender: "m",
                 ZIP2: '12313131',
                 Employee: "F",
             },
         ];
 
-        
+        const objects2 =
+            [
+                {
+                    "CalendarYearBirth": 24830,
+                    "Gender": "M",
+                    "Zip3": 100,
+                    "Employee": "ES"
+                },
+                {
+                    "CalendarYearBirth": 25554,
+                    "Gender": "F",
+                    "Zip3": 107,
+                    "Employee": "EC"
+                },
+                {
+                    "CalendarYearBirth": 25591,
+                    "Gender": "F",
+                    "Zip3": 912,
+                    "Employee": "EC"
+                },
+                {
+                    "CalendarYearBirth": 25591,
+                    "Gender": "M",
+                    "Zip3": 750,
+                    "Employee": "EC"
+                },
+                {
+                    "CalendarYearBirth": 25591,
+                    "Gender": "M",
+                    "Zip3": 330,
+                    "Employee": "EC"
+                },
+                {
+                    "CalendarYearBirth": 1990,
+                    "Gender": "F",
+                    "Zip3": 600,
+                    "Employee": "EC"
+                },
+                {
+                    "CalendarYearBirth": 1991,
+                    "Gender": "F",
+                    "Zip3": 110,
+                    "Employee": "EC"
+                },
+                {
+                    "CalendarYearBirth": 1992,
+                    "Gender": "M",
+                    "Zip3": 760,
+                    "Employee": "EC"
+                },
+                {
+                    "CalendarYearBirth": 1993,
+                    "Gender": "F",
+                    "Zip3": 335,
+                    "Employee": "ES"
+                },
+                {
+                    "CalendarYearBirth": 1994,
+                    "Gender": "M",
+                    "Zip3": 605,
+                    "Employee": "EE"
+                }
+            ]
         const objectsToString = objects2.map(obj => {
-    const newObj = {};
-    for (const key in obj) {
-        newObj[key] = String(obj[key]);
-    }
-    return newObj;
-});
+            const newObj = {};
+            for (const key in obj) {
+                newObj[key] = String(obj[key]);
+            }
+            return newObj;
+        });
 
-console.log(objectsToString , "converted to string ");
-
-        console.log(objects2 ,  "here are the string value ");
-        
 
 
         const updatedObjects = objectsToString.map(updateKeys);
-
-
         console.log(updatedObjects);
+
 
 
 

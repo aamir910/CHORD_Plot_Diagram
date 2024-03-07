@@ -103,28 +103,34 @@ chord2.forEach(chord => {
     // Add the arcs for the groups
     group.append("path")
     .each((d, i) => {
-        console.log("before " , d);
         d.bold = i >= 15; // Bold text from index 7 onwards
-        console.log("before " , d);
     })
     .attr("fill", d => d.bold ? "#09467f" : color[d.index])
-    .attr("stroke", d => d.bold ? "#09467f" : d3.rgb(color[d.index]) )
+    .attr("stroke", d => d.bold ? "#09467f" : d3.rgb(color[d.index]))
     .attr("d", d3.arc()
         .innerRadius(innerRadius) // Inner radius of the arc
         .outerRadius(outerRadius) // Outer radius of the arc
         .startAngle(d => d.startAngle) // Start angle of the arc
         .endAngle(d => d.endAngle) // End angle of the arc
-    );
+    )
+    .on("mouseover", function(d, i) {
+        // Show the name upon mouseover
+        d3.select("text#" + i).attr("opacity", 1);
+    })
+    .on("mouseout", function(d, i) {
+        // Hide the name upon mouseout
+        d3.select("text#" + i).attr("opacity", 0);
+    });
+
 
     // Add the group labels
   
-   
     group.append("text")
     .each((d, i) => {
         d.angle = (d.startAngle + d.endAngle) / 2;
         d.bold = i >= 15; // Bold text from index 7 onwards
     })
-    // .attr("dy", ".35em") 
+    .attr("opacity", 0) // Initially hide the text elements
     .attr("transform", d => `
         rotate(${(d.angle * 180 / Math.PI - 90)})
         translate(${innerRadius + 80})
@@ -132,16 +138,14 @@ chord2.forEach(chord => {
     `)
     .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
     .style("font-weight", d => d.bold ? "bold" : "normal")
-    .style("font-size","12px")
-    
-    .text((d, i) => categories[i]); 
-
-
-
-    // here are the new version of it 
-
-  
-
+    .style("font-size", "12px")
+    .text((d, i) => categories[i])
+    .on("mouseover", function() {
+        d3.select(this).attr("opacity", 1); // Set opacity to 1 on hover
+    })
+    .on("mouseout", function() {
+        d3.select(this).attr("opacity", 0); // Set opacity back to 0 when not hovered
+    });
 
 
     // Add the chords

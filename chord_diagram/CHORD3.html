@@ -2,40 +2,113 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chord Plot</title>
     <!-- Bootstrap CDN -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <style>
     /* Add your custom styles here if needed */
+    .main {
+        display: flex;
+    }
+
+    .legend {
+        /* display: flex; */
+        border: 2px solid black;
+        margin-top: 1rem;
+        border-radius: 1rem;
+        background-color: white;
+        width: 95%;
+        height: auto;
+        min-height: 200px;
+    }
+
+    .legend-item {
+        list-style-type: none;
+        /* Remove default list style */
+        margin-bottom: 5px;
+        /* Add margin between list items */
+    }
+
+    .legend-item span {
+        display: inline-block;
+        width: 30px;
+        height: 20px;
+        margin-right: 5px;
+    }
 </style>
 
 <body>
-    <div class="">
-         
-        <h1>Chord Diagram</h1>
-        <div style="background-color: rgb(221, 226, 195);" id="chordDiagram" class="col-9" ></div>
-         <div class="col-3" id="legend"></div> 
-
-
-    </div>
+    <h1>Chord Diagram</h1>
+    <section class="main">
+        <div  id="chordDiagram" class="col-9"></div>
+        <div class="col-3">
+            <div class="legend">
+                <legend id="">Arcs Names</legend>
+                <ul id="arcNames"></ul>
+            </div>
+        </div>
+    </section>
 
     <script src="Functions/plot_diagram.js"></script>
     <script>
         const categories = [
-            "Patients data", "Cell lines data", "Drug combinations",
-            "Drug-target interactions", "Drug-disease links", "Gene-disease links", "Cancer mutations",
-            "Chemical structures", "Protein structures", "Toxicities", "Pathways", "Docking",
-            "Homology modelling", "Binding sites", "Combination web-tools", "Target based DR", "Phenotypic DR", "Toxicity assessment", "Design new clinical trials",
-            "Mapping of diseases pathways", "Disease-specific", "Disease-agnostic", "Biomarker identification",
-            "Predict adverse reactions"
+            "Patients data",
+            "Cell lines data",
+            "Drug combinations",
+            "Drug-target interactions",
+            "Drug-disease links",
+            "Gene-disease links",
+            "Cancer mutations",
+            "Chemical structures",
+            "Protein structures",
+            "Toxicities",
+            "Pathways",
+            "Docking",
+            "Homology modelling",
+            "Binding sites",
+            "Combination web-tools",
+            "Target based DR",
+            "Phenotypic DR",
+            "Toxicity assessment",
+            "Design new clinical trials",
+            "Mapping of diseases pathways",
+            "Disease-specific",
+            "Disease-agnostic",
+            "Biomarker identification",
+            "Predict adverse reactions",
         ];
-
+        const color = [
+            "#197278", // Red
+            "#FFA500", // Orange
+            "#73610e", // brown
+            "#008000", // Green
+            "#4090ff", // Blue
+            "#4B0082", // Indigo
+            "#7b755a", // Violet
+            "#FF1493", // DeepPink
+            "#FF4500", // OrangeRed
+            "#be5dc8", // Gold
+            "#32CD32", // LimeGreen
+            "#00FFFF", // Aqua
+            "#000080", // Navy
+            "#800080", // Purple
+            "#FF69B4", // HotPink
+            "#00FF7F", // SpringGreen
+            "#87CEEB", // SkyBlue
+            "#6A5ACD", // SlateBlue
+            "#FFC0CB", // Pink
+            "#800000", // Maroon
+            "#808000", // Olive
+            "#808080", // Gray
+            "#508070", // White
+            "#000000", // Black
+        ];
         // Define the data
         d3.csv("chord_plot_updated copy 3.csv")
             .then(function (data) {
@@ -44,16 +117,15 @@
                 var matrixData = [];
 
                 data.forEach(function (entry) {
-
                     var keys = Object.keys(entry);
-                    var values = entry[keys[0]].split(';');
+                    var values = entry[keys[0]].split(";");
 
                     var rowHeader = keys[0].trim();
                     rowHeaders.push(rowHeader);
 
                     values.forEach(function (value, index) {
                         if (index > 0) {
-                            var colHeader = value.trim().split(';')[0];
+                            var colHeader = value.trim().split(";")[0];
                             if (!colHeaders.includes(colHeader)) {
                                 colHeaders.push(colHeader);
                             }
@@ -77,11 +149,33 @@
 
                 // Define dimensions for the plot
                 Chord_initials(matrix);
-
             })
-            .catch(error => {
-                console.error('Error fetching or parsing CSV data:', error);
+            .catch((error) => {
+                console.error("Error fetching or parsing CSV data:", error);
             });
+
+        function createLegend(categories, colors) {
+            const arcNamesList = document.getElementById('arcNames');
+
+            categories.forEach((category, index) => {
+                const listItem = document.createElement('li');
+                const colorBox = document.createElement('span');
+
+                // Add class name to list item
+                listItem.classList.add('legend-item');
+
+                listItem.appendChild(colorBox);
+                listItem.appendChild(document.createTextNode(category));
+                arcNamesList.appendChild(listItem);
+
+                // Set styles for color box
+                colorBox.style.backgroundColor = colors[index];
+            });
+        }
+
+        // Call the function with your categories and colors
+        createLegend(categories, color);
+
     </script>
 </body>
 

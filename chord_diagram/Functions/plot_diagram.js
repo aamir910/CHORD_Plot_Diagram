@@ -119,60 +119,28 @@ chord2.forEach(chord => {
     // Add the group labels
   
    
-    // group.append("text")
-    // .each((d, i) => {
-    //     console.log("before " , d);
-    //     d.angle = (d.startAngle + d.endAngle) / 2;
-    //     d.bold = i >= 15; // Bold text from index 7 onwards
-    //     console.log("before " , d);
-    // })
-    // // .attr("dy", ".35em") 
-    // .attr("transform", d => `
-    //     rotate(${(d.angle * 180 / Math.PI - 90)})
-    //     translate(${innerRadius + 80})
-    //     ${d.angle > Math.PI ? "rotate(180)" : ""}
-    // `)
-    // .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
-    // .style("font-weight", d => d.bold ? "bold" : "normal")
-    // .style("font-size","09px")
+    group.append("text")
+    .each((d, i) => {
+        d.angle = (d.startAngle + d.endAngle) / 2;
+        d.bold = i >= 15; // Bold text from index 7 onwards
+    })
+    // .attr("dy", ".35em") 
+    .attr("transform", d => `
+        rotate(${(d.angle * 180 / Math.PI - 90)})
+        translate(${innerRadius + 80})
+        ${d.angle > Math.PI ? "rotate(180)" : ""}
+    `)
+    .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
+    .style("font-weight", d => d.bold ? "bold" : "normal")
+    .style("font-size","12px")
     
-    // .text((d, i) => categories[i]); 
+    .text((d, i) => categories[i]); 
 
 
 
     // here are the new version of it 
 
-    group.append("text")
-    .each((d, i) => {
-        console.log("before " , d);
-        d.angle = (d.startAngle + d.endAngle) / 2;
-        d.bold = i >= 15; // Bold text from index 7 onwards
-        console.log("before " , d);
-    })
-    // .attr("dy", ".35em") 
-    .attr("transform", function(d){
-
-    console.log(d , "here is the console ") 
-
-    if(d.index === 15){
-
-    }
-    else{
-        
-    }
-    
-
-    return    `  rotate(${(d.angle * 180 / Math.PI - 90)})
-        translate(${innerRadius + 80})
-        ${d.angle > Math.PI ? "rotate(180)" : ""}
-    `
-
-} )
-    .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
-    .style("font-weight", d => d.bold ? "bold" : "normal")
-    .style("font-size","09px")
-    
-    .text((d, i) => categories[i]); 
+  
 
 
 

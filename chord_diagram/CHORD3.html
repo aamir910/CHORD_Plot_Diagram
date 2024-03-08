@@ -19,13 +19,14 @@
 
     .legend {
         /* display: flex; */
-        border: 2px solid black;
+        /* border: 2px solid black; */
         margin-top: 1rem;
         border-radius: 1rem;
         background-color: white;
         width: 95%;
         height: auto;
         min-height: 200px;
+        margin-left: 1rem;
     }
 
     .legend-item {
@@ -41,18 +42,29 @@
         height: 20px;
         margin-right: 5px;
     }
+
+    /* tooltip  */
+    .tooltip-text {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  fill: black; /* Text color */
+  background-color: white; /* Background color */
+}
 </style>
 
 <body>
     <h1>Chord Diagram</h1>
-    <section class="main">
-        <div  id="chordDiagram" class="col-9"></div>
-        <div class="col-3">
-            <div class="legend">
-                <legend id="">Arcs Names</legend>
-                <ul id="arcNames"></ul>
-            </div>
+    <section class="main row">
+            <div id="chordDiagram" class="col-md-9 col-12"></div>
+         
+            <div class="col-md-3 col-12">
+                <div class="legend">
+                    <legend id="arcLegend">Arcs Names</legend>
+                    <ul id="arcNames"></ul>
+                </div>
+            
         </div>
+        
     </section>
 
     <script src="Functions/plot_diagram.js"></script>
@@ -160,16 +172,19 @@
             categories.forEach((category, index) => {
                 const listItem = document.createElement('li');
                 const colorBox = document.createElement('span');
-
                 // Add class name to list item
                 listItem.classList.add('legend-item');
-
                 listItem.appendChild(colorBox);
                 listItem.appendChild(document.createTextNode(category));
                 arcNamesList.appendChild(listItem);
-
                 // Set styles for color box
-                colorBox.style.backgroundColor = colors[index];
+                if(index >=15){
+                    colorBox.style.border =`4px solid ${colors[index]} ` ;
+                    colorBox.style.backgroundColor = "#09467f";
+                }
+                else{
+                    colorBox.style.backgroundColor = colors[index];
+                }
             });
         }
 

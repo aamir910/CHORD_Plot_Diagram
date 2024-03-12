@@ -85,7 +85,6 @@ function Chord_initials(matrix) {
 
   // Compute the chord layout
   const chords = chord(matrix);
-  console.log(chords);
   let chord2 = chords;
 
   //    here update the size of the ribben value
@@ -164,7 +163,7 @@ function Chord_initials(matrix) {
     .attr("d", d3.ribbon().radius(innerRadius))
     .attr("fill", (d) => color[d.source.index])
     .attr("stroke", (d) => {
-      console.log(d);
+  
       return d3.rgb(color[d.source.index]);
     })
     .on("mouseover", function () {

@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chord Plot</title>
     <!-- Bootstrap CDN -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
     <!-- D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
@@ -17,11 +17,10 @@
         display: flex;
         width: 99%;
     }
-    #arcLegend{
+
+    #arcLegend {
         margin-left: 2.5rem;
-    
     }
-    
 
     .legend {
         /* display: flex; */
@@ -51,29 +50,86 @@
 
     /* tooltip  */
     .tooltip-text {
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  fill: black; /* Text color */
-  background-color: white; /* Background color */
-}
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        fill: black;
+        /* Text color */
+        background-color: white;
+        /* Background color */
+    }
 </style>
 
 <body>
     <section class="main row">
-            <div id="chordDiagram" class="col-md-9 col-12"></div>
-         
-            <div class="col-md-2 col-12">
-                <div class="legend">
-                    <h2  id="arcLegend">Arcs Names</h2>
-                    <ul id="arcNames"></ul>
-                </div>
-            
+        <div id="chordDiagram" class="col-md-9 col-12"></div>
+
+        <div class="col-md-2 col-12">
+            <div class="legend">
+                <h2 id="arcLegend">Arcs Names</h2>
+                <ul id="arcNames"></ul>
+            </div>
         </div>
-        
     </section>
 
+
+
+
     <script src="Functions/plot_diagram.js"></script>
+
+
+
     <script>
+        d3.csv("chord_plot.csv").then(function (data) {
+            // Log the parsed CSV data to console
+            console.log("here is the data ", data);
+            var headers = Object.keys(data[0]).slice(1);
+            console.log(headers)
+            // Initialize a 2D array with dimensions based on the number of headers
+            var matrix = new Array(headers.length);
+            for (var i = 0; i < headers.length; i++) {
+                matrix[i] = new Array(headers.length).fill(0);
+            }
+
+            // Iterate through the data and fill the matrix
+            data.forEach(function (d) {
+                var sourceIndex = headers.indexOf(d[Object.keys(d)[0]]);
+                Object.keys(d).slice(1).forEach(function (key) {
+                    var targetIndex = headers.indexOf(key);
+                    matrix[sourceIndex][targetIndex] = parseInt(d[key]);
+                });
+            });
+
+            // Log or use the matrix as required for the chord plot diagram
+            console.log(matrix);
+            // Now you can use the 'matrix' for your chord plot diagram
+        })
+
+
+        // Function to fetch CSV data
+        async function fetchCSV(url) {
+            const response = await fetch(url);
+            const data = await response.text();
+            return data;
+        }
+
+        // Function to parse CSV data into a 2D array
+        function parseCSV(csvData) {
+            const rows = csvData.trim().split('\n');
+            return rows.map(row => row.split(';'));
+        }
+
+        // Example usage
+        const csvUrl = 'chord_plot.csv'; // Replace 'data.csv' with your CSV file URL
+        fetchCSV(csvUrl)
+            .then(csvData => {
+                const dataArray = parseCSV(csvData);
+                console.log(dataArray);
+            })
+            .catch(error => console.error('Error fetching or parsing CSV:', error));
+
+    </script>
+    <script>
+
         const categories = [
             "Patients data",
             "Cell lines data",
@@ -126,19 +182,54 @@
             "#508070", // White
             "#000000", // Black
         ];
-        // Define the data
-        d3.csv("chord_plot_updated copy 3.csv")
+        // Define the data chord_plot
+        // d3.csv("chord_plot_updated copy 3.csv") .
+        function extendArray(array, valuesAfter15) {
+            // Iterate through each inner array
+            for (let i = 0; i < array.length; i++) {
+                // Replace values after the 15th index with the provided values
+                array[i].splice(15, valuesAfter15[i].length, ...valuesAfter15[i]);
+            }
+            return array;
+        }
+
+        function transposeArray(array) {
+            let transposedArray = [];
+            for (let i = 0; i < array[0].length; i++) {
+                let newRow = [];
+                for (let j = 0; j < array.length; j++) {
+                    newRow.push(array[j][i]);
+                }
+                transposedArray.push(newRow);
+            }
+            return transposedArray;
+        }
+        function addZeros(array, no_of_zeros) {
+            const newArray = [];
+            for (let i = 0; i < array.length; i++) {
+                newArray[i] = [];
+                for (let j = 0; j < array[i].length + no_of_zeros; j++) {
+                    newArray[i][j] = array[i][j] || 0;
+                }
+            }
+            return newArray;
+        }
+
+        d3.csv("chord_plot.csv")
             .then(function (data) {
                 var rowHeaders = [];
                 var colHeaders = [];
                 var matrixData = [];
-
+                let headcount2;
                 data.forEach(function (entry) {
                     var keys = Object.keys(entry);
                     var values = entry[keys[0]].split(";");
-
                     var rowHeader = keys[0].trim();
+                    console.log(rowHeader);
+                    headcount2 = (rowHeader.split(';').length - 1);
+
                     rowHeaders.push(rowHeader);
+
 
                     values.forEach(function (value, index) {
                         if (index > 0) {
@@ -151,43 +242,67 @@
 
                     matrixData.push(values.slice(1).map(Number));
                 });
-
                 // Creating n x n matrix
                 var n = rowHeaders.length;
+                let totalcount = n + headcount2;
                 var matrix = new Array(n).fill(0).map(() => new Array(n).fill(0));
 
-                matrixData.forEach(function (row, rowIndex) {
-                    row.forEach(function (value, colIndex) {
-                        matrix[rowIndex][colIndex] = value;
-                    });
-                });
+                let extendedArray = extendArray(matrix, matrixData);
 
-                console.log(matrix);
+                console.log("chord plot", matrix);
+                console.log("chord plot2", matrix, totalcount, matrixData);
+                // Output the extended array
+                console.log(extendedArray, "before transport ");
+                let transposedArray = transposeArray(extendedArray);
+
+                // Output the transposed array
+                console.log(transposedArray, "transport");
+
+
+                const modifiedArray1 = transposedArray.slice(n);
+
+                console.log(modifiedArray1);
+
+                const modifiedArray = addZeros(modifiedArray1, headcount2);
+
+                console.log(modifiedArray, "added the zero there ");
+
+
+
+
+                // matrixData.forEach(function (row, rowIndex) {
+                //     row.forEach(function (value, colIndex) {
+                //         matrix[rowIndex][colIndex] = value;
+                //     });
+                // });
+
+
+const concatenatedArray = extendedArray.concat(modifiedArray);
+                console.log("chord plot", concatenatedArray);
 
                 // Define dimensions for the plot
-                Chord_initials(matrix);
+                Chord_initials(concatenatedArray);
             })
             .catch((error) => {
                 console.error("Error fetching or parsing CSV data:", error);
             });
 
         function createLegend(categories, colors) {
-            const arcNamesList = document.getElementById('arcNames');
+            const arcNamesList = document.getElementById("arcNames");
 
             categories.forEach((category, index) => {
-                const listItem = document.createElement('li');
-                const colorBox = document.createElement('span');
+                const listItem = document.createElement("li");
+                const colorBox = document.createElement("span");
                 // Add class name to list item
-                listItem.classList.add('legend-item');
+                listItem.classList.add("legend-item");
                 listItem.appendChild(colorBox);
                 listItem.appendChild(document.createTextNode(category));
                 arcNamesList.appendChild(listItem);
                 // Set styles for color box
-                if(index >=15){
-                    colorBox.style.border =`4px solid ${colors[index]} ` ;
+                if (index >= 15) {
+                    colorBox.style.border = `4px solid ${colors[index]} `;
                     colorBox.style.backgroundColor = "#09467f";
-                }
-                else{
+                } else {
                     colorBox.style.backgroundColor = colors[index];
                 }
             });
@@ -195,7 +310,6 @@
 
         // Call the function with your categories and colors
         createLegend(categories, color);
-
     </script>
 </body>
 

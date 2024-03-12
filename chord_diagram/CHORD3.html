@@ -78,84 +78,11 @@
 
 
 
+  
+  
     <script>
-        d3.csv("chord_plot.csv").then(function (data) {
-            // Log the parsed CSV data to console
-            console.log("here is the data ", data);
-            var headers = Object.keys(data[0]).slice(1);
-            console.log(headers)
-            // Initialize a 2D array with dimensions based on the number of headers
-            var matrix = new Array(headers.length);
-            for (var i = 0; i < headers.length; i++) {
-                matrix[i] = new Array(headers.length).fill(0);
-            }
-
-            // Iterate through the data and fill the matrix
-            data.forEach(function (d) {
-                var sourceIndex = headers.indexOf(d[Object.keys(d)[0]]);
-                Object.keys(d).slice(1).forEach(function (key) {
-                    var targetIndex = headers.indexOf(key);
-                    matrix[sourceIndex][targetIndex] = parseInt(d[key]);
-                });
-            });
-
-            // Log or use the matrix as required for the chord plot diagram
-            console.log(matrix);
-            // Now you can use the 'matrix' for your chord plot diagram
-        })
-
-
-        // Function to fetch CSV data
-        async function fetchCSV(url) {
-            const response = await fetch(url);
-            const data = await response.text();
-            return data;
-        }
-
-        // Function to parse CSV data into a 2D array
-        function parseCSV(csvData) {
-            const rows = csvData.trim().split('\n');
-            return rows.map(row => row.split(';'));
-        }
-
-        // Example usage
-        const csvUrl = 'chord_plot.csv'; // Replace 'data.csv' with your CSV file URL
-        fetchCSV(csvUrl)
-            .then(csvData => {
-                const dataArray = parseCSV(csvData);
-                console.log(dataArray);
-            })
-            .catch(error => console.error('Error fetching or parsing CSV:', error));
-
-    </script>
-    <script>
-
-        const categories = [
-            "Patients data",
-            "Cell lines data",
-            "Drug combinations",
-            "Drug-target interactions",
-            "Drug-disease links",
-            "Gene-disease links",
-            "Cancer mutations",
-            "Chemical structures",
-            "Protein structures",
-            "Toxicities",
-            "Pathways",
-            "Docking",
-            "Homology modelling",
-            "Binding sites",
-            "Combination web-tools",
-            "Target based DR",
-            "Phenotypic DR",
-            "Toxicity assessment",
-            "Design new clinical trials",
-            "Mapping of diseases pathways",
-            "Disease-specific",
-            "Disease-agnostic",
-            "Biomarker identification",
-            "Predict adverse reactions",
-        ];
+        let categories = [];
+        let categoriespart1 = [] ;
         const color = [
             "#197278", // Red
             "#FFA500", // Orange
@@ -220,18 +147,23 @@
                 var rowHeaders = [];
                 var colHeaders = [];
                 var matrixData = [];
+                let names = [];
                 let headcount2;
+                console.log(data ,  "here is the data ")
                 data.forEach(function (entry) {
+
                     var keys = Object.keys(entry);
                     var values = entry[keys[0]].split(";");
                     var rowHeader = keys[0].trim();
-                    console.log(rowHeader);
                     headcount2 = (rowHeader.split(';').length - 1);
-
                     rowHeaders.push(rowHeader);
+                    
+   // adding the value to the categories    
 
+                      categoriespart1.push(values[0]); 
 
                     values.forEach(function (value, index) {
+                        // console.log( value.split(";"))
                         if (index > 0) {
                             var colHeader = value.trim().split(";")[0];
                             if (!colHeaders.includes(colHeader)) {
@@ -242,14 +174,22 @@
 
                     matrixData.push(values.slice(1).map(Number));
                 });
+
                 // Creating n x n matrix
+
+                // let categories_valuepart2 = JSON.parse(rowHeaders[0])
+                
+         const categoriespart2= rowHeaders[0].slice(1).split(';');
+
+            categories = categoriespart1.concat(categoriespart2); 
+
+
                 var n = rowHeaders.length;
                 let totalcount = n + headcount2;
                 var matrix = new Array(n).fill(0).map(() => new Array(n).fill(0));
 
                 let extendedArray = extendArray(matrix, matrixData);
 
-                console.log("chord plot", matrix);
                 console.log("chord plot2", matrix, totalcount, matrixData);
                 // Output the extended array
                 console.log(extendedArray, "before transport ");
@@ -257,31 +197,24 @@
 
                 // Output the transposed array
                 console.log(transposedArray, "transport");
-
-
                 const modifiedArray1 = transposedArray.slice(n);
-
                 console.log(modifiedArray1);
-
                 const modifiedArray = addZeros(modifiedArray1, headcount2);
-
                 console.log(modifiedArray, "added the zero there ");
-
-
-
 
                 // matrixData.forEach(function (row, rowIndex) {
                 //     row.forEach(function (value, colIndex) {
                 //         matrix[rowIndex][colIndex] = value;
                 //     });
                 // });
-
-
-const concatenatedArray = extendedArray.concat(modifiedArray);
+                
+               const concatenatedArray = extendedArray.concat(modifiedArray);
                 console.log("chord plot", concatenatedArray);
-
                 // Define dimensions for the plot
+                console.log(categories , 'categories2')
                 Chord_initials(concatenatedArray);
+                
+        createLegend(categories, color);
             })
             .catch((error) => {
                 console.error("Error fetching or parsing CSV data:", error);
@@ -309,7 +242,6 @@ const concatenatedArray = extendedArray.concat(modifiedArray);
         }
 
         // Call the function with your categories and colors
-        createLegend(categories, color);
     </script>
 </body>
 

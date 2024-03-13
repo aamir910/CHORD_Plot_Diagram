@@ -143,19 +143,22 @@
         }
 
         d3.csv("chord_plot copy.csv")
+        d3.csv("chord_plot_updated copy 3.csv")
+        
+        d3.csv("chord_plot.csv")
             .then(function (data) {
                 var rowHeaders = [];
                 var colHeaders = [];
                 var matrixData = [];
                 let names = [];
-                let headcount2;
+                let coulmNames;
                 console.log(data ,  "here is the data ")
                 data.forEach(function (entry) {
 
                     var keys = Object.keys(entry);
                     var values = entry[keys[0]].split(";");
                     var rowHeader = keys[0].trim();
-                    headcount2 = (rowHeader.split(';').length - 1);
+                    coulmNames = (rowHeader.split(';').length - 1);
                     rowHeaders.push(rowHeader);
                     
    // adding the value to the categories    
@@ -181,10 +184,15 @@
 
          const categoriespart2= rowHeaders[0].slice(1).split(';');
             categories = categoriespart1.concat(categoriespart2); 
-                var n = rowHeaders.length;
-                let totalcount = n + headcount2;
-                var matrix = new Array(n).fill(0).map(() => new Array(n).fill(0));
 
+            var n = rowHeaders.length;
+            let totalcount = n + coulmNames;
+
+
+            console.log( n , coulmNames , categoriespart1.every(value => categoriespart2.includes(value)))
+
+                var matrix = new Array(n).fill(0).map(() => new Array(n).fill(0));
+console.log(matrixData ,'matrixData') ;
                 let extendedArray = extendArray(matrix, matrixData);
 
                 console.log("chord plot2", matrix, totalcount, matrixData);
@@ -196,7 +204,7 @@
                 console.log(transposedArray, "transport");
                 const modifiedArray1 = transposedArray.slice(n);
                 console.log(modifiedArray1);
-                const modifiedArray = addZeros(modifiedArray1, headcount2);
+                const modifiedArray = addZeros(modifiedArray1, coulmNames);
                 console.log(modifiedArray, "added the zero there ");
 
                 // matrixData.forEach(function (row, rowIndex) {

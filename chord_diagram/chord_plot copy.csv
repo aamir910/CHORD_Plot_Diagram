@@ -1,4 +1,10 @@
-;Disease-specific;Biomarker identification;Predict adverse reactions
-Drug combinations;4;4;4
-Drug-target interactions;25;4;4
-Drug-disease links;4;12;0
+;Target based DR;Phenotypic DR;Design new clinical trials;Mapping of diseases pathways;Disease-specific;Disease-agnostic;Biomarker identification;Predict adverse reactions
+Drug combinations;0;4;0;0;0;4;0;0
+Phenotypic DR;25;0;0;0;8;4;21;0
+Drug-disease links;0;12;0;10;0;3;9;0
+icaw;3;0;0;0;0;3;0;0
+Chemical structures;3;0;0;0;0;0;3;0;0
+Protein structures;4;0;0;0;0;0;4;0;0
+sohial;0;8;8;0;0;0;8;0;0
+Pathways;10;0;0;0;10;1;9;0;0
+Docking;23;0;0;0;0;0;23;0;0

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>US Map with Texas Label</title>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/maps/modules/map.js"></script>
+<script src="https://code.highcharts.com/mapdata/countries/us/us-all.js"></script>
+</head>
+<body>
+
+<div id="container" style="height: 500px; min-width: 310px; max-width: 800px; margin: 0 auto"></div>
+
+<script>
+Highcharts.mapChart('container', {
+    chart: {
+        map: 'countries/us/us-all'
+    },
+    title: {
+        text: 'US Map with Texas Label'
+    },
+    series: [{
+        dataLabels: {
+            enabled: false,
+            format: '{point.name}',
+            style: {
+                textOutline: 'none' // Remove outline around labels
+            },
+            formatter: function() {
+                console.log('check')
+                if (this.point.name === 'US.TX') {
+                    return this.point.name;
+                }
+                return null; // Hide labels for other states
+            }
+        },
+        name: 'US States',
+        data: [{
+            'hc-key': 'us-tx',
+            value: 1
+        }]
+    }]
+});
+</script>
+
+</body>
+</html>

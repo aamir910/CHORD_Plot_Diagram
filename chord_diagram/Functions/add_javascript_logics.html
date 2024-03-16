@@ -1793,6 +1793,25 @@
                     }
                     return sumproduct;
                 }
+
+
+                function calculateValueOF_O(N5, O5, B32, B33, B31) {
+    let result;
+    if (N5 === O5) {
+        result = N5;
+    } else {
+        result = N5 + ((O5 - N5) / (B33 - B32)) * (B31 - B32);
+    }
+    return result;
+}
+function calculateValueOF_S(Q2, R2, B36, B37, B35) {
+    if (Q2 === R2) {
+        return Q2;
+    } else {
+        return Q2 + ((R2 - Q2) / (B37 - B36)) * (B35 - B36);
+    }
+}
+
                 const updatedObjects = objectsToString.map(updateKeys);
 
                 console.log(updatedObjects, "here is the final object");
@@ -1800,6 +1819,7 @@
                 let updatedObjects2 = JSON.parse(JSON.stringify(updatedObjects));
 
                 let Individual_Attachment_point = 5000;
+                Annual_Maximum_Incl_attachment_point = 500000 ;
                 let plan = 8;
                 let runin_month = 100;
                 let runout_month = 105;
@@ -1811,9 +1831,99 @@
                 let dependent_participation_rate = 100;
                 let annual_stop_loss_limit = "none";
                 let type_of_UW = "Type II";
-                let date_begins = "2000"
+                let date_begins = "2000";
+                let Coverage_for_next_$5000 = 80 ; 
+        
+// creating the opp mac calc    
 
-                updatedObjects2.forEach((entry, index) => {
+
+const table3 = [
+    ["Office Visits", 13, 20],
+    ["Hospital Inpatient per stay", 0.8, 10],
+    ["Hospital Inpatient per day", 3.7, 15],
+    ["Outpatient Surgical Center", 0.9, 30],
+    ["CT Scan/MRI", 1, 20],
+    ["Emergency Room", 0.9, 60],
+    ["Prescription Drug – Generic", 24.1, 15],
+    ["Prescription Drug – Without Specialty – Brand Name Formulary", 3.6, 20],
+    ["Prescription Drug – Without Specialty – Brand Name Non-Formulary", 2.4, 20],
+    ["Prescription Drug – With Specialty – Brand Name Formulary", 3.3, 20],
+    ["Prescription Drug – With Specialty – Brand Name Non-Formulary", 2.2, 20],
+    ["Prescription Drug – With Specialty – Specialty", 0.5, 15]
+];
+
+let sum = 0;
+
+
+for (let i = 0; i < table3.length; i++) {
+    sum += table3[i][1] * table3[i][2];
+}
+
+
+
+let B23  = Coverage_for_next_$5000/100 ; // b12 fromt he 2 input 
+let B24 = calendar_year ; 
+let B25 = EE_oop_max ; 
+let B26 =Math.ceil( (B25-B24)*(1-B23)); 
+let B27 = sum ;
+let B28 = Math.ceil( B24+ B26 +B27 ); 
+let B29  = 1200 
+let B30 = (B29 === B25) ? 0 : B28; 
+let B31 =  B30 + Individual_Attachment_point ; 
+console.log(B28 ,  "here is the b " , B31)  ;
+
+const targetValue = B31; // Example value you provided
+
+const values = [
+    5000, 7500, 10000, 12500, 15000, 17500, 20000, 22500, 25000, 30000,
+    35000, 40000, 45000, 50000, 55000, 60000, 65000, 70000, 75000, 80000,
+    85000, 90000, 95000, 100000, 105000, 110000, 115000, 120000, 125000, 
+    130000, 135000, 140000, 145000, 150000, 155000, 160000, 165000, 170000, 
+    175000, 180000, 185000, 190000, 195000, 200000, 205000, 210000, 215000, 
+    220000, 225000, 230000, 235000, 240000, 245000, 250000, 275000, 300000, 
+    325000, 350000, 375000, 400000, 425000, 450000, 475000, 500000, 550000, 
+    600000, 650000, 700000, 750000, 800000, 900000, 1000000, 1250000, 1500000, 
+    2000000, 2500000, 3000000, 4000000, 5000000, 10000000
+];
+
+// Find the nearest lower value
+let B32 = -Infinity;
+for (let i = 0; i < values.length; i++) {
+    if (values[i] < targetValue && values[i] > B32) {
+        B32 = values[i];
+    }
+} 
+let B33 = Infinity;
+for (let i = 0; i < values.length; i++) {
+    if (values[i] > targetValue && values[i] < B33) {
+        B33 = values[i];
+    }
+}
+let B35 = Annual_Maximum_Incl_attachment_point + B28
+console.log(B35 , "here is ");
+
+const targetvalue2 = B35 ; 
+// Find the nearest higher value
+
+// Find the nearest lower value
+let B36 = -Infinity;
+for (let i = 0; i < values.length; i++) {
+    if (values[i] < targetvalue2 && values[i] > B36) {
+        B36 = values[i];
+    }
+}
+ 
+// Find the nearest higher value
+let B37 = Infinity;
+for (let i = 0; i < values.length; i++) {
+    if (values[i] > targetvalue2 && values[i] < B37) {
+        B37 = values[i];
+    }
+}
+  console.log(B36 ,  B37 , "here are the last value of the b36 and the b37 ") ;
+
+
+updatedObjects2.forEach((entry, index) => {
 
                     switch (entry.Employee) {
                         case "EE":
@@ -1867,7 +1977,19 @@
                     entry.Base_Net_Monthly_Prem_lookupvalue = customFormula_ziptablealpha(entry.Zip_table_alpha)
                     entry.M = getValueByLabelAndIndex(Base_Net_Monthly_Prem_Table,
                         `${entry.Base_Net_Monthly_Prem_lookupvalue},${Individual_Attachment_point}`, plan - 1)
-                });
+                        entry.N = getValueByLabelAndIndex(Base_Net_Monthly_Prem_Table,
+                        `${entry.Base_Net_Monthly_Prem_lookupvalue},${B32}`, plan - 1)
+                        entry.O = getValueByLabelAndIndex(Base_Net_Monthly_Prem_Table,
+                        `${entry.Base_Net_Monthly_Prem_lookupvalue},${B33}`, plan - 1)
+                        entry.P =  calculateValueOF_O(entry.N ,entry.O, B32 ,B33 ,B31  )
+                        entry.Q = getValueByLabelAndIndex(Base_Net_Monthly_Prem_Table,
+                        `${entry.Base_Net_Monthly_Prem_lookupvalue},${B36}`, plan - 1)
+                        entry.R = getValueByLabelAndIndex(Base_Net_Monthly_Prem_Table,
+                        `${entry.Base_Net_Monthly_Prem_lookupvalue},${B37}`, plan - 1)
+
+                       entry.S = calculateValueOF_O(entry.Q , entry.R , B36, B37, B35 );  
+                        
+                    });
 
                 console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
 
@@ -1884,10 +2006,8 @@
                         : Math.floor(totalMemberCount);
                 employeeCount = updatedObjects2.length * 3;
 
-
-
-                
                 const Net_Premium_before_OOP = calculateSumproduct(updatedObjects2);
+
                 console.log("Line1: Base Net Premium before OOP Max adjustment:", Net_Premium_before_OOP);
                 console.log("Member count :", roundedMemberCount);
                 console.log("Employee count:", employeeCount);

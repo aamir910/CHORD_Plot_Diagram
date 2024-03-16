@@ -1725,7 +1725,7 @@
 
 
 
-        let updatedObjects2 ; 
+        let updatedObjects2;
         async function fetchExcelAndConvertToJson(filePath) {
             try {
                 const response = await fetch(filePath);
@@ -1744,10 +1744,55 @@
             try {
                 const Base_Net_Monthly_Prem_Table = await fetchExcelAndConvertToJson("xlxsfile/Base_Net_Monthly_Prem_Table.xlsx");
                 const Random_Zip_Generator = await fetchExcelAndConvertToJson("xlxsfile/Random_Zip_Generator.xlsx");
+                const Zip_Table = await fetchExcelAndConvertToJson("xlxsfile/Zip_Table.xlsx");
+
 
                 // Your processing logic here
                 console.log(Base_Net_Monthly_Prem_Table, "Base_Net_Monthly_Prem_Table");
                 console.log(Random_Zip_Generator, "Random_Zip_Generator");
+
+                console.log(Zip_Table, "Zip_Table");
+
+                function findTableForZip(zip, data) {
+                    for (let i = 0; i < data.length; i++) {
+                        if (data[i][0] === zip) {
+                            return data[i][2];
+                        }
+                    }
+                    return null; // Return null if no match is found
+                }
+                function customFormula_ziptablealpha(I2) {
+                    if (I2 === "I" || I2 === "J" || I2 === "K" || I2 === "L") {
+                        if (I2 === "I" || I2 === "J") {
+                            return "I,J";
+                        } else {
+                            return "K,L";
+                        }
+                    } else {
+                        return I2;
+                    }
+                }
+                function getValueByLabelAndIndex(data, label, index) {
+                    for (let i = 0; i < data.length; i++) {
+                        const innerList = data[i];
+                        if (innerList[0] === label) {
+                            if (index < innerList.length) {
+                                return innerList[index];
+                            } else {
+                                return null;  // Index out of range for this inner list
+                            }
+                        }
+                    }
+                    return null;  // Label not found in the data
+                }
+                // Function to calculate sumproduct
+                function calculateSumproduct(data) {
+                    let sumproduct = 0;
+                    for (const entry of data) {
+                        sumproduct += entry.M * entry.Member_count;
+                    }
+                    return sumproduct;
+                }
                 const updatedObjects = objectsToString.map(updateKeys);
 
                 console.log(updatedObjects, "here is the final object");
@@ -1755,7 +1800,7 @@
                 let updatedObjects2 = JSON.parse(JSON.stringify(updatedObjects));
 
                 let Individual_Attachment_point = 5000;
-                let plan = 6;
+                let plan = 8;
                 let runin_month = 100;
                 let runout_month = 105;
                 let annual_max = 500000;
@@ -1768,8 +1813,8 @@
                 let type_of_UW = "Type II";
                 let date_begins = "2000"
 
-                updatedObjects2.forEach((entry , index) => {
-                   
+                updatedObjects2.forEach((entry, index) => {
+
                     switch (entry.Employee) {
                         case "EE":
                             entry.Member_count = 1;
@@ -1812,14 +1857,26 @@
                     } else {
                         entry.age_bucket = "70 & Over";
                     }
-                    entry.zip_code_3 = Random_Zip_Generator[index+1][2].substring(0, 3); ;
 
+                    // added the 3 digit zip code 
+
+                    entry.zip_code_3 = Random_Zip_Generator[index + 1][2].substring(0, 3);
+                    // zip to alphabet 
+
+                    entry.Zip_table_alpha = findTableForZip(entry.zip_code_3, Zip_Table)
+                    entry.Base_Net_Monthly_Prem_lookupvalue = customFormula_ziptablealpha(entry.Zip_table_alpha)
+                    entry.M = getValueByLabelAndIndex(Base_Net_Monthly_Prem_Table,
+                        `${entry.Base_Net_Monthly_Prem_lookupvalue},${Individual_Attachment_point}`, plan - 1)
                 });
+
                 console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
+
                 let totalMemberCount = updatedObjects2.reduce(
                     (total, entry) => total + entry.Member_count,
                     0
                 );
+
+
                 totalMemberCount *= 3;
                 let roundedMemberCount =
                     totalMemberCount % 1 >= 0.5
@@ -1827,6 +1884,11 @@
                         : Math.floor(totalMemberCount);
                 employeeCount = updatedObjects2.length * 3;
 
+
+
+                
+                const Net_Premium_before_OOP = calculateSumproduct(updatedObjects2);
+                console.log("Line1: Base Net Premium before OOP Max adjustment:", Net_Premium_before_OOP);
                 console.log("Member count :", roundedMemberCount);
                 console.log("Employee count:", employeeCount);
                 console.log("Individual Attachment point :", Individual_Attachment_point);

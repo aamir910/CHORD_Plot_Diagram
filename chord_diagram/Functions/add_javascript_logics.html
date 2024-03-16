@@ -1743,7 +1743,7 @@
         updatedObjects2.forEach((entry) => {
             switch (entry.Employee) {
                 case "EE":
-                    entry.Member_count = 1; 
+                    entry.Member_count = 1;
                     break;
                 case "ES":
                     entry.Member_count = 2.2;
@@ -1759,7 +1759,29 @@
                     break;
             }
 
-             entry.Age_Last =  parseInt(date_begins) - parseInt(entry.CalendarYearBirth);
+            entry.Age_Last = parseInt(date_begins) - parseInt(entry.CalendarYearBirth);
+            if (entry.Age_Last < 30) {
+                entry.age_bucket = "Under 30";
+            } else if (entry.Age_Last >= 30 && entry.Age_Last < 35) {
+                entry.age_bucket = "30 – 34";
+            } else if (entry.Age_Last >= 35 && entry.Age_Last < 40) {
+                entry.age_bucket = "35 – 39";
+            } else if (entry.Age_Last >= 40 && entry.Age_Last < 45) {
+                entry.age_bucket = "40 – 44";
+            } else if (entry.Age_Last >= 45 && entry.Age_Last < 50) {
+                entry.age_bucket = "45 – 49";
+            } else if (entry.Age_Last >= 50 && entry.Age_Last < 55) {
+                entry.age_bucket = "50 – 54";
+            } else if (entry.Age_Last >= 55 && entry.Age_Last < 60) {
+                entry.age_bucket = "55 – 59";
+            } else if (entry.Age_Last >= 60 && entry.Age_Last < 65) {
+                entry.age_bucket = "60 – 64";
+            } else if (entry.Age_Last >= 65 && entry.Age_Last < 70) {
+                entry.age_bucket = "65 – 69";
+            } else {
+                entry.age_bucket = "70 & Over";
+            }
+
 
         });
         console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
@@ -1776,7 +1798,7 @@
                 : Math.floor(totalMemberCount);
         employeeCount = updatedObjects2.length * 3;
 
-      
+
 
         console.log("Member count :", roundedMemberCount);
         console.log("Employee count:", employeeCount);

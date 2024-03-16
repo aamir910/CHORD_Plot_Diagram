@@ -5,6 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+
 </head>
 
 <body>
@@ -1720,100 +1722,135 @@
             return newObj;
         });
 
-        const updatedObjects = objectsToString.map(updateKeys);
 
-        console.log(updatedObjects, "here is the final object");
 
-        let updatedObjects2 = JSON.parse(JSON.stringify(updatedObjects));
 
-        let Individual_Attachment_point = 5000;
-        let plan = 6;
-        let runin_month = 100;
-        let runout_month = 105;
-        let annual_max = 500000;
-        let calendar_year = 200;
-        let coverage_next_5000 = 100;
-        let EE_oop_max = 2000;
-        let industry = 1.005;
-        let dependent_participation_rate = 100;
-        let annual_stop_loss_limit = "none";
-        let type_of_UW = "Type II";
-        let date_begins = "2000"
 
-        updatedObjects2.forEach((entry) => {
-            switch (entry.Employee) {
-                case "EE":
-                    entry.Member_count = 1;
-                    break;
-                case "ES":
-                    entry.Member_count = 2.2;
-                    break;
-                case "EC":
-                    entry.Member_count = 2.2;
-                    break;
-                case "F":
-                    entry.Member_count = 4.2;
-                    break;
-                default:
-                    // Handle unknown employee types
-                    break;
+        async function fetchExcelAndConvertToJson(filePath) {
+            try {
+                const response = await fetch(filePath);
+                const arrayBuffer = await response.arrayBuffer();
+                const data = new Uint8Array(arrayBuffer);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+                return XLSX.utils.sheet_to_json(sheet, { header: 1 });
+            } catch (error) {
+                console.error('Error fetching or parsing file:', error);
+                throw error; // Rethrow the error to be handled by the caller
             }
+        }
+        async function main() {
+            try {
+                const Base_Net_Monthly_Prem_Table = await fetchExcelAndConvertToJson("xlxsfile/Base_Net_Monthly_Prem_Table.xlsx");
+                const Random_Zip_Generator = await fetchExcelAndConvertToJson("xlxsfile/Random_Zip_Generator.xlsx");
 
-            entry.Age_Last = parseInt(date_begins) - parseInt(entry.CalendarYearBirth);
-            if (entry.Age_Last < 30) {
-                entry.age_bucket = "Under 30";
-            } else if (entry.Age_Last >= 30 && entry.Age_Last < 35) {
-                entry.age_bucket = "30 – 34";
-            } else if (entry.Age_Last >= 35 && entry.Age_Last < 40) {
-                entry.age_bucket = "35 – 39";
-            } else if (entry.Age_Last >= 40 && entry.Age_Last < 45) {
-                entry.age_bucket = "40 – 44";
-            } else if (entry.Age_Last >= 45 && entry.Age_Last < 50) {
-                entry.age_bucket = "45 – 49";
-            } else if (entry.Age_Last >= 50 && entry.Age_Last < 55) {
-                entry.age_bucket = "50 – 54";
-            } else if (entry.Age_Last >= 55 && entry.Age_Last < 60) {
-                entry.age_bucket = "55 – 59";
-            } else if (entry.Age_Last >= 60 && entry.Age_Last < 65) {
-                entry.age_bucket = "60 – 64";
-            } else if (entry.Age_Last >= 65 && entry.Age_Last < 70) {
-                entry.age_bucket = "65 – 69";
-            } else {
-                entry.age_bucket = "70 & Over";
+                // Your processing logic here
+                console.log(Base_Net_Monthly_Prem_Table, "Base_Net_Monthly_Prem_Table");
+                console.log(Random_Zip_Generator, "Random_Zip_Generator");
+                const updatedObjects = objectsToString.map(updateKeys);
+
+                console.log(updatedObjects, "here is the final object");
+
+                let updatedObjects2 = JSON.parse(JSON.stringify(updatedObjects));
+
+                let Individual_Attachment_point = 5000;
+                let plan = 6;
+                let runin_month = 100;
+                let runout_month = 105;
+                let annual_max = 500000;
+                let calendar_year = 200;
+                let coverage_next_5000 = 100;
+                let EE_oop_max = 2000;
+                let industry = 1.005;
+                let dependent_participation_rate = 100;
+                let annual_stop_loss_limit = "none";
+                let type_of_UW = "Type II";
+                let date_begins = "2000"
+
+                updatedObjects2.forEach((entry) => {
+                    switch (entry.Employee) {
+                        case "EE":
+                            entry.Member_count = 1;
+                            break;
+                        case "ES":
+                            entry.Member_count = 2.2;
+                            break;
+                        case "EC":
+                            entry.Member_count = 2.2;
+                            break;
+                        case "F":
+                            entry.Member_count = 4.2;
+                            break;
+                        default:
+                            // Handle unknown employee types
+                            break;
+                    }
+                    // addded the age
+                    entry.Age_Last = parseInt(date_begins) - parseInt(entry.CalendarYearBirth);
+                    // added the age bucket 
+
+                    if (entry.Age_Last < 30) {
+                        entry.age_bucket = "Under 30";
+                    } else if (entry.Age_Last >= 30 && entry.Age_Last < 35) {
+                        entry.age_bucket = "30 – 34";
+                    } else if (entry.Age_Last >= 35 && entry.Age_Last < 40) {
+                        entry.age_bucket = "35 – 39";
+                    } else if (entry.Age_Last >= 40 && entry.Age_Last < 45) {
+                        entry.age_bucket = "40 – 44";
+                    } else if (entry.Age_Last >= 45 && entry.Age_Last < 50) {
+                        entry.age_bucket = "45 – 49";
+                    } else if (entry.Age_Last >= 50 && entry.Age_Last < 55) {
+                        entry.age_bucket = "50 – 54";
+                    } else if (entry.Age_Last >= 55 && entry.Age_Last < 60) {
+                        entry.age_bucket = "55 – 59";
+                    } else if (entry.Age_Last >= 60 && entry.Age_Last < 65) {
+                        entry.age_bucket = "60 – 64";
+                    } else if (entry.Age_Last >= 65 && entry.Age_Last < 70) {
+                        entry.age_bucket = "65 – 69";
+                    } else {
+                        entry.age_bucket = "70 & Over";
+                    }
+                });
+                console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
+                let totalMemberCount = updatedObjects2.reduce(
+                    (total, entry) => total + entry.Member_count,
+                    0
+                );
+                totalMemberCount *= 3;
+                let roundedMemberCount =
+                    totalMemberCount % 1 >= 0.5
+                        ? Math.ceil(totalMemberCount)
+                        : Math.floor(totalMemberCount);
+                employeeCount = updatedObjects2.length * 3;
+
+
+
+                console.log("Member count :", roundedMemberCount);
+                console.log("Employee count:", employeeCount);
+                console.log("Individual Attachment point :", Individual_Attachment_point);
+                console.log("Plan:", plan);
+                console.log("Run In, note months:", runin_month);
+                console.log("Run out, note months:", runout_month);
+                console.log("Annual Maximum Incl attachment point:", annual_max);
+                console.log("Calendar year deductible:", calendar_year);
+                console.log("Coverage for next $5000:", coverage_next_5000);
+                console.log("EE OOP max (incl deductible):", EE_oop_max);
+                console.log("Industry:", industry);
+                console.log("Dependent Participation Rate:", dependent_participation_rate);
+                console.log("Annual Stop Loss limit:", annual_stop_loss_limit);
+                console.log("Type of UW:", type_of_UW);
+
+
+                // Rest of your code...
+            } catch (error) {
+                // Handle any errors occurred during the process
+                console.error('An error occurred:', error);
             }
+        }
 
 
-        });
-        console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
-
-        let totalMemberCount = updatedObjects2.reduce(
-            (total, entry) => total + entry.Member_count,
-            0
-        );
-
-        totalMemberCount *= 3;
-        let roundedMemberCount =
-            totalMemberCount % 1 >= 0.5
-                ? Math.ceil(totalMemberCount)
-                : Math.floor(totalMemberCount);
-        employeeCount = updatedObjects2.length * 3;
-
-
-
-        console.log("Member count :", roundedMemberCount);
-        console.log("Employee count:", employeeCount);
-        console.log("Individual Attachment point :", Individual_Attachment_point);
-        console.log("Plan:", plan);
-        console.log("Run In, note months:", runin_month);
-        console.log("Run out, note months:", runout_month);
-        console.log("Annual Maximum Incl attachment point:", annual_max);
-        console.log("Calendar year deductible:", calendar_year);
-        console.log("Coverage for next $5000:", coverage_next_5000);
-        console.log("EE OOP max (incl deductible):", EE_oop_max);
-        console.log("Industry:", industry);
-        console.log("Dependent Participation Rate:", dependent_participation_rate);
-        console.log("Annual Stop Loss limit:", annual_stop_loss_limit);
-        console.log("Type of UW:", type_of_UW);
+        main();
 
     </script>
 </body>

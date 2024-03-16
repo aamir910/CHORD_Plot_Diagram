@@ -1725,7 +1725,7 @@
 
 
 
-
+        let updatedObjects2 ; 
         async function fetchExcelAndConvertToJson(filePath) {
             try {
                 const response = await fetch(filePath);
@@ -1768,7 +1768,8 @@
                 let type_of_UW = "Type II";
                 let date_begins = "2000"
 
-                updatedObjects2.forEach((entry) => {
+                updatedObjects2.forEach((entry , index) => {
+                   
                     switch (entry.Employee) {
                         case "EE":
                             entry.Member_count = 1;
@@ -1811,6 +1812,8 @@
                     } else {
                         entry.age_bucket = "70 & Over";
                     }
+                    entry.zip_code_3 = Random_Zip_Generator[index+1][2].substring(0, 3); ;
+
                 });
                 console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
                 let totalMemberCount = updatedObjects2.reduce(
@@ -1823,8 +1826,6 @@
                         ? Math.ceil(totalMemberCount)
                         : Math.floor(totalMemberCount);
                 employeeCount = updatedObjects2.length * 3;
-
-
 
                 console.log("Member count :", roundedMemberCount);
                 console.log("Employee count:", employeeCount);
@@ -1851,7 +1852,6 @@
 
 
         main();
-
     </script>
 </body>
 

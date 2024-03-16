@@ -78,11 +78,11 @@
 
 
 
-  
-  
+
+
     <script>
         let categories = [];
-        let categoriespart1 = [] ;
+        let categoriespart1 = [];
         const color = [
             "#197278", // Red
             "#FFA500", // Orange
@@ -142,17 +142,17 @@
             return newArray;
         }
 
-        d3.csv("chord_plot copy.csv")
+        d3.csv("chord_plot copy 2.csv")
         d3.csv("chord_plot_updated copy 3.csv")
-        
-        d3.csv("chord_plot.csv")
+
+        // d3.csv("chord_plot.csv")
             .then(function (data) {
                 var rowHeaders = [];
                 var colHeaders = [];
                 var matrixData = [];
                 let names = [];
                 let coulmNames;
-                console.log(data ,  "here is the data ")
+                console.log(data, "here is the data ")
                 data.forEach(function (entry) {
 
                     var keys = Object.keys(entry);
@@ -160,10 +160,10 @@
                     var rowHeader = keys[0].trim();
                     coulmNames = (rowHeader.split(';').length - 1);
                     rowHeaders.push(rowHeader);
-                    
-   // adding the value to the categories    
 
-                      categoriespart1.push(values[0]); 
+                    // adding the value to the categories    
+
+                    categoriespart1.push(values[0]);
 
                     values.forEach(function (value, index) {
                         // console.log( value.split(";"))
@@ -182,43 +182,50 @@
 
                 // let categories_valuepart2 = JSON.parse(rowHeaders[0])
 
-         const categoriespart2= rowHeaders[0].slice(1).split(';');
-            categories = categoriespart1.concat(categoriespart2); 
+                const categoriespart2 = rowHeaders[0].slice(1).split(';');
+                categories = categoriespart1.concat(categoriespart2);
 
-            var n = rowHeaders.length;
-            let totalcount = n + coulmNames;
+                var n = rowHeaders.length;
+                let totalcount = n + coulmNames;
 
 
-            console.log( n , coulmNames , categoriespart1.every(value => categoriespart2.includes(value)))
+                console.log(n, coulmNames, categoriespart1.every(value => categoriespart2.includes(value)));
+                if (categoriespart1.every(value => categoriespart2.includes(value))) {
+                    console.log("check")
+                    Chord_initials(matrixData);
+                    createLegend(categoriespart1, color);
+                }
+                else {
+                    var matrix = new Array(n).fill(0).map(() => new Array(n).fill(0));
+                    console.log(matrixData, 'matrixData');
+                    let extendedArray = extendArray(matrix, matrixData);
 
-                var matrix = new Array(n).fill(0).map(() => new Array(n).fill(0));
-console.log(matrixData ,'matrixData') ;
-                let extendedArray = extendArray(matrix, matrixData);
+                    console.log("chord plot2", matrix, totalcount, matrixData);
+                    // Output the extended array
+                    console.log(extendedArray, "before transport ");
+                    let transposedArray = transposeArray(extendedArray);
 
-                console.log("chord plot2", matrix, totalcount, matrixData);
-                // Output the extended array
-                console.log(extendedArray, "before transport ");
-                let transposedArray = transposeArray(extendedArray);
+                    // Output the transposed array
+                    console.log(transposedArray, "transport");
+                    const modifiedArray1 = transposedArray.slice(n);
+                    console.log(modifiedArray1);
+                    const modifiedArray = addZeros(modifiedArray1, coulmNames);
+                    console.log(modifiedArray, "added the zero there ");
 
-                // Output the transposed array
-                console.log(transposedArray, "transport");
-                const modifiedArray1 = transposedArray.slice(n);
-                console.log(modifiedArray1);
-                const modifiedArray = addZeros(modifiedArray1, coulmNames);
-                console.log(modifiedArray, "added the zero there ");
+                    // matrixData.forEach(function (row, rowIndex) {
+                    //     row.forEach(function (value, colIndex) {
+                    //         matrix[rowIndex][colIndex] = value;
+                    //     });
+                    // });
 
-                // matrixData.forEach(function (row, rowIndex) {
-                //     row.forEach(function (value, colIndex) {
-                //         matrix[rowIndex][colIndex] = value;
-                //     });
-                // });
-                
-               const concatenatedArray = extendedArray.concat(modifiedArray);
-                console.log("chord plot", concatenatedArray);
-                // Define dimensions for the plot
-                console.log(categories , 'categories2')
-                Chord_initials(concatenatedArray);
-                createLegend(categories, color);
+                    const concatenatedArray = extendedArray.concat(modifiedArray);
+                    console.log("chord plot", concatenatedArray);
+                    // Define dimensions for the plot
+                    console.log(categories, 'categories2')
+                    Chord_initials(concatenatedArray);
+                    createLegend(categories, color);
+
+                }
             })
             .catch((error) => {
                 console.error("Error fetching or parsing CSV data:", error);

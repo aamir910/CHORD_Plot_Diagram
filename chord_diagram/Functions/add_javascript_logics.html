@@ -1,1724 +1,1799 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-  </head>
+</head>
 
-  <body>
+<body>
     <script>
-      function updateKeys(obj) {
-        const variations = ["dob", "birth"];
-        const zipVariations = ["zip", "Zip", "ZIP"];
-        const updatedKey = "CalendarYearBirth";
-        const updatedGenderKey = "Gender";
-        const updatedZipkey = "Zip3";
-        const updatedEmployekey = "Employee";
+        function updateKeys(obj) {
+            const variations = ["dob", "birth"];
+            const zipVariations = ["zip", "Zip", "ZIP"];
+            const updatedKey = "CalendarYearBirth";
+            const updatedGenderKey = "Gender";
+            const updatedZipkey = "Zip3";
+            const updatedEmployekey = "Employee";
 
-        for (const key in obj) {
-          const lowerCaseKey = key.toLowerCase();
+            for (const key in obj) {
+                const lowerCaseKey = key.toLowerCase();
 
-          for (const variation of variations) {
-            if (lowerCaseKey.includes(variation.toLowerCase())) {
-              if (key === updatedKey) {
-                let dateOfBirth;
-                if (obj[key].length > 4 && isNumericString(obj[key])) {
-                  dateOfBirth = convertSerialToDate(obj[key]);
-                  // console.log(obj[key], "here is the key", dateOfBirth)
-                } else {
-                  dateOfBirth = obj[key];
+                for (const variation of variations) {
+                    if (lowerCaseKey.includes(variation.toLowerCase())) {
+                        if (key === updatedKey) {
+                            let dateOfBirth;
+                            if (obj[key].length > 4 && isNumericString(obj[key])) {
+                                dateOfBirth = convertSerialToDate(obj[key]);
+                            } else {
+                                dateOfBirth = obj[key];
+                            }
+
+                            let year = extractYear(dateOfBirth);
+                            if (!year) {
+                                year = extractYearFromDate(dateOfBirth);
+                            }
+                            obj[updatedKey] = year;
+                        } else {
+                            let dateOfBirth;
+                            if (obj[key].length > 4 && isNumericString(obj[key])) {
+                                dateOfBirth = convertSerialToDate(obj[key]);
+                            } else {
+                                dateOfBirth = obj[key];
+                            }
+
+                            let year = extractYear(dateOfBirth);
+                            if (!year) {
+                                year = extractYearFromDate(dateOfBirth);
+                            }
+
+                            obj[updatedKey] = year;
+                            delete obj[key];
+                        }
+                        break; // Assuming only one matching key should be updated
+                    }
                 }
 
-                let year = extractYear(dateOfBirth);
-                if (!year) {
-                  year = extractYearFromDate(dateOfBirth);
-                }
-                obj[updatedKey] = year;
-              } else {
-                let dateOfBirth;
-                if (obj[key].length > 4 && isNumericString(obj[key])) {
-                  dateOfBirth = convertSerialToDate(obj[key]);
-                  console.log(
-                    obj[key],
-                    "here is the key",
-                    convertSerialToDate(obj[key])
-                  );
-                } else {
-                  dateOfBirth = obj[key];
-                }
-
-                let year = extractYear(dateOfBirth);
-                if (!year) {
-                  year = extractYearFromDate(dateOfBirth);
+                if (lowerCaseKey === "gender" || lowerCaseKey === "sex") {
+                    if (key != updatedGenderKey) {
+                        obj[updatedGenderKey] = obj[key];
+                        delete obj[key];
+                    }
+                    const genderValue = obj[updatedGenderKey].toLowerCase();
+                    if (genderValue.includes("female") || genderValue.includes("f")) {
+                        obj[updatedGenderKey] = "F";
+                    } else if (
+                        genderValue.includes("male") ||
+                        genderValue.includes("m")
+                    ) {
+                        obj[updatedGenderKey] = "M";
+                    } else {
+                        obj[updatedGenderKey] = "Unknown";
+                    }
                 }
 
-                obj[updatedKey] = year;
-                delete obj[key];
-              }
-              break; // Assuming only one matching key should be updated
-            }
-          }
+                if (lowerCaseKey.includes("zip")) {
+                    if (key !== updatedZipkey) {
+                        obj[updatedZipkey] = obj[key];
+                        delete obj[key];
+                    }
 
-          if (lowerCaseKey === "gender" || lowerCaseKey === "sex") {
-            if (key != updatedGenderKey) {
-              obj[updatedGenderKey] = obj[key];
-              delete obj[key];
-            }
-            const genderValue = obj[updatedGenderKey].toLowerCase();
-            if (genderValue.includes("female") || genderValue.includes("f")) {
-              obj[updatedGenderKey] = "F";
-            } else if (
-              genderValue.includes("male") ||
-              genderValue.includes("m")
-            ) {
-              obj[updatedGenderKey] = "M";
-            } else {
-              obj[updatedGenderKey] = "Unknown";
-            }
-          }
+                    if (isNumericString(obj[updatedZipkey])) {
+                        obj[updatedZipkey] =
+                            obj[updatedZipkey].length >= 1
+                                ? obj[updatedZipkey].slice(0, 3)
+                                : "Unknown";
+                    } else {
+                        obj[updatedZipkey] = "Unknown";
+                    }
+                }
+                if (
+                    lowerCaseKey === "employee" ||
+                    lowerCaseKey === "employe" ||
+                    lowerCaseKey === "coverage"
+                ) {
+                    if (key != updatedEmployekey) {
+                        obj[updatedEmployekey] = obj[key];
+                        delete obj[key];
+                    }
 
-          if (lowerCaseKey.includes("zip")) {
-            if (key !== updatedZipkey) {
-              obj[updatedZipkey] = obj[key];
-              delete obj[key];
-            }
+                    const employeeValue = obj[updatedEmployekey].toLowerCase();
 
-            if (isNumericString(obj[updatedZipkey])) {
-              obj[updatedZipkey] =
-                obj[updatedZipkey].length >= 1
-                  ? obj[updatedZipkey].slice(0, 3)
-                  : "Unknown";
-            } else {
-              obj[updatedZipkey] = "Unknown";
+                    if (employeeValue.length > 2) {
+                        if (
+                            employeeValue.includes("family") ||
+                            employeeValue.includes("all")
+                        ) {
+                            obj[updatedEmployekey] = "F";
+                        } else if (
+                            employeeValue === "only" ||
+                            employeeValue === "single"
+                        ) {
+                            obj[updatedEmployekey] = "EE";
+                        } else if (
+                            employeeValue.includes("spouse") ||
+                            employeeValue.includes("partner") ||
+                            employeeValue.includes("wife")
+                        ) {
+                            obj[updatedEmployekey] = "ES";
+                        } else if (
+                            employeeValue.includes("child") ||
+                            employeeValue.includes("chdrn")
+                        ) {
+                            obj[updatedEmployekey] = "EC";
+                        } else {
+                            obj[updatedEmployekey] = "Unknown";
+                        }
+                    }
+                }
             }
-          }
-          if (lowerCaseKey === "employee" || lowerCaseKey === "employe" || lowerCaseKey === "coverage") {
-            if (key != updatedEmployekey) {
-              obj[updatedEmployekey] = obj[key];
-              delete obj[key];
-            }
-
-            const employeeValue = obj[updatedEmployekey].toLowerCase();
-
-            if (employeeValue.length > 2) {
-              if (employeeValue.includes("family")|| employeeValue.includes("all")) {
-                obj[updatedEmployekey] = "F";
-              } else if (employeeValue === "only" || employeeValue === "single"  ) {
-                obj[updatedEmployekey] = "EE";
-              } else if (
-                employeeValue.includes("spouse") ||
-                employeeValue.includes("partner")|| employeeValue.includes("wife")
-              ) {
-                obj[updatedEmployekey] = "ES";
-              } else if (employeeValue.includes("child") || employeeValue.includes("chdrn")) {
-                obj[updatedEmployekey] = "EC";
-              } else {
-                obj[updatedEmployekey] = "Unknown";
-              }
-            }
-          }
+            return obj;
         }
-        return obj;
-      }
-      function extractYearFromDate(dateString) {
-        const date = new Date(dateString);
-
-        const year = date.getFullYear();
-        return year;
-      }
-      function extractYear(dateString) {
-        if (typeof dateString === "string") {
-          const numericalYearMatch = dateString.match(/\b\d{4}\b/);
-
-          if (numericalYearMatch) {
-            return numericalYearMatch[0];
-          } else {
+        function extractYearFromDate(dateString) {
             const date = new Date(dateString);
 
-            if (!isNaN(date)) {
-              return date.getFullYear();
+            const year = date.getFullYear();
+            return year;
+        }
+        function extractYear(dateString) {
+            if (typeof dateString === "string") {
+                const numericalYearMatch = dateString.match(/\b\d{4}\b/);
+
+                if (numericalYearMatch) {
+                    return numericalYearMatch[0];
+                } else {
+                    const date = new Date(dateString);
+
+                    if (!isNaN(date)) {
+                        return date.getFullYear();
+                    } else {
+                        return null;
+                    }
+                }
             } else {
-              return null;
+                return dateString; // Return the same value if not a string
             }
-          }
-        } else {
-          return dateString; // Return the same value if not a string
         }
-      }
 
-      function isNumericString(str) {
-        return /^\d+$/.test(str);
-      }
-
-      function hasUnknownValue(obj) {
-        for (const key in obj) {
-          if (obj[key] === "Unknown") {
-            return true;
-          }
+        function isNumericString(str) {
+            return /^\d+$/.test(str);
         }
-        return false;
-      }
-      function convertSerialToDate(serialNumberStr) {
-        // Convert the serial number string to a number
-        var serialNumber = parseInt(serialNumberStr);
 
-        // Convert serial number to milliseconds since epoch
-        var millisecondsSinceEpoch = (serialNumber - 1) * 24 * 60 * 60 * 1000;
+        function hasUnknownValue(obj) {
+            for (const key in obj) {
+                if (obj[key] === "Unknown") {
+                    return true;
+                }
+            }
+            return false;
+        }
+        function convertSerialToDate(serialNumberStr) {
+            // Convert the serial number string to a number
+            var serialNumber = parseInt(serialNumberStr);
 
-        // Create a new Date object
-        var date = new Date(
-          millisecondsSinceEpoch + new Date("1899-12-30").getTime()
+            // Convert serial number to milliseconds since epoch
+            var millisecondsSinceEpoch = (serialNumber - 1) * 24 * 60 * 60 * 1000;
+
+            // Create a new Date object
+            var date = new Date(
+                millisecondsSinceEpoch + new Date("1899-12-30").getTime()
+            );
+
+            // Extract the date components
+            var day = date.getDate();
+            var month = date.getMonth() + 1; // Month is zero-indexed, so add 1
+            var year = date.getFullYear();
+
+            // Format the date
+            var formattedDate = month + "/" + day + "/" + year;
+
+            return formattedDate;
+        }
+
+        const objects = [
+            {
+                CalendarYearBirth: "12/24/1967",
+                sex: "nmale",
+                Zip3: "12345",
+                employe: "partner",
+            },
+            {
+                DOB: "12/24/1967",
+                gender: "m",
+                ZIP2: "12313131",
+                Employee: "F",
+            },
+        ];
+
+        const objects2 = [
+            {
+                CalendarYearBirth: 24830,
+                Gender: "M",
+                Zip3: 100,
+                Employee: "ALL",
+            },
+            {
+                CalendarYearBirth: 25554,
+                Gender: "F",
+                Zip3: 107,
+                Employee: "EC",
+            },
+            {
+                CalendarYearBirth: 25591,
+                Gender: "F",
+                Zip3: 912,
+                Employee: "all",
+            },
+            {
+                CalendarYearBirth: 25591,
+                Gender: "M",
+                Zip3: 750,
+                Employee: "chdrn",
+            },
+            {
+                CalendarYearBirth: 25591,
+                Gender: "M",
+                Zip3: 330,
+                Employee: "single",
+            },
+            {
+                CalendarYearBirth: 1990,
+                Gender: "F",
+                Zip3: 600,
+                Employee: "EC",
+            },
+            {
+                CalendarYearBirth: 1991,
+                Gender: "F",
+                Zip3: 110,
+                Employee: "EC",
+            },
+            {
+                CalendarYearBirth: 1992,
+                Gender: "M",
+                Zip3: 760,
+                Employee: "EC",
+            },
+            {
+                CalendarYearBirth: 1993,
+                Gender: "F",
+                Zip3: 335,
+                Employee: "ES",
+            },
+            {
+                CalendarYearBirth: 1994,
+                Gender: "M",
+                Zip3: 605,
+                Employee: "EE",
+            },
+        ];
+
+        const object3 = [
+            {
+                dob: 24830,
+                Gender: "M",
+                "Zip Code": "76123",
+                coverage: "Employee + Child(ren)",
+            },
+            {
+                dob: 25554,
+                Gender: "F",
+                "Zip Code": "70447",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 25591,
+                Gender: "M",
+                "Zip Code": "75165",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 26375,
+                Gender: "F",
+                "Zip Code": "78028",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 26412,
+                Gender: "M",
+                "Zip Code": "30058",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 27488,
+                Gender: "M",
+                "Zip Code": "76013",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 27942,
+                Gender: "F",
+                "Zip Code": "76133",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 28234,
+                Gender: "F",
+                "Zip Code": "76108",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 28537,
+                Gender: "F",
+                "Zip Code": "77429",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 30107,
+                Gender: "M",
+                "Zip Code": "30121",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 30221,
+                Gender: "F",
+                "Zip Code": "76088",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 31287,
+                Gender: "F",
+                "Zip Code": "76137",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 31838,
+                Gender: "F",
+                "Zip Code": "76135",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 32455,
+                Gender: "M",
+                "Zip Code": "76164",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 32770,
+                Gender: "M",
+                "Zip Code": "75237",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 33082,
+                Gender: "F",
+                "Zip Code": "76017",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 33160,
+                Gender: "M",
+                "Zip Code": "76123",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 33631,
+                Gender: "F",
+                "Zip Code": "76179",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 33840,
+                Gender: "F",
+                "Zip Code": "76462",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 34539,
+                Gender: "F",
+                "Zip Code": "76112",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 34962,
+                Gender: "F",
+                "Zip Code": "92337",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 35873,
+                Gender: "M",
+                "Zip Code": "75234",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 35981,
+                Gender: "M",
+                "Zip Code": "75167",
+                Employee: "Employee + Child(ren)",
+            },
+            {
+                dob: 21550,
+                Gender: "M",
+                "Zip Code": "90274",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 22239,
+                Gender: "M",
+                "Zip Code": "76108",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 22329,
+                Gender: "M",
+                "Zip Code": "76020",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 22392,
+                Gender: "M",
+                "Zip Code": "76123",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 22469,
+                Gender: "M",
+                "Zip Code": "43035",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 23400,
+                Gender: "M",
+                "Zip Code": "92346",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 23602,
+                Gender: "M",
+                "Zip Code": "95624",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 23721,
+                Gender: "M",
+                "Zip Code": "76033",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 23917,
+                Gender: "M",
+                "Zip Code": "76116",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 24383,
+                Gender: "M",
+                "Zip Code": "76104",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 25482,
+                Gender: "M",
+                "Zip Code": "76002",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 26891,
+                Gender: "F",
+                "Zip Code": "78130",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 28129,
+                Gender: "M",
+                "Zip Code": "76244",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 28212,
+                Gender: "M",
+                "Zip Code": "76016",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 28708,
+                Gender: "M",
+                "Zip Code": "76133",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 29789,
+                Gender: "M",
+                "Zip Code": "75052",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 32073,
+                Gender: "M",
+                "Zip Code": "85138",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 33198,
+                Gender: "F",
+                "Zip Code": "76133",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 24807,
+                Gender: "M",
+                "Zip Code": "30144",
+                Employee: "Employee + Spouse/Domestic Partner",
+            },
+            {
+                dob: 21607,
+                Gender: "M",
+                "Zip Code": "76657",
+                Employee: "Family",
+            },
+            {
+                dob: 22570,
+                Gender: "M",
+                "Zip Code": "35244",
+                Employee: "Family",
+            },
+            {
+                dob: 24101,
+                Gender: "M",
+                "Zip Code": "75093",
+                Employee: "Family",
+            },
+            {
+                dob: 24432,
+                Gender: "F",
+                "Zip Code": "76012",
+                Employee: "Family",
+            },
+            {
+                dob: 24713,
+                Gender: "M",
+                "Zip Code": "92886",
+                Employee: "Family",
+            },
+            {
+                dob: 24716,
+                Gender: "F",
+                "Zip Code": "76679",
+                Employee: "Family",
+            },
+            {
+                dob: 25044,
+                Gender: "M",
+                "Zip Code": "37087",
+                Employee: "Family",
+            },
+            {
+                dob: 25153,
+                Gender: "M",
+                "Zip Code": "76182",
+                Employee: "Family",
+            },
+            {
+                dob: 25249,
+                Gender: "M",
+                "Zip Code": "76016",
+                Employee: "Family",
+            },
+            {
+                dob: 25850,
+                Gender: "M",
+                "Zip Code": "76132",
+                Employee: "Family",
+            },
+            {
+                dob: 26038,
+                Gender: "M",
+                "Zip Code": "76001",
+                Employee: "Family",
+            },
+            {
+                dob: 26096,
+                Gender: "M",
+                "Zip Code": "75052",
+                Employee: "Family",
+            },
+            {
+                dob: 26203,
+                Gender: "M",
+                "Zip Code": "76248",
+                Employee: "Family",
+            },
+            {
+                dob: 26440,
+                Gender: "F",
+                "Zip Code": "76008",
+                Employee: "Family",
+            },
+            {
+                dob: 26449,
+                Gender: "F",
+                "Zip Code": "76087",
+                Employee: "Family",
+            },
+            {
+                dob: 26499,
+                Gender: "M",
+                "Zip Code": "76065",
+                Employee: "Family",
+            },
+            {
+                dob: 26556,
+                Gender: "M",
+                "Zip Code": "92324",
+                Employee: "Family",
+            },
+            {
+                dob: 27871,
+                Gender: "M",
+                "Zip Code": "76116",
+                Employee: "Family",
+            },
+            {
+                dob: 28539,
+                Gender: "F",
+                "Zip Code": "76182",
+                Employee: "Family",
+            },
+            {
+                dob: 28813,
+                Gender: "M",
+                "Zip Code": "75207",
+                Employee: "Family",
+            },
+            {
+                dob: 29233,
+                Gender: "M",
+                "Zip Code": "75102",
+                Employee: "Family",
+            },
+            {
+                dob: 29298,
+                Gender: "F",
+                "Zip Code": "76641",
+                Employee: "Family",
+            },
+            {
+                dob: 29306,
+                Gender: "M",
+                "Zip Code": "75050",
+                Employee: "Family",
+            },
+            {
+                dob: 29489,
+                Gender: "F",
+                "Zip Code": "77065",
+                Employee: "Family",
+            },
+            {
+                dob: 30292,
+                Gender: "M",
+                "Zip Code": "76118",
+                Employee: "Family",
+            },
+            {
+                dob: 30324,
+                Gender: "M",
+                "Zip Code": "76180",
+                Employee: "Family",
+            },
+            {
+                dob: 30953,
+                Gender: "M",
+                "Zip Code": "76107",
+                Employee: "Family",
+            },
+            {
+                dob: 31124,
+                Gender: "F",
+                "Zip Code": "76003",
+                Employee: "Family",
+            },
+            {
+                dob: 31226,
+                Gender: "M",
+                "Zip Code": "75167",
+                Employee: "Family",
+            },
+            {
+                dob: 31680,
+                Gender: "M",
+                "Zip Code": "76116",
+                Employee: "Family",
+            },
+            {
+                dob: 31868,
+                Gender: "M",
+                "Zip Code": "76017",
+                Employee: "Family",
+            },
+            {
+                dob: 31960,
+                Gender: "M",
+                "Zip Code": "76018",
+                Employee: "Family",
+            },
+            {
+                dob: 31977,
+                Gender: "M",
+                "Zip Code": "76109",
+                Employee: "Family",
+            },
+            {
+                dob: 32363,
+                Gender: "M",
+                "Zip Code": "76106",
+                Employee: "Family",
+            },
+            {
+                dob: 32465,
+                Gender: "M",
+                "Zip Code": "76119",
+                Employee: "Family",
+            },
+            {
+                dob: 33353,
+                Gender: "M",
+                "Zip Code": "76060",
+                Employee: "Family",
+            },
+            {
+                dob: 33780,
+                Gender: "M",
+                "Zip Code": "76132",
+                Employee: "Family",
+            },
+            {
+                dob: 34045,
+                Gender: "M",
+                "Zip Code": "33579",
+                Employee: "Family",
+            },
+            {
+                dob: 21040,
+                Gender: "M",
+                "Zip Code": "75109",
+                Employee: "Single",
+            },
+            {
+                dob: 21237,
+                Gender: "F",
+                "Zip Code": "76006",
+                Employee: "Single",
+            },
+            {
+                dob: 21437,
+                Gender: "M",
+                "Zip Code": "77372",
+                Employee: "Single",
+            },
+            {
+                dob: 21528,
+                Gender: "F",
+                "Zip Code": "76177",
+                Employee: "Single",
+            },
+            {
+                dob: 21620,
+                Gender: "F",
+                "Zip Code": "76088",
+                Employee: "Single",
+            },
+            {
+                dob: 21749,
+                Gender: "F",
+                "Zip Code": "85262",
+                Employee: "Single",
+            },
+            {
+                dob: 21912,
+                Gender: "F",
+                "Zip Code": "76135",
+                Employee: "Single",
+            },
+            {
+                dob: 22730,
+                Gender: "M",
+                "Zip Code": "76116",
+                Employee: "Single",
+            },
+            {
+                dob: 22883,
+                Gender: "F",
+                "Zip Code": "75050",
+                Employee: "Single",
+            },
+            {
+                dob: 22973,
+                Gender: "F",
+                "Zip Code": "76116",
+                Employee: "Single",
+            },
+            {
+                dob: 23082,
+                Gender: "M",
+                "Zip Code": "76108",
+                Employee: "Single",
+            },
+            {
+                dob: 23368,
+                Gender: "M",
+                "Zip Code": "38125",
+                Employee: "Single",
+            },
+            {
+                dob: 23630,
+                Gender: "M",
+                "Zip Code": "30103",
+                Employee: "Single",
+            },
+            {
+                dob: 23643,
+                Gender: "M",
+                "Zip Code": "91710",
+                Employee: "Single",
+            },
+            {
+                dob: 23673,
+                Gender: "M",
+                "Zip Code": "91701",
+                Employee: "Single",
+            },
+            {
+                dob: 24161,
+                Gender: "M",
+                "Zip Code": "75109",
+                Employee: "Single",
+            },
+            {
+                dob: 24201,
+                Gender: "M",
+                "Zip Code": "30152",
+                Employee: "Single",
+            },
+            {
+                dob: 24318,
+                Gender: "M",
+                "Zip Code": "77573",
+                Employee: "Single",
+            },
+            {
+                dob: 24464,
+                Gender: "M",
+                "Zip Code": "77073",
+                Employee: "Single",
+            },
+            {
+                dob: 24566,
+                Gender: "M",
+                "Zip Code": "89117",
+                Employee: "Single",
+            },
+            {
+                dob: 24570,
+                Gender: "M",
+                "Zip Code": "76140",
+                Employee: "Single",
+            },
+            {
+                dob: 24808,
+                Gender: "F",
+                "Zip Code": "76036",
+                Employee: "Single",
+            },
+            {
+                dob: 24817,
+                Gender: "M",
+                "Zip Code": "76123",
+                Employee: "Single",
+            },
+            {
+                dob: 24900,
+                Gender: "F",
+                "Zip Code": "76088",
+                Employee: "Single",
+            },
+            {
+                dob: 25024,
+                Gender: "F",
+                "Zip Code": "75109",
+                Employee: "Single",
+            },
+            {
+                dob: 25099,
+                Gender: "M",
+                "Zip Code": "76086",
+                Employee: "Single",
+            },
+            {
+                dob: 25199,
+                Gender: "M",
+                "Zip Code": "76111",
+                Employee: "Single",
+            },
+            {
+                dob: 25461,
+                Gender: "F",
+                "Zip Code": "76107",
+                Employee: "Single",
+            },
+            {
+                dob: 25582,
+                Gender: "F",
+                "Zip Code": "38119",
+                Employee: "Single",
+            },
+            {
+                dob: 25623,
+                Gender: "M",
+                "Zip Code": "76028",
+                Employee: "Single",
+            },
+            {
+                dob: 25658,
+                Gender: "F",
+                "Zip Code": "76117",
+                Employee: "Single",
+            },
+            {
+                dob: 25666,
+                Gender: "M",
+                "Zip Code": "75019",
+                Employee: "Single",
+            },
+            {
+                dob: 25891,
+                Gender: "M",
+                "Zip Code": "77098",
+                Employee: "Single",
+            },
+            {
+                dob: 26517,
+                Gender: "M",
+                "Zip Code": "76244",
+                Employee: "Single",
+            },
+            {
+                dob: 26724,
+                Gender: "M",
+                "Zip Code": "76112",
+                Employee: "Single",
+            },
+            {
+                dob: 26846,
+                Gender: "M",
+                "Zip Code": "30120",
+                Employee: "Single",
+            },
+            {
+                dob: 26876,
+                Gender: "M",
+                "Zip Code": "77043",
+                Employee: "Single",
+            },
+            {
+                dob: 26977,
+                Gender: "M",
+                "Zip Code": "30161",
+                Employee: "Single",
+            },
+            {
+                dob: 27211,
+                Gender: "M",
+                "Zip Code": "75219",
+                Employee: "Single",
+            },
+            {
+                dob: 27319,
+                Gender: "F",
+                "Zip Code": "76131",
+                Employee: "Single",
+            },
+            {
+                dob: 27409,
+                Gender: "M",
+                "Zip Code": "76137",
+                Employee: "Single",
+            },
+            {
+                dob: 27432,
+                Gender: "F",
+                "Zip Code": "75859",
+                Employee: "Single",
+            },
+            {
+                dob: 27871,
+                Gender: "F",
+                "Zip Code": "76107",
+                Employee: "Single",
+            },
+            {
+                dob: 27895,
+                Gender: "M",
+                "Zip Code": "76126",
+                Employee: "Single",
+            },
+            {
+                dob: 27960,
+                Gender: "M",
+                "Zip Code": "91737",
+                Employee: "Single",
+            },
+            {
+                dob: 28235,
+                Gender: "M",
+                "Zip Code": "76053",
+                Employee: "Single",
+            },
+            {
+                dob: 28297,
+                Gender: "M",
+                "Zip Code": "76179",
+                Employee: "Single",
+            },
+            {
+                dob: 28404,
+                Gender: "M",
+                "Zip Code": "76087",
+                Employee: "Single",
+            },
+            {
+                dob: 28567,
+                Gender: "M",
+                "Zip Code": "75219",
+                Employee: "Single",
+            },
+            {
+                dob: 28591,
+                Gender: "M",
+                "Zip Code": "75028",
+                Employee: "Single",
+            },
+            {
+                dob: 28698,
+                Gender: "M",
+                "Zip Code": "76112",
+                Employee: "Single",
+            },
+            {
+                dob: 28782,
+                Gender: "F",
+                "Zip Code": "30178",
+                Employee: "Single",
+            },
+            {
+                dob: 28898,
+                Gender: "M",
+                "Zip Code": "75860",
+                Employee: "Single",
+            },
+            {
+                dob: 28968,
+                Gender: "M",
+                "Zip Code": "76107",
+                Employee: "Single",
+            },
+            {
+                dob: 29024,
+                Gender: "F",
+                "Zip Code": "76179",
+                Employee: "Single",
+            },
+            {
+                dob: 29048,
+                Gender: "M",
+                "Zip Code": "91731",
+                Employee: "Single",
+            },
+            {
+                dob: 29078,
+                Gender: "F",
+                "Zip Code": "77338",
+                Employee: "Single",
+            },
+            {
+                dob: 29101,
+                Gender: "M",
+                "Zip Code": "76126",
+                Employee: "Single",
+            },
+            {
+                dob: 29146,
+                Gender: "F",
+                "Zip Code": "78542",
+                Employee: "Single",
+            },
+            {
+                dob: 29323,
+                Gender: "M",
+                "Zip Code": "76001",
+                Employee: "Single",
+            },
+            {
+                dob: 29435,
+                Gender: "F",
+                "Zip Code": "92313",
+                Employee: "Single",
+            },
+            {
+                dob: 29521,
+                Gender: "M",
+                "Zip Code": "76063",
+                Employee: "Single",
+            },
+            {
+                dob: 29812,
+                Gender: "M",
+                "Zip Code": "37067",
+                Employee: "Single",
+            },
+            {
+                dob: 29830,
+                Gender: "M",
+                "Zip Code": "76015",
+                Employee: "Single",
+            },
+            {
+                dob: 29943,
+                Gender: "M",
+                "Zip Code": "91730",
+                Employee: "Single",
+            },
+            {
+                dob: 30277,
+                Gender: "M",
+                "Zip Code": "76049",
+                Employee: "Single",
+            },
+            {
+                dob: 30545,
+                Gender: "M",
+                "Zip Code": "76108",
+                Employee: "Single",
+            },
+            {
+                dob: 30819,
+                Gender: "M",
+                "Zip Code": "76112",
+                Employee: "Single",
+            },
+            {
+                dob: 30914,
+                Gender: "F",
+                "Zip Code": "75052",
+                Employee: "Single",
+            },
+            {
+                dob: 31149,
+                Gender: "M",
+                "Zip Code": "76126",
+                Employee: "Single",
+            },
+            {
+                dob: 31151,
+                Gender: "M",
+                "Zip Code": "76111",
+                Employee: "Single",
+            },
+            {
+                dob: 31206,
+                Gender: "M",
+                "Zip Code": "76133",
+                Employee: "Single",
+            },
+            {
+                dob: 31295,
+                Gender: "F",
+                "Zip Code": "76031",
+                Employee: "Single",
+            },
+            {
+                dob: 31390,
+                Gender: "F",
+                "Zip Code": "76016",
+                Employee: "Single",
+            },
+            {
+                dob: 31513,
+                Gender: "M",
+                "Zip Code": "76120",
+                Employee: "Single",
+            },
+            {
+                dob: 31591,
+                Gender: "M",
+                "Zip Code": "76009",
+                Employee: "Single",
+            },
+            {
+                dob: 31891,
+                Gender: "F",
+                "Zip Code": "77547",
+                Employee: "Single",
+            },
+            {
+                dob: 31952,
+                Gender: "F",
+                "Zip Code": "76022",
+                Employee: "Single",
+            },
+            {
+                dob: 32034,
+                Gender: "M",
+                "Zip Code": "76103",
+                Employee: "Single",
+            },
+            {
+                dob: 32056,
+                Gender: "M",
+                "Zip Code": "76135",
+                Employee: "Single",
+            },
+            {
+                dob: 32193,
+                Gender: "M",
+                "Zip Code": "77067",
+                Employee: "Single",
+            },
+            {
+                dob: 32233,
+                Gender: "M",
+                "Zip Code": "76010",
+                Employee: "Single",
+            },
+            {
+                dob: 32291,
+                Gender: "F",
+                "Zip Code": "76179",
+                Employee: "Single",
+            },
+            {
+                dob: 32333,
+                Gender: "F",
+                "Zip Code": "76131",
+                Employee: "Single",
+            },
+            {
+                dob: 32427,
+                Gender: "F",
+                "Zip Code": "92860",
+                Employee: "Single",
+            },
+            {
+                dob: 32440,
+                Gender: "M",
+                "Zip Code": "76227",
+                Employee: "Single",
+            },
+            {
+                dob: 32466,
+                Gender: "F",
+                "Zip Code": "76116",
+                Employee: "Single",
+            },
+            {
+                dob: 32489,
+                Gender: "F",
+                "Zip Code": "91764",
+                Employee: "Single",
+            },
+            {
+                dob: 32609,
+                Gender: "F",
+                "Zip Code": "76148",
+                Employee: "Single",
+            },
+            {
+                dob: 32690,
+                Gender: "F",
+                "Zip Code": "76063",
+                Employee: "Single",
+            },
+            {
+                dob: 32730,
+                Gender: "M",
+                "Zip Code": "76179",
+                Employee: "Single",
+            },
+            {
+                dob: 32742,
+                Gender: "M",
+                "Zip Code": "76103",
+                Employee: "Single",
+            },
+            {
+                dob: 32841,
+                Gender: "M",
+                "Zip Code": "92345",
+                Employee: "Single",
+            },
+            {
+                dob: 32989,
+                Gender: "M",
+                "Zip Code": "78108",
+                Employee: "Single",
+            },
+            {
+                dob: 33197,
+                Gender: "M",
+                "Zip Code": "76123",
+                Employee: "Single",
+            },
+            {
+                dob: 33221,
+                Gender: "M",
+                "Zip Code": "78628",
+                Employee: "Single",
+            },
+            {
+                dob: 33265,
+                Gender: "F",
+                "Zip Code": "76136",
+                Employee: "Single",
+            },
+            {
+                dob: 33309,
+                Gender: "M",
+                "Zip Code": "76148",
+                Employee: "Single",
+            },
+            {
+                dob: 33325,
+                Gender: "M",
+                "Zip Code": "76086",
+                Employee: "Single",
+            },
+            {
+                dob: 33539,
+                Gender: "M",
+                "Zip Code": "75234",
+                Employee: "Single",
+            },
+            {
+                dob: 33635,
+                Gender: "M",
+                "Zip Code": "76131",
+                Employee: "Single",
+            },
+            {
+                dob: 33713,
+                Gender: "M",
+                "Zip Code": "91767",
+                Employee: "Single",
+            },
+            {
+                dob: 33738,
+                Gender: "F",
+                "Zip Code": "76135",
+                Employee: "Single",
+            },
+            {
+                dob: 33742,
+                Gender: "F",
+                "Zip Code": "76117",
+                Employee: "Single",
+            },
+            {
+                dob: 33806,
+                Gender: "M",
+                "Zip Code": "76107",
+                Employee: "Single",
+            },
+            {
+                dob: 33812,
+                Gender: "F",
+                "Zip Code": "76048",
+                Employee: "Single",
+            },
+            {
+                dob: 33868,
+                Gender: "M",
+                "Zip Code": "85201",
+                Employee: "Single",
+            },
+            {
+                dob: 33906,
+                Gender: "M",
+                "Zip Code": "75109",
+                Employee: "Single",
+            },
+            {
+                dob: 34002,
+                Gender: "M",
+                "Zip Code": "76001",
+                Employee: "Single",
+            },
+            {
+                dob: 34096,
+                Gender: "F",
+                "Zip Code": "75119",
+                Employee: "Single",
+            },
+            {
+                dob: 34124,
+                Gender: "F",
+                "Zip Code": "76132",
+                Employee: "Single",
+            },
+            {
+                dob: 34143,
+                Gender: "M",
+                "Zip Code": "76114",
+                Employee: "Single",
+            },
+            {
+                dob: 34169,
+                Gender: "F",
+                "Zip Code": "75104",
+                Employee: "Single",
+            },
+            {
+                dob: 34177,
+                Gender: "M",
+                "Zip Code": "76148",
+                Employee: "Single",
+            },
+            {
+                dob: 34298,
+                Gender: "F",
+                "Zip Code": "76132",
+                Employee: "Single",
+            },
+            {
+                dob: 34360,
+                Gender: "F",
+                "Zip Code": "76131",
+                Employee: "Single",
+            },
+            {
+                dob: 34397,
+                Gender: "M",
+                "Zip Code": "76182",
+                Employee: "Single",
+            },
+            {
+                dob: 34446,
+                Gender: "F",
+                "Zip Code": "76067",
+                Employee: "Single",
+            },
+            {
+                dob: 34446,
+                Gender: "M",
+                "Zip Code": "76117",
+                Employee: "Single",
+            },
+            {
+                dob: 34627,
+                Gender: "M",
+                "Zip Code": "76010",
+                Employee: "Single",
+            },
+            {
+                dob: 34681,
+                Gender: "M",
+                "Zip Code": "76107",
+                Employee: "Single",
+            },
+            {
+                dob: 34767,
+                Gender: "M",
+                "Zip Code": "76119",
+                Employee: "Single",
+            },
+            {
+                dob: 34787,
+                Gender: "F",
+                "Zip Code": "76114",
+                Employee: "Single",
+            },
+            {
+                dob: 34961,
+                Gender: "M",
+                "Zip Code": "85301",
+                Employee: "Single",
+            },
+            {
+                dob: 35370,
+                Gender: "F",
+                "Zip Code": "76123",
+                Employee: "Single",
+            },
+            {
+                dob: 35393,
+                Gender: "M",
+                "Zip Code": "76110",
+                Employee: "Single",
+            },
+            {
+                dob: 35418,
+                Gender: "M",
+                "Zip Code": "91710",
+                Employee: "Single",
+            },
+            {
+                dob: 35420,
+                Gender: "M",
+                "Zip Code": "76085",
+                Employee: "Single",
+            },
+            {
+                dob: 35479,
+                Gender: "M",
+                "Zip Code": "76104",
+                Employee: "Single",
+            },
+            {
+                dob: 35630,
+                Gender: "M",
+                "Zip Code": "76106",
+                Employee: "Single",
+            },
+            {
+                dob: 35632,
+                Gender: "M",
+                "Zip Code": "30121",
+                Employee: "Single",
+            },
+            {
+                dob: 35701,
+                Gender: "M",
+                "Zip Code": "76108",
+                Employee: "Single",
+            },
+            {
+                dob: 35724,
+                Gender: "M",
+                "Zip Code": "30161",
+                Employee: "Single",
+            },
+            {
+                dob: 35794,
+                Gender: "F",
+                "Zip Code": "85006",
+                Employee: "Single",
+            },
+            {
+                dob: 35803,
+                Gender: "M",
+                "Zip Code": "77338",
+                Employee: "Single",
+            },
+            {
+                dob: 35829,
+                Gender: "M",
+                "Zip Code": "76092",
+                Employee: "Single",
+            },
+            {
+                dob: 35876,
+                Gender: "F",
+                "Zip Code": "76082",
+                Employee: "Single",
+            },
+            {
+                dob: 35896,
+                Gender: "M",
+                "Zip Code": "77338",
+                Employee: "Single",
+            },
+            {
+                dob: 35929,
+                Gender: "F",
+                "Zip Code": "38654",
+                Employee: "Single",
+            },
+            {
+                dob: 35947,
+                Gender: "M",
+                "Zip Code": "76148",
+                Employee: "Single",
+            },
+            {
+                dob: 36043,
+                Gender: "M",
+                "Zip Code": "92377",
+                Employee: "Single",
+            },
+            {
+                dob: 36052,
+                Gender: "F",
+                "Zip Code": "76112",
+                Employee: "Single",
+            },
+            {
+                dob: 36143,
+                Gender: "M",
+                "Zip Code": "30152",
+                Employee: "Single",
+            },
+            {
+                dob: 36176,
+                Gender: "F",
+                "Zip Code": "76044",
+                Employee: "Single",
+            },
+            {
+                dob: 36187,
+                Gender: "F",
+                "Zip Code": "76148",
+                Employee: "Single",
+            },
+            {
+                dob: 36228,
+                Gender: "F",
+                "Zip Code": "92335",
+                Employee: "Single",
+            },
+            {
+                dob: 36280,
+                Gender: "M",
+                "Zip Code": "76180",
+                Employee: "Single",
+            },
+            {
+                dob: 36396,
+                Gender: "F",
+                "Zip Code": "76148",
+                Employee: "Single",
+            },
+            {
+                dob: 36404,
+                Gender: "M",
+                "Zip Code": "76106",
+                Employee: "Single",
+            },
+            {
+                dob: 36413,
+                Gender: "M",
+                "Zip Code": "76182",
+                Employee: "Single",
+            },
+            {
+                dob: 36605,
+                Gender: "M",
+                "Zip Code": "76116",
+                Employee: "Single",
+            },
+            {
+                dob: 36619,
+                Gender: "M",
+                "Zip Code": "76131",
+                Employee: "Single",
+            },
+            {
+                dob: 36732,
+                Gender: "F",
+                "Zip Code": "76105",
+                Employee: "Single",
+            },
+            {
+                dob: 37124,
+                Gender: "M",
+                "Zip Code": "91767",
+                Employee: "Single",
+            },
+            {
+                dob: 37161,
+                Gender: "F",
+                "Zip Code": "76104",
+                Employee: "Single",
+            },
+            {
+                dob: 37162,
+                Gender: "M",
+                "Zip Code": "93552",
+                Employee: "Single",
+            },
+            {
+                dob: 37259,
+                Gender: "M",
+                "Zip Code": "76106",
+                Employee: "Single",
+            },
+            {
+                dob: 37746,
+                Gender: "M",
+                "Zip Code": "76111",
+                Employee: "Single",
+            },
+            {
+                dob: 38013,
+                Gender: "F",
+                "Zip Code": "92354",
+                Employee: "Single",
+            },
+            {
+                dob: 38203,
+                Gender: "M",
+                "Zip Code": "76115",
+                Employee: "Single",
+            },
+        ];
+
+        const objectsToString = object3.map((obj) => {
+            const newObj = {};
+            for (const key in obj) {
+                newObj[key] = String(obj[key]);
+            }
+            return newObj;
+        });
+
+        const updatedObjects = objectsToString.map(updateKeys);
+
+        console.log(updatedObjects, "here is the final object");
+
+        let updatedObjects2 = JSON.parse(JSON.stringify(updatedObjects));
+
+        let Individual_Attachment_point = 5000;
+        let plan = 6;
+        let runin_month = 100;
+        let runout_month = 105;
+        let annual_max = 500000;
+        let calendar_year = 200;
+        let coverage_next_5000 = 100;
+        let EE_oop_max = 2000;
+        let industry = 1.005;
+        let dependent_participation_rate = 100;
+        let annual_stop_loss_limit = "none";
+        let type_of_UW = "Type II";
+        let date_begins = "2000"
+
+        updatedObjects2.forEach((entry) => {
+            switch (entry.Employee) {
+                case "EE":
+                    entry.Member_count = 1; 
+                    break;
+                case "ES":
+                    entry.Member_count = 2.2;
+                    break;
+                case "EC":
+                    entry.Member_count = 2.2;
+                    break;
+                case "F":
+                    entry.Member_count = 4.2;
+                    break;
+                default:
+                    // Handle unknown employee types
+                    break;
+            }
+
+             entry.Age_Last =  parseInt(date_begins) - parseInt(entry.CalendarYearBirth);
+
+        });
+        console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
+
+        let totalMemberCount = updatedObjects2.reduce(
+            (total, entry) => total + entry.Member_count,
+            0
         );
 
-        // Extract the date components
-        var day = date.getDate();
-        var month = date.getMonth() + 1; // Month is zero-indexed, so add 1
-        var year = date.getFullYear();
+        totalMemberCount *= 3;
+        let roundedMemberCount =
+            totalMemberCount % 1 >= 0.5
+                ? Math.ceil(totalMemberCount)
+                : Math.floor(totalMemberCount);
+        employeeCount = updatedObjects2.length * 3;
 
-        // Format the date
-        var formattedDate = month + "/" + day + "/" + year;
+      
 
-        return formattedDate;
-      }
-
-      const objects = [
-        {
-          CalendarYearBirth: "12/24/1967",
-          sex: "nmale",
-          Zip3: "12345",
-          employe: "partner",
-        },
-        {
-          DOB: "12/24/1967",
-          gender: "m",
-          ZIP2: "12313131",
-          Employee: "F",
-        },
-      ];
-
-      const objects2 = [
-        {
-          CalendarYearBirth: 24830,
-          Gender: "M",
-          Zip3: 100,
-          Employee: "ALL",
-        },
-        {
-          CalendarYearBirth: 25554,
-          Gender: "F",
-          Zip3: 107,
-          Employee: "EC",
-        },
-        {
-          CalendarYearBirth: 25591,
-          Gender: "F",
-          Zip3: 912,
-          Employee: "all",
-        },
-        {
-          CalendarYearBirth: 25591,
-          Gender: "M",
-          Zip3: 750,
-          Employee: "chdrn",
-        },
-        {
-          CalendarYearBirth: 25591,
-          Gender: "M",
-          Zip3: 330,
-          Employee: "single",
-        },
-        {
-          CalendarYearBirth: 1990,
-          Gender: "F",
-          Zip3: 600,
-          Employee: "EC",
-        },
-        {
-          CalendarYearBirth: 1991,
-          Gender: "F",
-          Zip3: 110,
-          Employee: "EC",
-        },
-        {
-          CalendarYearBirth: 1992,
-          Gender: "M",
-          Zip3: 760,
-          Employee: "EC",
-        },
-        {
-          CalendarYearBirth: 1993,
-          Gender: "F",
-          Zip3: 335,
-          Employee: "ES",
-        },
-        {
-          CalendarYearBirth: 1994,
-          Gender: "M",
-          Zip3: 605,
-          Employee: "EE",
-        },
-      ];
-
- const object3 = [
-    {
-        "dob": 24830,
-        "Gender": "M",
-        "Zip Code": "76123",
-        "coverage": "Employee + Child(ren)"
-    },
-    {
-        "dob": 25554,
-        "Gender": "F",
-        "Zip Code": "70447",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 25591,
-        "Gender": "M",
-        "Zip Code": "75165",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 26375,
-        "Gender": "F",
-        "Zip Code": "78028",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 26412,
-        "Gender": "M",
-        "Zip Code": "30058",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 27488,
-        "Gender": "M",
-        "Zip Code": "76013",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 27942,
-        "Gender": "F",
-        "Zip Code": "76133",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 28234,
-        "Gender": "F",
-        "Zip Code": "76108",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 28537,
-        "Gender": "F",
-        "Zip Code": "77429",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 30107,
-        "Gender": "M",
-        "Zip Code": "30121",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 30221,
-        "Gender": "F",
-        "Zip Code": "76088",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 31287,
-        "Gender": "F",
-        "Zip Code": "76137",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 31838,
-        "Gender": "F",
-        "Zip Code": "76135",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 32455,
-        "Gender": "M",
-        "Zip Code": "76164",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 32770,
-        "Gender": "M",
-        "Zip Code": "75237",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 33082,
-        "Gender": "F",
-        "Zip Code": "76017",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 33160,
-        "Gender": "M",
-        "Zip Code": "76123",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 33631,
-        "Gender": "F",
-        "Zip Code": "76179",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 33840,
-        "Gender": "F",
-        "Zip Code": "76462",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 34539,
-        "Gender": "F",
-        "Zip Code": "76112",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 34962,
-        "Gender": "F",
-        "Zip Code": "92337",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 35873,
-        "Gender": "M",
-        "Zip Code": "75234",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 35981,
-        "Gender": "M",
-        "Zip Code": "75167",
-        "Employee": "Employee + Child(ren)"
-    },
-    {
-        "dob": 21550,
-        "Gender": "M",
-        "Zip Code": "90274",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 22239,
-        "Gender": "M",
-        "Zip Code": "76108",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 22329,
-        "Gender": "M",
-        "Zip Code": "76020",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 22392,
-        "Gender": "M",
-        "Zip Code": "76123",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 22469,
-        "Gender": "M",
-        "Zip Code": "43035",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 23400,
-        "Gender": "M",
-        "Zip Code": "92346",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 23602,
-        "Gender": "M",
-        "Zip Code": "95624",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 23721,
-        "Gender": "M",
-        "Zip Code": "76033",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 23917,
-        "Gender": "M",
-        "Zip Code": "76116",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 24383,
-        "Gender": "M",
-        "Zip Code": "76104",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 25482,
-        "Gender": "M",
-        "Zip Code": "76002",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 26891,
-        "Gender": "F",
-        "Zip Code": "78130",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 28129,
-        "Gender": "M",
-        "Zip Code": "76244",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 28212,
-        "Gender": "M",
-        "Zip Code": "76016",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 28708,
-        "Gender": "M",
-        "Zip Code": "76133",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 29789,
-        "Gender": "M",
-        "Zip Code": "75052",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 32073,
-        "Gender": "M",
-        "Zip Code": "85138",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 33198,
-        "Gender": "F",
-        "Zip Code": "76133",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 24807,
-        "Gender": "M",
-        "Zip Code": "30144",
-        "Employee": "Employee + Spouse/Domestic Partner"
-    },
-    {
-        "dob": 21607,
-        "Gender": "M",
-        "Zip Code": "76657",
-        "Employee": "Family"
-    },
-    {
-        "dob": 22570,
-        "Gender": "M",
-        "Zip Code": "35244",
-        "Employee": "Family"
-    },
-    {
-        "dob": 24101,
-        "Gender": "M",
-        "Zip Code": "75093",
-        "Employee": "Family"
-    },
-    {
-        "dob": 24432,
-        "Gender": "F",
-        "Zip Code": "76012",
-        "Employee": "Family"
-    },
-    {
-        "dob": 24713,
-        "Gender": "M",
-        "Zip Code": "92886",
-        "Employee": "Family"
-    },
-    {
-        "dob": 24716,
-        "Gender": "F",
-        "Zip Code": "76679",
-        "Employee": "Family"
-    },
-    {
-        "dob": 25044,
-        "Gender": "M",
-        "Zip Code": "37087",
-        "Employee": "Family"
-    },
-    {
-        "dob": 25153,
-        "Gender": "M",
-        "Zip Code": "76182",
-        "Employee": "Family"
-    },
-    {
-        "dob": 25249,
-        "Gender": "M",
-        "Zip Code": "76016",
-        "Employee": "Family"
-    },
-    {
-        "dob": 25850,
-        "Gender": "M",
-        "Zip Code": "76132",
-        "Employee": "Family"
-    },
-    {
-        "dob": 26038,
-        "Gender": "M",
-        "Zip Code": "76001",
-        "Employee": "Family"
-    },
-    {
-        "dob": 26096,
-        "Gender": "M",
-        "Zip Code": "75052",
-        "Employee": "Family"
-    },
-    {
-        "dob": 26203,
-        "Gender": "M",
-        "Zip Code": "76248",
-        "Employee": "Family"
-    },
-    {
-        "dob": 26440,
-        "Gender": "F",
-        "Zip Code": "76008",
-        "Employee": "Family"
-    },
-    {
-        "dob": 26449,
-        "Gender": "F",
-        "Zip Code": "76087",
-        "Employee": "Family"
-    },
-    {
-        "dob": 26499,
-        "Gender": "M",
-        "Zip Code": "76065",
-        "Employee": "Family"
-    },
-    {
-        "dob": 26556,
-        "Gender": "M",
-        "Zip Code": "92324",
-        "Employee": "Family"
-    },
-    {
-        "dob": 27871,
-        "Gender": "M",
-        "Zip Code": "76116",
-        "Employee": "Family"
-    },
-    {
-        "dob": 28539,
-        "Gender": "F",
-        "Zip Code": "76182",
-        "Employee": "Family"
-    },
-    {
-        "dob": 28813,
-        "Gender": "M",
-        "Zip Code": "75207",
-        "Employee": "Family"
-    },
-    {
-        "dob": 29233,
-        "Gender": "M",
-        "Zip Code": "75102",
-        "Employee": "Family"
-    },
-    {
-        "dob": 29298,
-        "Gender": "F",
-        "Zip Code": "76641",
-        "Employee": "Family"
-    },
-    {
-        "dob": 29306,
-        "Gender": "M",
-        "Zip Code": "75050",
-        "Employee": "Family"
-    },
-    {
-        "dob": 29489,
-        "Gender": "F",
-        "Zip Code": "77065",
-        "Employee": "Family"
-    },
-    {
-        "dob": 30292,
-        "Gender": "M",
-        "Zip Code": "76118",
-        "Employee": "Family"
-    },
-    {
-        "dob": 30324,
-        "Gender": "M",
-        "Zip Code": "76180",
-        "Employee": "Family"
-    },
-    {
-        "dob": 30953,
-        "Gender": "M",
-        "Zip Code": "76107",
-        "Employee": "Family"
-    },
-    {
-        "dob": 31124,
-        "Gender": "F",
-        "Zip Code": "76003",
-        "Employee": "Family"
-    },
-    {
-        "dob": 31226,
-        "Gender": "M",
-        "Zip Code": "75167",
-        "Employee": "Family"
-    },
-    {
-        "dob": 31680,
-        "Gender": "M",
-        "Zip Code": "76116",
-        "Employee": "Family"
-    },
-    {
-        "dob": 31868,
-        "Gender": "M",
-        "Zip Code": "76017",
-        "Employee": "Family"
-    },
-    {
-        "dob": 31960,
-        "Gender": "M",
-        "Zip Code": "76018",
-        "Employee": "Family"
-    },
-    {
-        "dob": 31977,
-        "Gender": "M",
-        "Zip Code": "76109",
-        "Employee": "Family"
-    },
-    {
-        "dob": 32363,
-        "Gender": "M",
-        "Zip Code": "76106",
-        "Employee": "Family"
-    },
-    {
-        "dob": 32465,
-        "Gender": "M",
-        "Zip Code": "76119",
-        "Employee": "Family"
-    },
-    {
-        "dob": 33353,
-        "Gender": "M",
-        "Zip Code": "76060",
-        "Employee": "Family"
-    },
-    {
-        "dob": 33780,
-        "Gender": "M",
-        "Zip Code": "76132",
-        "Employee": "Family"
-    },
-    {
-        "dob": 34045,
-        "Gender": "M",
-        "Zip Code": "33579",
-        "Employee": "Family"
-    },
-    {
-        "dob": 21040,
-        "Gender": "M",
-        "Zip Code": "75109",
-        "Employee": "Single"
-    },
-    {
-        "dob": 21237,
-        "Gender": "F",
-        "Zip Code": "76006",
-        "Employee": "Single"
-    },
-    {
-        "dob": 21437,
-        "Gender": "M",
-        "Zip Code": "77372",
-        "Employee": "Single"
-    },
-    {
-        "dob": 21528,
-        "Gender": "F",
-        "Zip Code": "76177",
-        "Employee": "Single"
-    },
-    {
-        "dob": 21620,
-        "Gender": "F",
-        "Zip Code": "76088",
-        "Employee": "Single"
-    },
-    {
-        "dob": 21749,
-        "Gender": "F",
-        "Zip Code": "85262",
-        "Employee": "Single"
-    },
-    {
-        "dob": 21912,
-        "Gender": "F",
-        "Zip Code": "76135",
-        "Employee": "Single"
-    },
-    {
-        "dob": 22730,
-        "Gender": "M",
-        "Zip Code": "76116",
-        "Employee": "Single"
-    },
-    {
-        "dob": 22883,
-        "Gender": "F",
-        "Zip Code": "75050",
-        "Employee": "Single"
-    },
-    {
-        "dob": 22973,
-        "Gender": "F",
-        "Zip Code": "76116",
-        "Employee": "Single"
-    },
-    {
-        "dob": 23082,
-        "Gender": "M",
-        "Zip Code": "76108",
-        "Employee": "Single"
-    },
-    {
-        "dob": 23368,
-        "Gender": "M",
-        "Zip Code": "38125",
-        "Employee": "Single"
-    },
-    {
-        "dob": 23630,
-        "Gender": "M",
-        "Zip Code": "30103",
-        "Employee": "Single"
-    },
-    {
-        "dob": 23643,
-        "Gender": "M",
-        "Zip Code": "91710",
-        "Employee": "Single"
-    },
-    {
-        "dob": 23673,
-        "Gender": "M",
-        "Zip Code": "91701",
-        "Employee": "Single"
-    },
-    {
-        "dob": 24161,
-        "Gender": "M",
-        "Zip Code": "75109",
-        "Employee": "Single"
-    },
-    {
-        "dob": 24201,
-        "Gender": "M",
-        "Zip Code": "30152",
-        "Employee": "Single"
-    },
-    {
-        "dob": 24318,
-        "Gender": "M",
-        "Zip Code": "77573",
-        "Employee": "Single"
-    },
-    {
-        "dob": 24464,
-        "Gender": "M",
-        "Zip Code": "77073",
-        "Employee": "Single"
-    },
-    {
-        "dob": 24566,
-        "Gender": "M",
-        "Zip Code": "89117",
-        "Employee": "Single"
-    },
-    {
-        "dob": 24570,
-        "Gender": "M",
-        "Zip Code": "76140",
-        "Employee": "Single"
-    },
-    {
-        "dob": 24808,
-        "Gender": "F",
-        "Zip Code": "76036",
-        "Employee": "Single"
-    },
-    {
-        "dob": 24817,
-        "Gender": "M",
-        "Zip Code": "76123",
-        "Employee": "Single"
-    },
-    {
-        "dob": 24900,
-        "Gender": "F",
-        "Zip Code": "76088",
-        "Employee": "Single"
-    },
-    {
-        "dob": 25024,
-        "Gender": "F",
-        "Zip Code": "75109",
-        "Employee": "Single"
-    },
-    {
-        "dob": 25099,
-        "Gender": "M",
-        "Zip Code": "76086",
-        "Employee": "Single"
-    },
-    {
-        "dob": 25199,
-        "Gender": "M",
-        "Zip Code": "76111",
-        "Employee": "Single"
-    },
-    {
-        "dob": 25461,
-        "Gender": "F",
-        "Zip Code": "76107",
-        "Employee": "Single"
-    },
-    {
-        "dob": 25582,
-        "Gender": "F",
-        "Zip Code": "38119",
-        "Employee": "Single"
-    },
-    {
-        "dob": 25623,
-        "Gender": "M",
-        "Zip Code": "76028",
-        "Employee": "Single"
-    },
-    {
-        "dob": 25658,
-        "Gender": "F",
-        "Zip Code": "76117",
-        "Employee": "Single"
-    },
-    {
-        "dob": 25666,
-        "Gender": "M",
-        "Zip Code": "75019",
-        "Employee": "Single"
-    },
-    {
-        "dob": 25891,
-        "Gender": "M",
-        "Zip Code": "77098",
-        "Employee": "Single"
-    },
-    {
-        "dob": 26517,
-        "Gender": "M",
-        "Zip Code": "76244",
-        "Employee": "Single"
-    },
-    {
-        "dob": 26724,
-        "Gender": "M",
-        "Zip Code": "76112",
-        "Employee": "Single"
-    },
-    {
-        "dob": 26846,
-        "Gender": "M",
-        "Zip Code": "30120",
-        "Employee": "Single"
-    },
-    {
-        "dob": 26876,
-        "Gender": "M",
-        "Zip Code": "77043",
-        "Employee": "Single"
-    },
-    {
-        "dob": 26977,
-        "Gender": "M",
-        "Zip Code": "30161",
-        "Employee": "Single"
-    },
-    {
-        "dob": 27211,
-        "Gender": "M",
-        "Zip Code": "75219",
-        "Employee": "Single"
-    },
-    {
-        "dob": 27319,
-        "Gender": "F",
-        "Zip Code": "76131",
-        "Employee": "Single"
-    },
-    {
-        "dob": 27409,
-        "Gender": "M",
-        "Zip Code": "76137",
-        "Employee": "Single"
-    },
-    {
-        "dob": 27432,
-        "Gender": "F",
-        "Zip Code": "75859",
-        "Employee": "Single"
-    },
-    {
-        "dob": 27871,
-        "Gender": "F",
-        "Zip Code": "76107",
-        "Employee": "Single"
-    },
-    {
-        "dob": 27895,
-        "Gender": "M",
-        "Zip Code": "76126",
-        "Employee": "Single"
-    },
-    {
-        "dob": 27960,
-        "Gender": "M",
-        "Zip Code": "91737",
-        "Employee": "Single"
-    },
-    {
-        "dob": 28235,
-        "Gender": "M",
-        "Zip Code": "76053",
-        "Employee": "Single"
-    },
-    {
-        "dob": 28297,
-        "Gender": "M",
-        "Zip Code": "76179",
-        "Employee": "Single"
-    },
-    {
-        "dob": 28404,
-        "Gender": "M",
-        "Zip Code": "76087",
-        "Employee": "Single"
-    },
-    {
-        "dob": 28567,
-        "Gender": "M",
-        "Zip Code": "75219",
-        "Employee": "Single"
-    },
-    {
-        "dob": 28591,
-        "Gender": "M",
-        "Zip Code": "75028",
-        "Employee": "Single"
-    },
-    {
-        "dob": 28698,
-        "Gender": "M",
-        "Zip Code": "76112",
-        "Employee": "Single"
-    },
-    {
-        "dob": 28782,
-        "Gender": "F",
-        "Zip Code": "30178",
-        "Employee": "Single"
-    },
-    {
-        "dob": 28898,
-        "Gender": "M",
-        "Zip Code": "75860",
-        "Employee": "Single"
-    },
-    {
-        "dob": 28968,
-        "Gender": "M",
-        "Zip Code": "76107",
-        "Employee": "Single"
-    },
-    {
-        "dob": 29024,
-        "Gender": "F",
-        "Zip Code": "76179",
-        "Employee": "Single"
-    },
-    {
-        "dob": 29048,
-        "Gender": "M",
-        "Zip Code": "91731",
-        "Employee": "Single"
-    },
-    {
-        "dob": 29078,
-        "Gender": "F",
-        "Zip Code": "77338",
-        "Employee": "Single"
-    },
-    {
-        "dob": 29101,
-        "Gender": "M",
-        "Zip Code": "76126",
-        "Employee": "Single"
-    },
-    {
-        "dob": 29146,
-        "Gender": "F",
-        "Zip Code": "78542",
-        "Employee": "Single"
-    },
-    {
-        "dob": 29323,
-        "Gender": "M",
-        "Zip Code": "76001",
-        "Employee": "Single"
-    },
-    {
-        "dob": 29435,
-        "Gender": "F",
-        "Zip Code": "92313",
-        "Employee": "Single"
-    },
-    {
-        "dob": 29521,
-        "Gender": "M",
-        "Zip Code": "76063",
-        "Employee": "Single"
-    },
-    {
-        "dob": 29812,
-        "Gender": "M",
-        "Zip Code": "37067",
-        "Employee": "Single"
-    },
-    {
-        "dob": 29830,
-        "Gender": "M",
-        "Zip Code": "76015",
-        "Employee": "Single"
-    },
-    {
-        "dob": 29943,
-        "Gender": "M",
-        "Zip Code": "91730",
-        "Employee": "Single"
-    },
-    {
-        "dob": 30277,
-        "Gender": "M",
-        "Zip Code": "76049",
-        "Employee": "Single"
-    },
-    {
-        "dob": 30545,
-        "Gender": "M",
-        "Zip Code": "76108",
-        "Employee": "Single"
-    },
-    {
-        "dob": 30819,
-        "Gender": "M",
-        "Zip Code": "76112",
-        "Employee": "Single"
-    },
-    {
-        "dob": 30914,
-        "Gender": "F",
-        "Zip Code": "75052",
-        "Employee": "Single"
-    },
-    {
-        "dob": 31149,
-        "Gender": "M",
-        "Zip Code": "76126",
-        "Employee": "Single"
-    },
-    {
-        "dob": 31151,
-        "Gender": "M",
-        "Zip Code": "76111",
-        "Employee": "Single"
-    },
-    {
-        "dob": 31206,
-        "Gender": "M",
-        "Zip Code": "76133",
-        "Employee": "Single"
-    },
-    {
-        "dob": 31295,
-        "Gender": "F",
-        "Zip Code": "76031",
-        "Employee": "Single"
-    },
-    {
-        "dob": 31390,
-        "Gender": "F",
-        "Zip Code": "76016",
-        "Employee": "Single"
-    },
-    {
-        "dob": 31513,
-        "Gender": "M",
-        "Zip Code": "76120",
-        "Employee": "Single"
-    },
-    {
-        "dob": 31591,
-        "Gender": "M",
-        "Zip Code": "76009",
-        "Employee": "Single"
-    },
-    {
-        "dob": 31891,
-        "Gender": "F",
-        "Zip Code": "77547",
-        "Employee": "Single"
-    },
-    {
-        "dob": 31952,
-        "Gender": "F",
-        "Zip Code": "76022",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32034,
-        "Gender": "M",
-        "Zip Code": "76103",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32056,
-        "Gender": "M",
-        "Zip Code": "76135",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32193,
-        "Gender": "M",
-        "Zip Code": "77067",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32233,
-        "Gender": "M",
-        "Zip Code": "76010",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32291,
-        "Gender": "F",
-        "Zip Code": "76179",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32333,
-        "Gender": "F",
-        "Zip Code": "76131",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32427,
-        "Gender": "F",
-        "Zip Code": "92860",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32440,
-        "Gender": "M",
-        "Zip Code": "76227",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32466,
-        "Gender": "F",
-        "Zip Code": "76116",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32489,
-        "Gender": "F",
-        "Zip Code": "91764",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32609,
-        "Gender": "F",
-        "Zip Code": "76148",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32690,
-        "Gender": "F",
-        "Zip Code": "76063",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32730,
-        "Gender": "M",
-        "Zip Code": "76179",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32742,
-        "Gender": "M",
-        "Zip Code": "76103",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32841,
-        "Gender": "M",
-        "Zip Code": "92345",
-        "Employee": "Single"
-    },
-    {
-        "dob": 32989,
-        "Gender": "M",
-        "Zip Code": "78108",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33197,
-        "Gender": "M",
-        "Zip Code": "76123",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33221,
-        "Gender": "M",
-        "Zip Code": "78628",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33265,
-        "Gender": "F",
-        "Zip Code": "76136",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33309,
-        "Gender": "M",
-        "Zip Code": "76148",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33325,
-        "Gender": "M",
-        "Zip Code": "76086",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33539,
-        "Gender": "M",
-        "Zip Code": "75234",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33635,
-        "Gender": "M",
-        "Zip Code": "76131",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33713,
-        "Gender": "M",
-        "Zip Code": "91767",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33738,
-        "Gender": "F",
-        "Zip Code": "76135",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33742,
-        "Gender": "F",
-        "Zip Code": "76117",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33806,
-        "Gender": "M",
-        "Zip Code": "76107",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33812,
-        "Gender": "F",
-        "Zip Code": "76048",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33868,
-        "Gender": "M",
-        "Zip Code": "85201",
-        "Employee": "Single"
-    },
-    {
-        "dob": 33906,
-        "Gender": "M",
-        "Zip Code": "75109",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34002,
-        "Gender": "M",
-        "Zip Code": "76001",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34096,
-        "Gender": "F",
-        "Zip Code": "75119",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34124,
-        "Gender": "F",
-        "Zip Code": "76132",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34143,
-        "Gender": "M",
-        "Zip Code": "76114",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34169,
-        "Gender": "F",
-        "Zip Code": "75104",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34177,
-        "Gender": "M",
-        "Zip Code": "76148",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34298,
-        "Gender": "F",
-        "Zip Code": "76132",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34360,
-        "Gender": "F",
-        "Zip Code": "76131",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34397,
-        "Gender": "M",
-        "Zip Code": "76182",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34446,
-        "Gender": "F",
-        "Zip Code": "76067",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34446,
-        "Gender": "M",
-        "Zip Code": "76117",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34627,
-        "Gender": "M",
-        "Zip Code": "76010",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34681,
-        "Gender": "M",
-        "Zip Code": "76107",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34767,
-        "Gender": "M",
-        "Zip Code": "76119",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34787,
-        "Gender": "F",
-        "Zip Code": "76114",
-        "Employee": "Single"
-    },
-    {
-        "dob": 34961,
-        "Gender": "M",
-        "Zip Code": "85301",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35370,
-        "Gender": "F",
-        "Zip Code": "76123",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35393,
-        "Gender": "M",
-        "Zip Code": "76110",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35418,
-        "Gender": "M",
-        "Zip Code": "91710",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35420,
-        "Gender": "M",
-        "Zip Code": "76085",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35479,
-        "Gender": "M",
-        "Zip Code": "76104",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35630,
-        "Gender": "M",
-        "Zip Code": "76106",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35632,
-        "Gender": "M",
-        "Zip Code": "30121",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35701,
-        "Gender": "M",
-        "Zip Code": "76108",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35724,
-        "Gender": "M",
-        "Zip Code": "30161",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35794,
-        "Gender": "F",
-        "Zip Code": "85006",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35803,
-        "Gender": "M",
-        "Zip Code": "77338",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35829,
-        "Gender": "M",
-        "Zip Code": "76092",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35876,
-        "Gender": "F",
-        "Zip Code": "76082",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35896,
-        "Gender": "M",
-        "Zip Code": "77338",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35929,
-        "Gender": "F",
-        "Zip Code": "38654",
-        "Employee": "Single"
-    },
-    {
-        "dob": 35947,
-        "Gender": "M",
-        "Zip Code": "76148",
-        "Employee": "Single"
-    },
-    {
-        "dob": 36043,
-        "Gender": "M",
-        "Zip Code": "92377",
-        "Employee": "Single"
-    },
-    {
-        "dob": 36052,
-        "Gender": "F",
-        "Zip Code": "76112",
-        "Employee": "Single"
-    },
-    {
-        "dob": 36143,
-        "Gender": "M",
-        "Zip Code": "30152",
-        "Employee": "Single"
-    },
-    {
-        "dob": 36176,
-        "Gender": "F",
-        "Zip Code": "76044",
-        "Employee": "Single"
-    },
-    {
-        "dob": 36187,
-        "Gender": "F",
-        "Zip Code": "76148",
-        "Employee": "Single"
-    },
-    {
-        "dob": 36228,
-        "Gender": "F",
-        "Zip Code": "92335",
-        "Employee": "Single"
-    },
-    {
-        "dob": 36280,
-        "Gender": "M",
-        "Zip Code": "76180",
-        "Employee": "Single"
-    },
-    {
-        "dob": 36396,
-        "Gender": "F",
-        "Zip Code": "76148",
-        "Employee": "Single"
-    },
-    {
-        "dob": 36404,
-        "Gender": "M",
-        "Zip Code": "76106",
-        "Employee": "Single"
-    },
-    {
-        "dob": 36413,
-        "Gender": "M",
-        "Zip Code": "76182",
-        "Employee": "Single"
-    },
-    {
-        "dob": 36605,
-        "Gender": "M",
-        "Zip Code": "76116",
-        "Employee": "Single"
-    },
-    {
-        "dob": 36619,
-        "Gender": "M",
-        "Zip Code": "76131",
-        "Employee": "Single"
-    },
-    {
-        "dob": 36732,
-        "Gender": "F",
-        "Zip Code": "76105",
-        "Employee": "Single"
-    },
-    {
-        "dob": 37124,
-        "Gender": "M",
-        "Zip Code": "91767",
-        "Employee": "Single"
-    },
-    {
-        "dob": 37161,
-        "Gender": "F",
-        "Zip Code": "76104",
-        "Employee": "Single"
-    },
-    {
-        "dob": 37162,
-        "Gender": "M",
-        "Zip Code": "93552",
-        "Employee": "Single"
-    },
-    {
-        "dob": 37259,
-        "Gender": "M",
-        "Zip Code": "76106",
-        "Employee": "Single"
-    },
-    {
-        "dob": 37746,
-        "Gender": "M",
-        "Zip Code": "76111",
-        "Employee": "Single"
-    },
-    {
-        "dob": 38013,
-        "Gender": "F",
-        "Zip Code": "92354",
-        "Employee": "Single"
-    },
-    {
-        "dob": 38203,
-        "Gender": "M",
-        "Zip Code": "76115",
-        "Employee": "Single"
-    }
-]
-
-
-      const objectsToString = object3.map((obj) => {
-        const newObj = {};
-        for (const key in obj) {
-          newObj[key] = String(obj[key]);
-        }
-        return newObj;
-      });
-
-      const updatedObjects = objectsToString.map(updateKeys);
-      console.log(updatedObjects);
-
-
-
-
+        console.log("Member count :", roundedMemberCount);
+        console.log("Employee count:", employeeCount);
+        console.log("Individual Attachment point :", Individual_Attachment_point);
+        console.log("Plan:", plan);
+        console.log("Run In, note months:", runin_month);
+        console.log("Run out, note months:", runout_month);
+        console.log("Annual Maximum Incl attachment point:", annual_max);
+        console.log("Calendar year deductible:", calendar_year);
+        console.log("Coverage for next $5000:", coverage_next_5000);
+        console.log("EE OOP max (incl deductible):", EE_oop_max);
+        console.log("Industry:", industry);
+        console.log("Dependent Participation Rate:", dependent_participation_rate);
+        console.log("Annual Stop Loss limit:", annual_stop_loss_limit);
+        console.log("Type of UW:", type_of_UW);
 
     </script>
-  </body>
+</body>
+
 </html>

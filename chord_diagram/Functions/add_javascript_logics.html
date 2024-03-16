@@ -1786,14 +1786,20 @@
                     return null;  // Label not found in the data
                 }
                 // Function to calculate sumproduct
-                function calculateSumproduct(data) {
+                function calculateSumproduct(data ) {
                     let sumproduct = 0;
                     for (const entry of data) {
                         sumproduct += entry.M * entry.Member_count;
                     }
                     return sumproduct;
                 }
-
+                function calculateSumproduct2(data ) {
+                    let sumproduct = 0;
+                    for (const entry of data) {
+                        sumproduct += entry.P * entry.Member_count;
+                    }
+                    return sumproduct;
+                }
 
                 function calculateValueOF_O(N5, O5, B32, B33, B31) {
     let result;
@@ -1966,7 +1972,7 @@ updatedObjects2.forEach((entry, index) => {
                         entry.age_bucket = "65 – 69";
                     } else {
                         entry.age_bucket = "70 & Over";
-                    }
+                    } 
 
                     // added the 3 digit zip code 
 
@@ -1986,9 +1992,7 @@ updatedObjects2.forEach((entry, index) => {
                         `${entry.Base_Net_Monthly_Prem_lookupvalue},${B36}`, plan - 1)
                         entry.R = getValueByLabelAndIndex(Base_Net_Monthly_Prem_Table,
                         `${entry.Base_Net_Monthly_Prem_lookupvalue},${B37}`, plan - 1)
-
-                       entry.S = calculateValueOF_O(entry.Q , entry.R , B36, B37, B35 );  
-                        
+                         entry.S = calculateValueOF_O(entry.Q , entry.R , B36, B37, B35 );  
                     });
 
                 console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
@@ -2006,9 +2010,14 @@ updatedObjects2.forEach((entry, index) => {
                         : Math.floor(totalMemberCount);
                 employeeCount = updatedObjects2.length * 3;
 
-                const Net_Premium_before_OOP = calculateSumproduct(updatedObjects2);
 
+                const Net_Premium_before_OOP = calculateSumproduct(updatedObjects2);
+                const Line_1a = calculateSumproduct2(updatedObjects2) - Net_Premium_before_OOP ;
+                                
                 console.log("Line1: Base Net Premium before OOP Max adjustment:", Net_Premium_before_OOP);
+                console.log("Line1a: Base Net Premium before OOP Max adjustment:", Line_1a);
+                console.log("Line1a: Base Net Premium before OOP Max adjustment:", Line_1a);
+              
                 console.log("Member count :", roundedMemberCount);
                 console.log("Employee count:", employeeCount);
                 console.log("Individual Attachment point :", Individual_Attachment_point);

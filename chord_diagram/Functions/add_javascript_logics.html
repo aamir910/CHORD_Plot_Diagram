@@ -2115,12 +2115,18 @@
                 ageBuckets.forEach(bucket => {
                     const countMale = countRowsByGenderAndAgeBucket(updatedObjects2, "M", bucket);
                     const countFemale = countRowsByGenderAndAgeBucket(updatedObjects2, "F", bucket);
+                    const countMale2 = countRowsByGenderAndAgeBucket2(updatedObjects2, "M", bucket);
+                    const countFemale2 = countRowsByGenderAndAgeBucket2(updatedObjects2, "F", bucket);
+
                     console.log(`Age Bucket: ${bucket}`);
                     console.log(`Number of rows with Gender=M: ${countMale}`);
                     console.log(`Number of rows with Gender=F: ${countFemale}`);
                     console.log("--------");
+                    console.log(`Number of rows with Gender=M2: ${countMale2}`);
+                    console.log(`Number of rows with Gender=F2: ${countFemale2}`);
+                    console.log("--------");
 
-                    male_female_array.push([bucket, countMale, countFemale]);
+                    male_female_array.push([bucket, countMale, countFemale, countMale2, countFemale2]);
 
 
                 });
@@ -2129,14 +2135,25 @@
                 function countRowsByGenderAndAgeBucket(data, gender, ageBucket) {
                     return data.filter(row => row.Gender === gender && row.age_bucket === ageBucket && row.Member_count === 1).length;
                 }
-
+                function countRowsByGenderAndAgeBucket2(data, gender, ageBucket) {
+                    return data.filter(row => row.Gender === gender && row.age_bucket === ageBucket && row.Member_count > 1).length;
+                }
 
                 const cal_count_factor_m_f = male_female_array.map((m1, index) => ({
 
-                    m1: male_female_array[index][1],
-                    f1: male_female_array[index][2],
+                    m1: male_female_array[index][3],
+                    f1: male_female_array[index][4],
                     m2: Age_Gender_Factor_1[index + 1][male_point],
                     f2: Age_Gender_Factor_1[index + 1][female_point]
+                }));
+
+
+                const cal_count_factor_m_f_2 = male_female_array.map((m1, index) => ({
+
+                    m1: male_female_array[index][1],
+                    f1: male_female_array[index][2],
+                    m2: Age_Gender_Factor_2[index + 1][male_point-1],
+                    f2: Age_Gender_Factor_2[index + 1][female_point-1]
                 }));
 
                 function calculateSum(array, property) {
@@ -2146,24 +2163,30 @@
                 // Usage
                 const sumM1 = calculateSum(cal_count_factor_m_f, 'm1');
                 const sumF1 = calculateSum(cal_count_factor_m_f, 'f1');
+                const sum2M1 = calculateSum(cal_count_factor_m_f_2, 'm1');
+                const sum2F1 = calculateSum(cal_count_factor_m_f_2, 'f1');
+                console.log("Sum of m1:", sum2M1);
+                console.log("Sum of f1:", sum2F1);
 
-                console.log("Sum of m1:", sumM1);
-                console.log("Sum of f1:", sumF1);
+                function calculateSumProduct(array, property1, property2) {
+                    return array.reduce((acc, obj) => acc + (obj[property1] * obj[property2]), 0);
+                }
 
-                const sumProductF2 = cal_count_factor_m_f.reduce((acc, obj) => {
-  // Multiply f1 and f2 for each object and add to the accumulator
-  return acc + (obj.f1 * obj.f2);
-}, 0);
+                // Usage
+                const sumProductF2 = calculateSumProduct(cal_count_factor_m_f, 'f1', 'f2');
+                const sumProductM2 = calculateSumProduct(cal_count_factor_m_f, 'm1', 'm2');
+               
+                const sumProduct2F2 = calculateSumProduct(cal_count_factor_m_f_2, 'f1', 'f2');
+                const sumProduc2M2 = calculateSumProduct(cal_count_factor_m_f_2, 'm1', 'm2');
 
-console.log("Sum of the product of f1 and f2:", sumProductF2);
-const sumProductM2 = cal_count_factor_m_f.reduce((acc, obj) => {
-  // Multiply m1 and m2 for each object and add to the accumulator
-  return acc + (obj.m1 * obj.m2);
-}, 0);
 
-console.log("Sum of the product of m1 and m2:", sumProductM2);
+                console.log("Sum of the product of f1 and f2:", sumProductF2);
+                console.log("Sum of the product of m1 and m2:", sumProductM2);
 
-                console.log(cal_count_factor_m_f, "here is the final value female_point");
+
+
+
+                console.log(cal_count_factor_m_f, cal_count_factor_m_f_2, "here is the final value female_point");
                 console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
                 console.log("Member count :", roundedMemberCount);
                 console.log("Employee count:", employeeCount);

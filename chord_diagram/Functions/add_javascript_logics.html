@@ -2131,17 +2131,39 @@
                 }
 
 
-                const result = male_female_array.map((m1, index) => ({
-                    
+                const cal_count_factor_m_f = male_female_array.map((m1, index) => ({
+
                     m1: male_female_array[index][1],
                     f1: male_female_array[index][2],
-                    m2: Age_Gender_Factor_1[index+1][male_point],
-                    f2: Age_Gender_Factor_1[index+1][female_point]
+                    m2: Age_Gender_Factor_1[index + 1][male_point],
+                    f2: Age_Gender_Factor_1[index + 1][female_point]
                 }));
 
-                console.log(result , "here is the final value female_point");
+                function calculateSum(array, property) {
+                    return array.reduce((acc, obj) => acc + obj[property], 0);
+                }
 
+                // Usage
+                const sumM1 = calculateSum(cal_count_factor_m_f, 'm1');
+                const sumF1 = calculateSum(cal_count_factor_m_f, 'f1');
 
+                console.log("Sum of m1:", sumM1);
+                console.log("Sum of f1:", sumF1);
+
+                const sumProductF2 = cal_count_factor_m_f.reduce((acc, obj) => {
+  // Multiply f1 and f2 for each object and add to the accumulator
+  return acc + (obj.f1 * obj.f2);
+}, 0);
+
+console.log("Sum of the product of f1 and f2:", sumProductF2);
+const sumProductM2 = cal_count_factor_m_f.reduce((acc, obj) => {
+  // Multiply m1 and m2 for each object and add to the accumulator
+  return acc + (obj.m1 * obj.m2);
+}, 0);
+
+console.log("Sum of the product of m1 and m2:", sumProductM2);
+
+                console.log(cal_count_factor_m_f, "here is the final value female_point");
                 console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
                 console.log("Member count :", roundedMemberCount);
                 console.log("Employee count:", employeeCount);

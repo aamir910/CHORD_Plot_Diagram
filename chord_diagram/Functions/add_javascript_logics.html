@@ -1722,7 +1722,9 @@
             return newObj;
         });
 
+        const updatedObjects = objectsToString.map(updateKeys);
 
+        console.log(updatedObjects, "here is the final object");
 
 
         async function fetchExcelAndConvertToJson(filePath) {
@@ -1831,10 +1833,24 @@
                     }
                 }
 
-                const updatedObjects = objectsToString.map(updateKeys);
+                function calculateAgeGender(dependent_participation_rate) {
+    // Map ranges to corresponding age_gender values
+    const ranges = [
+        { min: 0, max: 49, value: 1.08 },
+        { min: 50, max: 59, value: 1.03 },
+        { min: 60, max: 69, value: 1.00 },
+        { min: 70, max: 79, value: 0.95 },
+        { min: 80, max: 89, value: 0.90 },
+        { min: 90, max: 99, value: 0.88 },
+        { min: 100, max: Infinity, value: 0.85 }
+    ];
 
-                console.log(updatedObjects, "here is the final object");
+    // Find the range that includes dependent_participation_rate
+    const range = ranges.find(range => dependent_participation_rate >= range.min && dependent_participation_rate <= range.max);
 
+    // Return the corresponding age_gender value
+    return range ? range.value : null;
+}
                 let updatedObjects2 = JSON.parse(JSON.stringify(updatedObjects));
 
                 let Individual_Attachment_point = 5000;
@@ -1852,6 +1868,15 @@
                 let type_of_UW = "Type II";
                 let date_begins = "2000";
                 let Coverage_for_next_$5000 = 80;
+
+
+                // for the net primium value
+
+                let Industry_Factor = 1.025;
+                let age_gender =calculateAgeGender(dependent_participation_rate); 
+
+                console.log(age_gender , "here is the age gender value ")
+                let Dependent_Participation_Factor = 0.85;
 
                 // creating the opp mac calc    
 
@@ -2013,7 +2038,6 @@
                     entry.S = calculateValueOF_O(entry.Q, entry.R, B36, B37, B35);
                 });
 
-                console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
 
                 let totalMemberCount = updatedObjects2.reduce(
                     (total, entry) => total + entry.Member_count,
@@ -2050,25 +2074,7 @@
 
 
 
-                let adjustment_run_in = calculateValueOFLine3(plan, B9,adjacent_based_rate, B28_main);
-
-                let adjustment_run_out = calculateValueOfLine4(plan, B20,adjacent_based_rate, B28_main);
-
-
-                console.log("Line1: Base Net Premium before OOP Max adjustment:", Net_Premium_before_OOP);
-
-
-                console.log("Line1a: Base Net Premium before OOP Max adjustment:", Line_1a);
-                console.log("Line2: Base Net Premium before OOP Max adjustment:", adjacent_based_rate);
-
-                console.log("Line 3: Adjustment for Run-out", adjustment_run_in);
-                console.log("Line 4: Adjustment for Run-In", adjustment_run_out);
-                console.log("Adjustment for Annual Max Benefit:", B28_main);
-
-let Adjusted_rate = adjacent_based_rate +adjustment_run_in+ adjustment_run_out +B28_main 
-
-console.log("Adjusted rate:" , Adjusted_rate ) ; 
-
+                console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
                 console.log("Member count :", roundedMemberCount);
                 console.log("Employee count:", employeeCount);
                 console.log("Individual Attachment point :", Individual_Attachment_point);
@@ -2084,7 +2090,27 @@ console.log("Adjusted rate:" , Adjusted_rate ) ;
                 console.log("Annual Stop Loss limit:", annual_stop_loss_limit);
                 console.log("Type of UW:", type_of_UW);
 
+                let adjustment_run_in = calculateValueOFLine3(plan, B9, adjacent_based_rate, B28_main);
 
+                let adjustment_run_out = calculateValueOfLine4(plan, B20, adjacent_based_rate, B28_main);
+
+
+                console.log("Line1: Base Net Premium before OOP Max adjustment:", Net_Premium_before_OOP.toFixed(2));
+
+
+                console.log("Line1a: Base Net Premium before OOP Max adjustment:", Line_1a.toFixed(2));
+                console.log("Line2: Base Net Premium before OOP Max adjustment:", adjacent_based_rate.toFixed(2));
+
+                console.log("Line 3: Adjustment for Run-out", adjustment_run_in.toFixed(2));
+                console.log("Line 4: Adjustment for Run-In", adjustment_run_out.toFixed(2));
+                console.log("Adjustment for Annual Max Benefit:", B28_main.toFixed(2));
+
+                let Adjusted_rate = adjacent_based_rate + adjustment_run_in + adjustment_run_out + B28_main
+
+                console.log("Adjusted rate:", Adjusted_rate.toFixed(2));
+                let net_priminum = Adjusted_rate * age_gender * Industry_Factor * Dependent_Participation_Factor
+
+                console.log("Net Premium:", net_priminum.toFixed(2));
                 // Rest of your code...
             } catch (error) {
                 // Handle any errors occurred during the process

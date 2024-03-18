@@ -189,6 +189,26 @@
                 let totalcount = n + coulmNames;
 
 
+                let Individual_Attachment_point = rowData['individual_attachment_point'];
+                Annual_Maximum_Incl_attachment_point = rowData['annual_maximum_incl_attachment_point'];
+                let plan = rowData['plan'];
+                let runin_month = rowData['run_in'];
+                let runout_month = rowData['run_out'];
+                let annual_max = rowData['annual_maximum_incl_attachment_point'];
+                let calendar_year = rowData['calendar_year_deductible'];
+                let coverage_next_5000 = rowData['coverage_for_next'];
+                let EE_oop_max = rowData['EE_OOP_max_incl_deductible'];
+                let industry = rowData['industry_factor'];
+                let dependent_participation_rate =  rowData['dependent_participation_rate'];
+                let annual_stop_loss_limit =rowData['annual_stop_loss_limit'];
+                let type_of_UW =  rowData['type_of_UW'];
+                let date_begins =  rowData['rates_beginning'];
+                let Coverage_for_next_$5000 = rowData['coverage_for_next'] ;
+    
+
+
+
+
                 console.log(n, coulmNames, categoriespart1.every(value => categoriespart2.includes(value)));
                 if (categoriespart1.every(value => categoriespart2.includes(value))) {
                     console.log("check")

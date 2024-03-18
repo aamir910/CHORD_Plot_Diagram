@@ -1,0 +1,389 @@
+   const objectsToString = object3.map((obj) => {
+            const newObj = {};
+            for (const key in obj) {
+                newObj[key] = String(obj[key]);
+            }
+            return newObj;
+        });
+
+        const updatedObjects = objectsToString.map(updateKeys);
+
+console.log(updatedObjects, "here is the final object");
+
+
+        async function fetchExcelAndConvertToJson(filePath) {
+            try {
+                const response = await fetch(filePath);
+                const arrayBuffer = await response.arrayBuffer();
+                const data = new Uint8Array(arrayBuffer);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+                return XLSX.utils.sheet_to_json(sheet, { header: 1 });
+            } catch (error) {
+                console.error('Error fetching or parsing file:', error);
+                throw error; // Rethrow the error to be handled by the caller
+            }
+        }
+        async function main() {
+            try {
+                const Base_Net_Monthly_Prem_Table = await fetchExcelAndConvertToJson("xlxsfile/Base_Net_Monthly_Prem_Table.xlsx");
+                const Random_Zip_Generator = await fetchExcelAndConvertToJson("xlxsfile/Random_Zip_Generator.xlsx");
+                const Zip_Table = await fetchExcelAndConvertToJson("xlxsfile/Zip_Table.xlsx");
+
+
+                // Your processing logic here
+                console.log(Base_Net_Monthly_Prem_Table, "Base_Net_Monthly_Prem_Table");
+                console.log(Random_Zip_Generator, "Random_Zip_Generator");
+
+                console.log(Zip_Table, "Zip_Table");
+
+                function findTableForZip(zip, data) {
+                    for (let i = 0; i < data.length; i++) {
+                        if (data[i][0] === zip) {
+                            return data[i][2];
+                        }
+                    }
+                    return null; // Return null if no match is found
+                }
+                function customFormula_ziptablealpha(I2) {
+                    if (I2 === "I" || I2 === "J" || I2 === "K" || I2 === "L") {
+                        if (I2 === "I" || I2 === "J") {
+                            return "I,J";
+                        } else {
+                            return "K,L";
+                        }
+                    } else {
+                        return I2;
+                    }
+                }
+                function getValueByLabelAndIndex(data, label, index) {
+                    for (let i = 0; i < data.length; i++) {
+                        const innerList = data[i];
+                        if (innerList[0] === label) {
+                            if (index < innerList.length) {
+                                return innerList[index];
+                            } else {
+                                return null;  // Index out of range for this inner list
+                            }
+                        }
+                    }
+                    return null;  // Label not found in the data
+                }
+                // Function to calculate sumproduct
+                function calculateSumproduct(data) {
+                    let sumproduct = 0;
+                    for (const entry of data) {
+                        sumproduct += entry.M * entry.Member_count;
+                    }
+                    return sumproduct;
+                }
+                function calculateSumproduct2(data) {
+                    let sumproduct = 0;
+                    for (const entry of data) {
+                        sumproduct += entry.P * entry.Member_count;
+                    }
+                    return sumproduct;
+                }
+
+                function calculateValueOF_O(N5, O5, B32, B33, B31) {
+                    let result;
+                    if (N5 === O5) {
+                        result = N5;
+                    } else {
+                        result = N5 + ((O5 - N5) / (B33 - B32)) * (B31 - B32);
+                    }
+                    return result;
+                }
+                function calculateValueOF_S(Q2, R2, B36, B37, B35) {
+                    if (Q2 === R2) {
+                        return Q2;
+                    } else {
+                        return Q2 + ((R2 - Q2) / (B37 - B36)) * (B35 - B36);
+                    }
+                }
+                function calculateValueOFLine3(C7, B9, B23, B28) {
+                    if (C7 === 8) {
+                        return (B9 - 1) * (B23 - B28);
+                    } else {
+                        return 0;
+                    }
+                }
+                function calculateValueOfLine4(C7, B20, B23, B28) {
+                    if (C7 === 6) {
+                        return (B20 - 1) * (B23 - B28);
+                    } else {
+                        return 0;
+                    }
+                }
+
+              
+
+                let updatedObjects2 = JSON.parse(JSON.stringify(updatedObjects));
+
+                let Individual_Attachment_point = 5000;
+                Annual_Maximum_Incl_attachment_point = 500000;
+                let plan = 6;
+                let runin_month = 100;
+                let runout_month = 105;
+                let annual_max = 500000;
+                let calendar_year = 200;
+                let coverage_next_5000 = 100;
+                let EE_oop_max = 2000;
+                let industry = 1.005;
+                let dependent_participation_rate = 100;
+                let annual_stop_loss_limit = "none";
+                let type_of_UW = "Type II";
+                let date_begins = "2000";
+                let Coverage_for_next_$5000 = 80;
+    
+
+                // for the net primium value 
+               let   Industry_Factor = 1.025;
+               let    age_gender =  1.25 ; 
+               let Dependent_Participation_Factor = 0.85 ; 
+
+                // creating the opp mac calc    
+
+
+                const table3 = [
+                    ["Office Visits", 13, 20],
+                    ["Hospital Inpatient per stay", 0.8, 10],
+                    ["Hospital Inpatient per day", 3.7, 15],
+                    ["Outpatient Surgical Center", 0.9, 30],
+                    ["CT Scan/MRI", 1, 20],
+                    ["Emergency Room", 0.9, 60],
+                    ["Prescription Drug – Generic", 24.1, 15],
+                    ["Prescription Drug – Without Specialty – Brand Name Formulary", 3.6, 20],
+                    ["Prescription Drug – Without Specialty – Brand Name Non-Formulary", 2.4, 20],
+                    ["Prescription Drug – With Specialty – Brand Name Formulary", 3.3, 20],
+                    ["Prescription Drug – With Specialty – Brand Name Non-Formulary", 2.2, 20],
+                    ["Prescription Drug – With Specialty – Specialty", 0.5, 15]
+                ];
+
+                let sum = 0;
+
+
+                for (let i = 0; i < table3.length; i++) {
+                    sum += table3[i][1] * table3[i][2];
+                }
+
+
+
+                let B23 = Coverage_for_next_$5000 / 100; // b12 fromt he 2 input 
+                let B24 = calendar_year;
+                let B25 = EE_oop_max;
+                let B26 = Math.ceil((B25 - B24) * (1 - B23));
+                let B27 = sum;
+                let B28 = Math.ceil(B24 + B26 + B27);
+                let B29 = 1200
+                let B30 = (B29 === B25) ? 0 : B28;
+                let B31 = B30 + Individual_Attachment_point;
+                console.log(B28, "here is the b ", B31);
+
+                const targetValue = B31; // Example value you provided
+
+                const values = [
+                    5000, 7500, 10000, 12500, 15000, 17500, 20000, 22500, 25000, 30000,
+                    35000, 40000, 45000, 50000, 55000, 60000, 65000, 70000, 75000, 80000,
+                    85000, 90000, 95000, 100000, 105000, 110000, 115000, 120000, 125000,
+                    130000, 135000, 140000, 145000, 150000, 155000, 160000, 165000, 170000,
+                    175000, 180000, 185000, 190000, 195000, 200000, 205000, 210000, 215000,
+                    220000, 225000, 230000, 235000, 240000, 245000, 250000, 275000, 300000,
+                    325000, 350000, 375000, 400000, 425000, 450000, 475000, 500000, 550000,
+                    600000, 650000, 700000, 750000, 800000, 900000, 1000000, 1250000, 1500000,
+                    2000000, 2500000, 3000000, 4000000, 5000000, 10000000
+                ];
+
+                // Find the nearest lower value
+                let B32 = -Infinity;
+                for (let i = 0; i < values.length; i++) {
+                    if (values[i] < targetValue && values[i] > B32) {
+                        B32 = values[i];
+                    }
+                }
+                let B33 = Infinity;
+                for (let i = 0; i < values.length; i++) {
+                    if (values[i] > targetValue && values[i] < B33) {
+                        B33 = values[i];
+                    }
+                }
+                let B35 = Annual_Maximum_Incl_attachment_point + B28
+                console.log(B35, "here is ");
+
+                const targetvalue2 = B35;
+                // Find the nearest higher value
+
+                // Find the nearest lower value
+                let B36 = -Infinity;
+                for (let i = 0; i < values.length; i++) {
+                    if (values[i] < targetvalue2 && values[i] > B36) {
+                        B36 = values[i];
+                    }
+                }
+
+                // Find the nearest higher value
+                let B37 = Infinity;
+                for (let i = 0; i < values.length; i++) {
+                    if (values[i] > targetvalue2 && values[i] < B37) {
+                        B37 = values[i];
+                    }
+                }
+                console.log(B36, B37, "here are the last value of the b36 and the b37 ");
+
+
+                // here are the B9 
+                let B9 = runin_month;
+                let B20 = runout_month;
+
+
+                updatedObjects2.forEach((entry, index) => {
+
+                    switch (entry.Employee) {
+                        case "EE":
+                            entry.Member_count = 1;
+                            break;
+                        case "ES":
+                            entry.Member_count = 2.2;
+                            break;
+                        case "EC":
+                            entry.Member_count = 2.2;
+                            break;
+                        case "F":
+                            entry.Member_count = 4.2;
+                            break;
+                        default:
+                            // Handle unknown employee types
+                            break;
+                    }
+                    // addded the age
+                    entry.Age_Last = parseInt(date_begins) - parseInt(entry.CalendarYearBirth);
+                    // added the age bucket 
+
+                    if (entry.Age_Last < 30) {
+                        entry.age_bucket = "Under 30";
+                    } else if (entry.Age_Last >= 30 && entry.Age_Last < 35) {
+                        entry.age_bucket = "30 – 34";
+                    } else if (entry.Age_Last >= 35 && entry.Age_Last < 40) {
+                        entry.age_bucket = "35 – 39";
+                    } else if (entry.Age_Last >= 40 && entry.Age_Last < 45) {
+                        entry.age_bucket = "40 – 44";
+                    } else if (entry.Age_Last >= 45 && entry.Age_Last < 50) {
+                        entry.age_bucket = "45 – 49";
+                    } else if (entry.Age_Last >= 50 && entry.Age_Last < 55) {
+                        entry.age_bucket = "50 – 54";
+                    } else if (entry.Age_Last >= 55 && entry.Age_Last < 60) {
+                        entry.age_bucket = "55 – 59";
+                    } else if (entry.Age_Last >= 60 && entry.Age_Last < 65) {
+                        entry.age_bucket = "60 – 64";
+                    } else if (entry.Age_Last >= 65 && entry.Age_Last < 70) {
+                        entry.age_bucket = "65 – 69";
+                    } else {
+                        entry.age_bucket = "70 & Over";
+                    }
+
+                    // added the 3 digit zip code 
+
+                    entry.zip_code_3 = Random_Zip_Generator[index + 1][2].substring(0, 3);
+                    // zip to alphabet 
+
+                    entry.Zip_table_alpha = findTableForZip(entry.zip_code_3, Zip_Table)
+                    entry.Base_Net_Monthly_Prem_lookupvalue = customFormula_ziptablealpha(entry.Zip_table_alpha)
+                    entry.M = getValueByLabelAndIndex(Base_Net_Monthly_Prem_Table,
+                        `${entry.Base_Net_Monthly_Prem_lookupvalue},${Individual_Attachment_point}`, plan - 1)
+                    entry.N = getValueByLabelAndIndex(Base_Net_Monthly_Prem_Table,
+                        `${entry.Base_Net_Monthly_Prem_lookupvalue},${B32}`, plan - 1)
+                    entry.O = getValueByLabelAndIndex(Base_Net_Monthly_Prem_Table,
+                        `${entry.Base_Net_Monthly_Prem_lookupvalue},${B33}`, plan - 1)
+                    entry.P = calculateValueOF_O(entry.N, entry.O, B32, B33, B31)
+                    entry.Q = getValueByLabelAndIndex(Base_Net_Monthly_Prem_Table,
+                        `${entry.Base_Net_Monthly_Prem_lookupvalue},${B36}`, plan - 1)
+                    entry.R = getValueByLabelAndIndex(Base_Net_Monthly_Prem_Table,
+                        `${entry.Base_Net_Monthly_Prem_lookupvalue},${B37}`, plan - 1)
+                    entry.S = calculateValueOF_O(entry.Q, entry.R, B36, B37, B35);
+                });
+
+
+                let totalMemberCount = updatedObjects2.reduce(
+                    (total, entry) => total + entry.Member_count,
+                    0
+                );
+
+
+                totalMemberCount *= 3;
+                let roundedMemberCount =
+                    totalMemberCount % 1 >= 0.5
+                        ? Math.ceil(totalMemberCount)
+                        : Math.floor(totalMemberCount);
+                employeeCount = updatedObjects2.length * 3;
+
+
+                const Net_Premium_before_OOP = calculateSumproduct(updatedObjects2);
+                const Line_1a = calculateSumproduct2(updatedObjects2) - Net_Premium_before_OOP;
+                let adjacent_based_rate = Net_Premium_before_OOP + Line_1a;
+
+                let sumOfS = 0;
+
+                updatedObjects2.forEach(obj => {
+                    sumOfS += obj.S;
+                });
+
+                console.log("Sum of S:", sumOfS);
+                let B28_main;
+                if (Annual_Maximum_Incl_attachment_point == "") {
+                    B28_main = 0;
+                } else {
+                    B28_main = - sumOfS
+                }
+
+
+
+
+                console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
+                console.log("Member count :", roundedMemberCount);
+                console.log("Employee count:", employeeCount);
+                console.log("Individual Attachment point :", Individual_Attachment_point);
+                console.log("Plan:", plan);
+                console.log("Run In, note months:", runin_month);
+                console.log("Run out, note months:", runout_month);
+                console.log("Annual Maximum Incl attachment point:", annual_max);
+                console.log("Calendar year deductible:", calendar_year);
+                console.log("Coverage for next $5000:", coverage_next_5000);
+                console.log("EE OOP max (incl deductible):", EE_oop_max);
+                console.log("Industry:", industry);
+                console.log("Dependent Participation Rate:", dependent_participation_rate);
+                console.log("Annual Stop Loss limit:", annual_stop_loss_limit);
+                console.log("Type of UW:", type_of_UW);
+
+                let adjustment_run_in = calculateValueOFLine3(plan, B9,adjacent_based_rate, B28_main);
+
+                let adjustment_run_out = calculateValueOfLine4(plan, B20,adjacent_based_rate, B28_main);
+
+
+                console.log("Line1: Base Net Premium before OOP Max adjustment:", Net_Premium_before_OOP.toFixed(2));
+
+
+                console.log("Line1a: Base Net Premium before OOP Max adjustment:", Line_1a.toFixed(2));
+                console.log("Line2: Base Net Premium before OOP Max adjustment:", adjacent_based_rate.toFixed(2));
+
+                console.log("Line 3: Adjustment for Run-out", adjustment_run_in.toFixed(2));
+                console.log("Line 4: Adjustment for Run-In", adjustment_run_out.toFixed(2));
+                console.log("Adjustment for Annual Max Benefit:", B28_main.toFixed(2));
+
+let Adjusted_rate = adjacent_based_rate +adjustment_run_in+ adjustment_run_out +B28_main 
+
+console.log("Adjusted rate:" , Adjusted_rate.toFixed(2) ) ; 
+  let net_priminum = Adjusted_rate * age_gender *industry * dependent_participation_rate
+             
+  console.log( "Net Premium:" , net_priminum.toFixed(2) ) ;    
+                // Rest of your code...
+            } catch (error) {
+                // Handle any errors occurred during the process
+                console.error('An error occurred:', error);
+            }
+        }
+
+
+        main();
+
+

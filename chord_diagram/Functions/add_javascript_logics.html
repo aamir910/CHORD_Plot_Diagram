@@ -1746,11 +1746,15 @@
                 const Base_Net_Monthly_Prem_Table = await fetchExcelAndConvertToJson("xlxsfile/Base_Net_Monthly_Prem_Table.xlsx");
                 const Random_Zip_Generator = await fetchExcelAndConvertToJson("xlxsfile/Random_Zip_Generator.xlsx");
                 const Zip_Table = await fetchExcelAndConvertToJson("xlxsfile/Zip_Table.xlsx");
+                const Age_Gender_Factor_1 = await fetchExcelAndConvertToJson("xlxsfile/Age_Gender_Factor_1.xlsx");
+                const Age_Gender_Factor_2 = await fetchExcelAndConvertToJson("xlxsfile/Age_Gender_Factor_2.xlsx");
 
 
                 // Your processing logic here
                 console.log(Base_Net_Monthly_Prem_Table, "Base_Net_Monthly_Prem_Table");
                 console.log(Random_Zip_Generator, "Random_Zip_Generator");
+                console.log(Age_Gender_Factor_1, "Age_Gender_Factor_1");
+                console.log(Age_Gender_Factor_2, "Age_Gender_Factor_2");
 
                 console.log(Zip_Table, "Zip_Table");
 
@@ -1834,23 +1838,23 @@
                 }
 
                 function calculateAgeGender(dependent_participation_rate) {
-    // Map ranges to corresponding age_gender values
-    const ranges = [
-        { min: 0, max: 49, value: 1.08 },
-        { min: 50, max: 59, value: 1.03 },
-        { min: 60, max: 69, value: 1.00 },
-        { min: 70, max: 79, value: 0.95 },
-        { min: 80, max: 89, value: 0.90 },
-        { min: 90, max: 99, value: 0.88 },
-        { min: 100, max: Infinity, value: 0.85 }
-    ];
+                    // Map ranges to corresponding age_gender values
+                    const ranges = [
+                        { min: 0, max: 49, value: 1.08 },
+                        { min: 50, max: 59, value: 1.03 },
+                        { min: 60, max: 69, value: 1.00 },
+                        { min: 70, max: 79, value: 0.95 },
+                        { min: 80, max: 89, value: 0.90 },
+                        { min: 90, max: 99, value: 0.88 },
+                        { min: 100, max: Infinity, value: 0.85 }
+                    ];
 
-    // Find the range that includes dependent_participation_rate
-    const range = ranges.find(range => dependent_participation_rate >= range.min && dependent_participation_rate <= range.max);
+                    // Find the range that includes dependent_participation_rate
+                    const range = ranges.find(range => dependent_participation_rate >= range.min && dependent_participation_rate <= range.max);
 
-    // Return the corresponding age_gender value
-    return range ? range.value : null;
-}
+                    // Return the corresponding age_gender value
+                    return range ? range.value : null;
+                }
                 let updatedObjects2 = JSON.parse(JSON.stringify(updatedObjects));
 
                 let Individual_Attachment_point = 5000;
@@ -1873,9 +1877,9 @@
                 // for the net primium value
 
                 let Industry_Factor = 1.025;
-                let age_gender =calculateAgeGender(dependent_participation_rate); 
+                let age_gender = calculateAgeGender(dependent_participation_rate);
 
-                console.log(age_gender , "here is the age gender value ")
+                console.log(age_gender, "here is the age gender value ")
                 let Dependent_Participation_Factor = 0.85;
 
                 // creating the opp mac calc    
@@ -2070,8 +2074,72 @@
                 } else {
                     B28_main = - sumOfS
                 }
+                // calcuation of the age factor  
+
+                let male_point;
+                let female_point;
+                if (Individual_Attachment_point < 25000) {
+                    male_point = 1 + 1;
+                    female_point = male_point + 1;
+                } else if (Individual_Attachment_point <= 99999) {
+                    male_point = 3 + 1;
+                    female_point = male_point + 1;
+                } else if (Individual_Attachment_point <= 249999) {
+                    male_point = 5 + 1;
+                    female_point = male_point + 1;
+                } else if (Individual_Attachment_point <= 499999) { // Add an additional condition for Individual_Attachment_point <= 499999
+                    male_point = 7 + 1;
+                    female_point = male_point + 1;
+                }
 
 
+                console.log(male_point, "male", female_point, "female")
+
+
+
+                const ageBuckets = [
+                    "Under 30",
+                    "30 – 34",
+                    "35 – 39",
+                    "40 – 44",
+                    "45 – 49",
+                    "50 – 54",
+                    "55 – 59",
+                    "60 – 64",
+                    "65 – 69",
+                    "70 & Over",
+                    "Retired – Medicare Primary"
+                ];
+                let male_female_array = [];
+
+                ageBuckets.forEach(bucket => {
+                    const countMale = countRowsByGenderAndAgeBucket(updatedObjects2, "M", bucket);
+                    const countFemale = countRowsByGenderAndAgeBucket(updatedObjects2, "F", bucket);
+                    console.log(`Age Bucket: ${bucket}`);
+                    console.log(`Number of rows with Gender=M: ${countMale}`);
+                    console.log(`Number of rows with Gender=F: ${countFemale}`);
+                    console.log("--------");
+
+                    male_female_array.push([bucket, countMale, countFemale]);
+
+
+                });
+                console.log(male_female_array, 'male_female_array');
+
+                function countRowsByGenderAndAgeBucket(data, gender, ageBucket) {
+                    return data.filter(row => row.Gender === gender && row.age_bucket === ageBucket && row.Member_count === 1).length;
+                }
+
+
+                const result = male_female_array.map((m1, index) => ({
+                    
+                    m1: male_female_array[index][1],
+                    f1: male_female_array[index][2],
+                    m2: Age_Gender_Factor_1[index+1][male_point],
+                    f2: Age_Gender_Factor_1[index+1][female_point]
+                }));
+
+                console.log(result , "here is the final value female_point");
 
 
                 console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");

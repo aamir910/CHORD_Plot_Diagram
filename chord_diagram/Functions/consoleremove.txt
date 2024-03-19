@@ -1724,7 +1724,6 @@
 
         const updatedObjects = objectsToString.map(updateKeys);
 
-        console.log(updatedObjects, "here is the final object");
 
 
         async function fetchExcelAndConvertToJson(filePath) {
@@ -1750,13 +1749,6 @@
                 const Age_Gender_Factor_2 = await fetchExcelAndConvertToJson("xlxsfile/Age_Gender_Factor_2.xlsx");
 
 
-                // Your processing logic here
-                console.log(Base_Net_Monthly_Prem_Table, "Base_Net_Monthly_Prem_Table");
-                console.log(Random_Zip_Generator, "Random_Zip_Generator");
-                console.log(Age_Gender_Factor_1, "Age_Gender_Factor_1");
-                console.log(Age_Gender_Factor_2, "Age_Gender_Factor_2");
-
-                console.log(Zip_Table, "Zip_Table");
 
                 function findTableForZip(zip, data) {
                     for (let i = 0; i < data.length; i++) {
@@ -1858,7 +1850,7 @@
                 let updatedObjects2 = JSON.parse(JSON.stringify(updatedObjects));
 
 
-                
+
                 let Individual_Attachment_point = 5000;
                 Annual_Maximum_Incl_attachment_point = 500000;
                 let plan = 6;
@@ -1918,7 +1910,6 @@
                 let B29 = 1200
                 let B30 = (B29 === B25) ? 0 : B28;
                 let B31 = B30 + Individual_Attachment_point;
-                console.log(B28, "here is the b ", B31);
 
                 const targetValue = B31; // Example value you provided
 
@@ -1948,7 +1939,6 @@
                     }
                 }
                 let B35 = Annual_Maximum_Incl_attachment_point + B28
-                console.log(B35, "here is ");
 
                 const targetvalue2 = B35;
                 // Find the nearest higher value
@@ -1968,7 +1958,6 @@
                         B37 = values[i];
                     }
                 }
-                console.log(B36, B37, "here are the last value of the b36 and the b37 ");
 
 
                 // here are the B9 
@@ -2067,7 +2056,6 @@
                     sumOfS += obj.S;
                 });
 
-                console.log("Sum of S:", sumOfS);
                 let B28_main;
                 if (Annual_Maximum_Incl_attachment_point == "") {
                     B28_main = 0;
@@ -2093,8 +2081,6 @@
                 }
 
 
-                console.log(male_point, "male", female_point, "female")
-
 
 
                 const ageBuckets = [
@@ -2118,19 +2104,12 @@
                     const countMale2 = countRowsByGenderAndAgeBucket2(updatedObjects2, "M", bucket);
                     const countFemale2 = countRowsByGenderAndAgeBucket2(updatedObjects2, "F", bucket);
 
-                    console.log(`Age Bucket: ${bucket}`);
-                    console.log(`Number of rows with Gender=M: ${countMale}`);
-                    console.log(`Number of rows with Gender=F: ${countFemale}`);
-                    console.log("--------");
-                    console.log(`Number of rows with Gender=M2: ${countMale2}`);
-                    console.log(`Number of rows with Gender=F2: ${countFemale2}`);
-                    console.log("--------");
+                
 
                     male_female_array.push([bucket, countMale, countFemale, countMale2, countFemale2]);
 
 
                 });
-                console.log(male_female_array, 'male_female_array');
 
                 function countRowsByGenderAndAgeBucket(data, gender, ageBucket) {
                     return data.filter(row => row.Gender === gender && row.age_bucket === ageBucket && row.Member_count === 1).length;
@@ -2169,9 +2148,6 @@
                 const sum2F1 = calculateSum(cal_count_factor_m_f_2, 'f1');
 
 
-                console.log("Sum of m1:", sum2M1);
-                console.log("Sum of f1:", sum2F1);
-
                 function calculateSumProduct(array, property1, property2) {
                     return array.reduce((acc, obj) => acc + (obj[property1] * obj[property2]), 0);
                 }
@@ -2194,14 +2170,10 @@
 
 
 
-                console.log("Sum of the product of f1 and f2:", sumProductF2);
-                console.log("Sum of the product of m1 and m2:", sumProductM2);
-                          console.log("factor:", factor);
-
                             age_gender = factor  ;
 
 
-                console.log(cal_count_factor_m_f, cal_count_factor_m_f_2, "here is the final value female_point");
+                            
                 console.log(updatedObjects2, "ADDED THE MEMBER COUNT ");
                 console.log("Member count :", roundedMemberCount);
                 console.log("Employee count:", employeeCount);

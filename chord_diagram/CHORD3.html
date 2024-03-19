@@ -189,21 +189,47 @@
                 let totalcount = n + coulmNames;
 
 
-                let Individual_Attachment_point = rowData['individual_attachment_point'];
-                Annual_Maximum_Incl_attachment_point = rowData['annual_maximum_incl_attachment_point'];
-                let plan = rowData['plan'];
-                let runin_month = rowData['run_in'];
-                let runout_month = rowData['run_out'];
-                let annual_max = rowData['annual_maximum_incl_attachment_point'];
-                let calendar_year = rowData['calendar_year_deductible'];
-                let coverage_next_5000 = rowData['coverage_for_next'];
-                let EE_oop_max = rowData['EE_OOP_max_incl_deductible'];
-                let industry = rowData['industry_factor'];
-                let dependent_participation_rate =  rowData['dependent_participation_rate'];
+                let Individual_Attachment_point = parseInt( rowData['individual_attachment_point'] );
+                Annual_Maximum_Incl_attachment_point =parseInt ( rowData['annual_maximum_incl_attachment_point'] );
+                let plan =  parseInt( rowData['plan'] );
+                let runin_month = parseInt ( rowData['run_in']);
+                let runout_month =parseInt (rowData['run_out']);
+                let annual_max =parseInt( rowData['annual_maximum_incl_attachment_point']) ;
+                let calendar_year =parseInt( rowData['calendar_year_deductible']);
+                let coverage_next_5000 =parseInt( rowData['coverage_for_next'] );
+                let EE_oop_max = parseInt( rowData['EE_OOP_max_incl_deductible'] );
+                let industry =parseFloat( rowData['industry_factor']);
+                let dependent_participation_rate = parseInt( rowData['dependent_participation_rate'] );
                 let annual_stop_loss_limit =rowData['annual_stop_loss_limit'];
                 let type_of_UW =  rowData['type_of_UW'];
                 let date_begins =  rowData['rates_beginning'];
-                let Coverage_for_next_$5000 = rowData['coverage_for_next'] ;
+                let Coverage_for_next_$5000 = parseInt(rowData['coverage_for_next'] );
+
+                // let Individual_Attachment_point = rowData['individual_attachment_point'];
+                // Annual_Maximum_Incl_attachment_point = 500000;
+                // console.log("type of " , typeof Annual_Maximum_Incl_attachment_point , typeof rowData['annual_maximum_incl_attachment_point']  ) ; 
+                // let plan = 6;
+                // let runin_month = 100;
+                // let runout_month = 105;
+                // let annual_max = 500000;
+                // let calendar_year = 200;
+                // // let coverage_next_5000 = 100
+                // let EE_oop_max = 2000;
+                // let industry = 1.005;
+                // let dependent_participation_rate = 100;
+                // let annual_stop_loss_limit = "none";
+                // let type_of_UW = "Type II";
+                // let date_begins = "2000";
+                // let Coverage_for_next_$5000 = 80;
+                
+                
+                
+                
+                
+    
+
+                // for the net primium value 
+               let   Industry_Factor =parseFloat( rowData['industry_factor']) ; 
     
 
 

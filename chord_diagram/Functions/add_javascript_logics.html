@@ -36,7 +36,11 @@
                             if (!year) {
                                 year = extractYearFromDate(dateOfBirth);
                             }
+                            
+                            const convertedDate = checkAndConvertDate(dateOfBirth);
                             obj[updatedKey] = year;
+                            obj[`${updatedKey}2`] = convertedDate;
+
                         } else {
                             let dateOfBirth;
                             if (obj[key].length > 4 && isNumericString(obj[key])) {
@@ -250,7 +254,7 @@
 
         const object3 = [
             {
-                CalendarYearBirth: 3 - 3 - 2200,
+                CalendarYearBirth: "10/10/2000",
                 Gender: "M",
                 Zip3: 100,
                 Employee: "ALL",
@@ -450,6 +454,20 @@
                     // Return the corresponding age_gender value
                     return range ? range.value : null;
                 }
+                function calculateAge(birthDateStr, currentDateStr) {
+    const birthDate = new Date(birthDateStr);
+    const currentDate = new Date(currentDateStr);
+
+    // Calculate the difference in milliseconds between the two dates
+    const timeDiff = Math.abs(currentDate - birthDate);
+
+    // Convert the difference to years
+    const age = Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 365.25));
+
+    return age;
+}
+
+
                 let updatedObjects2 = JSON.parse(JSON.stringify(updatedObjects));
 
 
@@ -467,7 +485,7 @@
                 let dependent_participation_rate = 100;
                 let annual_stop_loss_limit = "none";
                 let type_of_UW = "Type II";
-                let date_begins = "2000";
+                let date_begins = "10-3-2024";
                 let Coverage_for_next_$5000 = 80;
 
 
@@ -591,7 +609,9 @@
                             break;
                     }
                     // addded the age
-                    entry.Age_Last = parseInt(date_begins) - parseInt(entry.CalendarYearBirth);
+                    // entry.Age_Last = parseInt(date_begins) - parseInt(entry.CalendarYearBirth);
+                  entry.Age_Last= calculateAge(entry.CalendarYearBirth2, date_begins); 
+                  
                     // added the age bucket 
 
                     if (entry.Age_Last < 30) {

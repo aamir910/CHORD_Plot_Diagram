@@ -45,7 +45,7 @@
                             let dateOfBirth;
                             if (obj[key].length > 4 && isNumericString(obj[key])) {
                                 dateOfBirth = convertSerialToDate(obj[key]);
-                                console.log(dateOfBirth)
+                              
                             } else {
                                 dateOfBirth = obj[key];
                             }
@@ -56,8 +56,7 @@
                             }
 
                             const convertedDate = checkAndConvertDate(dateOfBirth);
-                            console.log("Original Date:", dateOfBirth);
-                            console.log("Converted Date:", convertedDate);
+        
                             obj[updatedKey] = year;
                             obj[`${updatedKey}2`] = convertedDate;
 
@@ -113,20 +112,23 @@
                     const employeeValue = obj[updatedEmployekey].toLowerCase();
 
                     if (employeeValue.length > 2) {
+                        console.log(employeeValue)
                         if (
                             employeeValue.includes("family") ||
                             employeeValue.includes("all")
                         ) {
                             obj[updatedEmployekey] = "F";
                         } else if (
-                            employeeValue === "only" ||
-                            employeeValue === "single"
+                            employeeValue.includes("only") ||
+                            employeeValue.includes("single")
+
                         ) {
                             obj[updatedEmployekey] = "EE";
                         } else if (
                             employeeValue.includes("spouse") ||
                             employeeValue.includes("partner") ||
-                            employeeValue.includes("wife")
+                            employeeValue.includes("wife")  ||
+                            employeeValue.includes("sps")
                         ) {
                             obj[updatedEmployekey] = "ES";
                         } else if (
@@ -227,7 +229,7 @@
             );
 
             // Extract the date components
-            var day = date.getDate();
+            var day = date.getDate()+1;
             var month = date.getMonth() + 1; // Month is zero-indexed, so add 1
             var year = date.getFullYear();
 
@@ -251,10 +253,2531 @@
                 Employee: "F",
             },
         ];
-
-        const object3 = [
+const object3 =[
+    {
+        "CalendarYearBirth": 29199,
+        "Gender": "F",
+        "Zip3": 85383,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34535,
+        "Gender": "M",
+        "Zip3": 20874,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34646,
+        "Gender": "F",
+        "Zip3": 22079,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30366,
+        "Gender": "F",
+        "Zip3": 23321,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27165,
+        "Gender": "F",
+        "Zip3": 92129,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27953,
+        "Gender": "M",
+        "Zip3": 20105,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23623,
+        "Gender": "M",
+        "Zip3": 92126,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31237,
+        "Gender": "F",
+        "Zip3": 92109,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 22719,
+        "Gender": "F",
+        "Zip3": 24055,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27719,
+        "Gender": "F",
+        "Zip3": 92081,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29289,
+        "Gender": "M",
+        "Zip3": 91501,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26748,
+        "Gender": "M",
+        "Zip3": 24084,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27615,
+        "Gender": "F",
+        "Zip3": 91932,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28316,
+        "Gender": "M",
+        "Zip3": 22408,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31376,
+        "Gender": "F",
+        "Zip3": 22193,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23323,
+        "Gender": "F",
+        "Zip3": 92071,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27185,
+        "Gender": "M",
+        "Zip3": 22554,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23542,
+        "Gender": "F",
+        "Zip3": 20646,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35885,
+        "Gender": "F",
+        "Zip3": 22202,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27010,
+        "Gender": "M",
+        "Zip3": 22193,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31365,
+        "Gender": "M",
+        "Zip3": 22191,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 36255,
+        "Gender": "M",
+        "Zip3": 20190,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 21260,
+        "Gender": "M",
+        "Zip3": 23322,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30101,
+        "Gender": "M",
+        "Zip3": 92109,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25602,
+        "Gender": "F",
+        "Zip3": 92117,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 37121,
+        "Gender": "M",
+        "Zip3": 92108,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27872,
+        "Gender": "F",
+        "Zip3": 22315,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27832,
+        "Gender": "M",
+        "Zip3": 22315,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 21224,
+        "Gender": "M",
+        "Zip3": 236691372,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23154,
+        "Gender": "F",
+        "Zip3": 98682,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30816,
+        "Gender": "M",
+        "Zip3": 201111967,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24639,
+        "Gender": "M",
+        "Zip3": 47546,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30593,
+        "Gender": "M",
+        "Zip3": 20640,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24838,
+        "Gender": "F",
+        "Zip3": 23462,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23656,
+        "Gender": "M",
+        "Zip3": 83404,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28125,
+        "Gender": "M",
+        "Zip3": 23603,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29705,
+        "Gender": "M",
+        "Zip3": 22026,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35533,
+        "Gender": "M",
+        "Zip3": 92123,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27438,
+        "Gender": "F",
+        "Zip3": 20774,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29345,
+        "Gender": "F",
+        "Zip3": 22025,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34767,
+        "Gender": "M",
+        "Zip3": 22311,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32435,
+        "Gender": "M",
+        "Zip3": 20732,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33827,
+        "Gender": "F",
+        "Zip3": 921082751,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24781,
+        "Gender": "M",
+        "Zip3": 234524740,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 22643,
+        "Gender": "F",
+        "Zip3": 23513,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30074,
+        "Gender": "M",
+        "Zip3": 23502,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23692,
+        "Gender": "M",
+        "Zip3": 20024,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28076,
+        "Gender": "M",
+        "Zip3": 84043,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23510,
+        "Gender": "M",
+        "Zip3": 92119,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26416,
+        "Gender": "M",
+        "Zip3": 20194,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26388,
+        "Gender": "M",
+        "Zip3": 233235356,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35269,
+        "Gender": "M",
+        "Zip3": 45240,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23429,
+        "Gender": "M",
+        "Zip3": 23452,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32617,
+        "Gender": "F",
+        "Zip3": 22553,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28630,
+        "Gender": "M",
+        "Zip3": 335435039,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34345,
+        "Gender": "M",
+        "Zip3": 92128,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30470,
+        "Gender": "M",
+        "Zip3": 23462,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33361,
+        "Gender": "M",
+        "Zip3": 92805,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30116,
+        "Gender": "F",
+        "Zip3": 22033,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29909,
+        "Gender": "M",
+        "Zip3": 91910,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 20321,
+        "Gender": "M",
+        "Zip3": 22201,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34386,
+        "Gender": "F",
+        "Zip3": 23320,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33423,
+        "Gender": "F",
+        "Zip3": 23452,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29722,
+        "Gender": "F",
+        "Zip3": 78415,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30356,
+        "Gender": "F",
+        "Zip3": 234526510,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28871,
+        "Gender": "F",
+        "Zip3": 22153,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32690,
+        "Gender": "M",
+        "Zip3": 23510,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33423,
+        "Gender": "M",
+        "Zip3": 23462,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30207,
+        "Gender": "M",
+        "Zip3": 91910,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 36833,
+        "Gender": "M",
+        "Zip3": 20171,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28173,
+        "Gender": "F",
+        "Zip3": 75094,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24194,
+        "Gender": "M",
+        "Zip3": 236932769,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31782,
+        "Gender": "M",
+        "Zip3": 33647,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34839,
+        "Gender": "M",
+        "Zip3": 96818,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25695,
+        "Gender": "F",
+        "Zip3": 25428,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26877,
+        "Gender": "F",
+        "Zip3": 20640,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27543,
+        "Gender": "M",
+        "Zip3": 75019,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32568,
+        "Gender": "M",
+        "Zip3": 23518,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25951,
+        "Gender": "M",
+        "Zip3": 22209,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33893,
+        "Gender": "F",
+        "Zip3": 92102,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23306,
+        "Gender": "M",
+        "Zip3": 23188,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25702,
+        "Gender": "M",
+        "Zip3": 92128,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34891,
+        "Gender": "M",
+        "Zip3": 20639,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29332,
+        "Gender": "M",
+        "Zip3": 80132,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26640,
+        "Gender": "M",
+        "Zip3": 22172,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27142,
+        "Gender": "M",
+        "Zip3": 223052502,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30720,
+        "Gender": "M",
+        "Zip3": 20707,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26956,
+        "Gender": "F",
+        "Zip3": 23113,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25494,
+        "Gender": "F",
+        "Zip3": 20011,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 20672,
+        "Gender": "M",
+        "Zip3": 23513,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24252,
+        "Gender": "F",
+        "Zip3": 23513,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30787,
+        "Gender": "M",
+        "Zip3": 20002,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27354,
+        "Gender": "F",
+        "Zip3": 22304,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29864,
+        "Gender": "M",
+        "Zip3": 91913,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33408,
+        "Gender": "M",
+        "Zip3": 8721,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32982,
+        "Gender": "M",
+        "Zip3": 23453,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24232,
+        "Gender": "M",
+        "Zip3": 92106,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32225,
+        "Gender": "M",
+        "Zip3": 23325,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31575,
+        "Gender": "F",
+        "Zip3": 33616,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26841,
+        "Gender": "M",
+        "Zip3": 92128,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25015,
+        "Gender": "F",
+        "Zip3": 23436,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25056,
+        "Gender": "M",
+        "Zip3": 23464,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31856,
+        "Gender": "M",
+        "Zip3": 22315,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26200,
+        "Gender": "M",
+        "Zip3": 80903,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25452,
+        "Gender": "M",
+        "Zip3": 27958,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33372,
+        "Gender": "M",
+        "Zip3": 20724,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33388,
+        "Gender": "M",
+        "Zip3": 23662,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25616,
+        "Gender": "M",
+        "Zip3": 32163,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23940,
+        "Gender": "M",
+        "Zip3": 20191,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32208,
+        "Gender": "M",
+        "Zip3": 234648807,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32242,
+        "Gender": "M",
+        "Zip3": 20151,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 19733,
+        "Gender": "F",
+        "Zip3": 22202,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32057,
+        "Gender": "M",
+        "Zip3": 234517162,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23650,
+        "Gender": "M",
+        "Zip3": 92121,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35684,
+        "Gender": "M",
+        "Zip3": 60073,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29871,
+        "Gender": "M",
+        "Zip3": 22201,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28538,
+        "Gender": "M",
+        "Zip3": 22192,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29133,
+        "Gender": "M",
+        "Zip3": 84005,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30561,
+        "Gender": "M",
+        "Zip3": 22556,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34788,
+        "Gender": "M",
+        "Zip3": 59801,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 21961,
+        "Gender": "M",
+        "Zip3": 92109,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34900,
+        "Gender": "F",
+        "Zip3": 23225,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26771,
+        "Gender": "M",
+        "Zip3": 92124,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30556,
+        "Gender": "M",
+        "Zip3": 92139,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 19307,
+        "Gender": "F",
+        "Zip3": 92114,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27426,
+        "Gender": "F",
+        "Zip3": 20745,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25485,
+        "Gender": "M",
+        "Zip3": 92123,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29105,
+        "Gender": "M",
+        "Zip3": 47401,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34714,
+        "Gender": "M",
+        "Zip3": 22204,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28387,
+        "Gender": "F",
+        "Zip3": 234523929,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25034,
+        "Gender": "M",
+        "Zip3": 92154,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24574,
+        "Gender": "F",
+        "Zip3": 234524114,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30027,
+        "Gender": "F",
+        "Zip3": 23464,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29847,
+        "Gender": "F",
+        "Zip3": 20735,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25217,
+        "Gender": "F",
+        "Zip3": 236934176,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 21232,
+        "Gender": "F",
+        "Zip3": 20721,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33284,
+        "Gender": "M",
+        "Zip3": 91915,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25094,
+        "Gender": "M",
+        "Zip3": 27929,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24383,
+        "Gender": "F",
+        "Zip3": 78660,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29661,
+        "Gender": "M",
+        "Zip3": 20607,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26996,
+        "Gender": "F",
+        "Zip3": 35761,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23137,
+        "Gender": "M",
+        "Zip3": 336473580,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30744,
+        "Gender": "F",
+        "Zip3": 22032,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28436,
+        "Gender": "F",
+        "Zip3": 919775242,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 22166,
+        "Gender": "M",
+        "Zip3": 21704,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25636,
+        "Gender": "F",
+        "Zip3": 23323,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32042,
+        "Gender": "M",
+        "Zip3": 47424,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27077,
+        "Gender": "M",
+        "Zip3": 22046,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27401,
+        "Gender": "F",
+        "Zip3": 335794126,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31193,
+        "Gender": "M",
+        "Zip3": 92071,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26330,
+        "Gender": "M",
+        "Zip3": 336055210,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 22184,
+        "Gender": "M",
+        "Zip3": 92109,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 22771,
+        "Gender": "F",
+        "Zip3": 921147088,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26802,
+        "Gender": "M",
+        "Zip3": 20152,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31442,
+        "Gender": "M",
+        "Zip3": 92126,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26046,
+        "Gender": "F",
+        "Zip3": 33624,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27289,
+        "Gender": "M",
+        "Zip3": 98391,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29273,
+        "Gender": "F",
+        "Zip3": 20105,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31045,
+        "Gender": "M",
+        "Zip3": 442215577,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31196,
+        "Gender": "M",
+        "Zip3": 23454,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25948,
+        "Gender": "F",
+        "Zip3": 233200736,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 19998,
+        "Gender": "M",
+        "Zip3": 96734,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26164,
+        "Gender": "M",
+        "Zip3": 20735,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33344,
+        "Gender": "M",
+        "Zip3": 92618,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33816,
+        "Gender": "M",
+        "Zip3": 29201,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26921,
+        "Gender": "M",
+        "Zip3": 201589469,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30140,
+        "Gender": "F",
+        "Zip3": 92065,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35863,
+        "Gender": "M",
+        "Zip3": 21784,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30941,
+        "Gender": "F",
+        "Zip3": 234554320,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28324,
+        "Gender": "M",
+        "Zip3": 92128,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34839,
+        "Gender": "M",
+        "Zip3": 92109,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28537,
+        "Gender": "M",
+        "Zip3": 22209,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35948,
+        "Gender": "M",
+        "Zip3": 22602,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29296,
+        "Gender": "F",
+        "Zip3": 23456,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 16708,
+        "Gender": "M",
+        "Zip3": 22303,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33561,
+        "Gender": "M",
+        "Zip3": 22314,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 21638,
+        "Gender": "F",
+        "Zip3": 234542231,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28717,
+        "Gender": "M",
+        "Zip3": 336172500,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23906,
+        "Gender": "M",
+        "Zip3": 23462,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28019,
+        "Gender": "M",
+        "Zip3": 92128,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25046,
+        "Gender": "M",
+        "Zip3": 21054,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 22246,
+        "Gender": "M",
+        "Zip3": 234554363,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32157,
+        "Gender": "F",
+        "Zip3": 20020,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25256,
+        "Gender": "M",
+        "Zip3": 22039,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23694,
+        "Gender": "M",
+        "Zip3": 92028,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31276,
+        "Gender": "M",
+        "Zip3": 22306,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26789,
+        "Gender": "F",
+        "Zip3": 75015,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29927,
+        "Gender": "M",
+        "Zip3": 20685,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27912,
+        "Gender": "F",
+        "Zip3": 236061106,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32052,
+        "Gender": "M",
+        "Zip3": 33611,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35205,
+        "Gender": "F",
+        "Zip3": 92131,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34267,
+        "Gender": "M",
+        "Zip3": 20602,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 21549,
+        "Gender": "F",
+        "Zip3": 92129,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32514,
+        "Gender": "M",
+        "Zip3": 92126,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 21782,
+        "Gender": "M",
+        "Zip3": 223081600,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23315,
+        "Gender": "F",
+        "Zip3": 23602,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 22895,
+        "Gender": "F",
+        "Zip3": 22193,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33330,
+        "Gender": "F",
+        "Zip3": 20774,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24559,
+        "Gender": "M",
+        "Zip3": 23462,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34727,
+        "Gender": "M",
+        "Zip3": 20763,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33153,
+        "Gender": "F",
+        "Zip3": 92108,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29262,
+        "Gender": "M",
+        "Zip3": 20640,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29803,
+        "Gender": "F",
+        "Zip3": 23464,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32029,
+        "Gender": "M",
+        "Zip3": 23456,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30266,
+        "Gender": "M",
+        "Zip3": 62613,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28671,
+        "Gender": "M",
+        "Zip3": 20112,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28708,
+        "Gender": "M",
+        "Zip3": 22003,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24692,
+        "Gender": "M",
+        "Zip3": 92116,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35702,
+        "Gender": "M",
+        "Zip3": 22102,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27855,
+        "Gender": "M",
+        "Zip3": 91941,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25850,
+        "Gender": "M",
+        "Zip3": 92011,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30978,
+        "Gender": "M",
+        "Zip3": 22554,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24313,
+        "Gender": "M",
+        "Zip3": 92171,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26425,
+        "Gender": "M",
+        "Zip3": 23456,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23722,
+        "Gender": "F",
+        "Zip3": 233208246,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26493,
+        "Gender": "M",
+        "Zip3": 92129,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30586,
+        "Gender": "F",
+        "Zip3": 201526345,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34025,
+        "Gender": "M",
+        "Zip3": 20190,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26536,
+        "Gender": "M",
+        "Zip3": 23454,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26470,
+        "Gender": "M",
+        "Zip3": 92405,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24753,
+        "Gender": "M",
+        "Zip3": 23693,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24498,
+        "Gender": "F",
+        "Zip3": 403119369,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24308,
+        "Gender": "M",
+        "Zip3": 22405,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29323,
+        "Gender": "M",
+        "Zip3": 23508,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26714,
+        "Gender": "M",
+        "Zip3": 84093,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30222,
+        "Gender": "M",
+        "Zip3": 47403,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27373,
+        "Gender": "M",
+        "Zip3": 23454,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29004,
+        "Gender": "M",
+        "Zip3": 91915,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 22452,
+        "Gender": "F",
+        "Zip3": 33983,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29780,
+        "Gender": "M",
+        "Zip3": 22191,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32445,
+        "Gender": "M",
+        "Zip3": 33569,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30499,
+        "Gender": "F",
+        "Zip3": 23454,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 19829,
+        "Gender": "F",
+        "Zip3": 22204,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 21767,
+        "Gender": "M",
+        "Zip3": 23434,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 36740,
+        "Gender": "F",
+        "Zip3": 22209,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26185,
+        "Gender": "M",
+        "Zip3": 20772,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33858,
+        "Gender": "F",
+        "Zip3": 23462,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 36591,
+        "Gender": "M",
+        "Zip3": 20003,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26146,
+        "Gender": "M",
+        "Zip3": 22551,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 22863,
+        "Gender": "M",
+        "Zip3": 33624,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31983,
+        "Gender": "M",
+        "Zip3": 23464,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 19495,
+        "Gender": "M",
+        "Zip3": 22152,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29015,
+        "Gender": "M",
+        "Zip3": 92591,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27806,
+        "Gender": "F",
+        "Zip3": 20008,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32525,
+        "Gender": "F",
+        "Zip3": 23503,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32276,
+        "Gender": "M",
+        "Zip3": 79936,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 36220,
+        "Gender": "M",
+        "Zip3": 228351138,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26481,
+        "Gender": "M",
+        "Zip3": 40601,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25504,
+        "Gender": "F",
+        "Zip3": 22182,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32223,
+        "Gender": "F",
+        "Zip3": 80829,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25602,
+        "Gender": "M",
+        "Zip3": 92128,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27065,
+        "Gender": "F",
+        "Zip3": 20176,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30970,
+        "Gender": "M",
+        "Zip3": 91913,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27037,
+        "Gender": "M",
+        "Zip3": 22193,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25901,
+        "Gender": "M",
+        "Zip3": 92170,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27192,
+        "Gender": "M",
+        "Zip3": 92019,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 19859,
+        "Gender": "F",
+        "Zip3": 20772,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23223,
+        "Gender": "F",
+        "Zip3": 92071,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31619,
+        "Gender": "M",
+        "Zip3": 92591,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23513,
+        "Gender": "F",
+        "Zip3": 78332,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25942,
+        "Gender": "M",
+        "Zip3": 23455,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26108,
+        "Gender": "F",
+        "Zip3": 782514370,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32247,
+        "Gender": "M",
+        "Zip3": 2871,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26230,
+        "Gender": "M",
+        "Zip3": 92592,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23743,
+        "Gender": "M",
+        "Zip3": 91913,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27808,
+        "Gender": "M",
+        "Zip3": 92592,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31329,
+        "Gender": "F",
+        "Zip3": 92131,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 36931,
+        "Gender": "F",
+        "Zip3": 22102,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34148,
+        "Gender": "M",
+        "Zip3": 91977,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30565,
+        "Gender": "M",
+        "Zip3": 200326019,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29564,
+        "Gender": "M",
+        "Zip3": 921115621,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28346,
+        "Gender": "M",
+        "Zip3": 23452,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23573,
+        "Gender": "M",
+        "Zip3": 20603,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32906,
+        "Gender": "M",
+        "Zip3": 91942,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32755,
+        "Gender": "F",
+        "Zip3": 20872,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24628,
+        "Gender": "F",
+        "Zip3": 98277,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33884,
+        "Gender": "M",
+        "Zip3": 21157,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30181,
+        "Gender": "M",
+        "Zip3": 92027,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27784,
+        "Gender": "M",
+        "Zip3": 22026,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25192,
+        "Gender": "F",
+        "Zip3": 92118,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33999,
+        "Gender": "M",
+        "Zip3": 20003,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 36242,
+        "Gender": "F",
+        "Zip3": 22201,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26080,
+        "Gender": "M",
+        "Zip3": 28001,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 36214,
+        "Gender": "M",
+        "Zip3": 22204,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25143,
+        "Gender": "M",
+        "Zip3": 23454,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 20114,
+        "Gender": "M",
+        "Zip3": 220335300,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28769,
+        "Gender": "M",
+        "Zip3": 22546,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31902,
+        "Gender": "F",
+        "Zip3": 22202,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27456,
+        "Gender": "F",
+        "Zip3": 234624702,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25551,
+        "Gender": "M",
+        "Zip3": 23456,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29667,
+        "Gender": "M",
+        "Zip3": 92078,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29832,
+        "Gender": "F",
+        "Zip3": 92105,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35655,
+        "Gender": "M",
+        "Zip3": 22203,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33659,
+        "Gender": "M",
+        "Zip3": 22192,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24577,
+        "Gender": "M",
+        "Zip3": 23435,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27444,
+        "Gender": "M",
+        "Zip3": 84096,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29419,
+        "Gender": "F",
+        "Zip3": 22209,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 22305,
+        "Gender": "F",
+        "Zip3": 91913,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27056,
+        "Gender": "F",
+        "Zip3": 20636,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28087,
+        "Gender": "F",
+        "Zip3": 22406,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35943,
+        "Gender": "M",
+        "Zip3": 23452,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 20521,
+        "Gender": "F",
+        "Zip3": 23518,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24759,
+        "Gender": "M",
+        "Zip3": 285460035,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33506,
+        "Gender": "M",
+        "Zip3": 23321,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34805,
+        "Gender": "M",
+        "Zip3": 21043,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33324,
+        "Gender": "F",
+        "Zip3": 20744,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24809,
+        "Gender": "M",
+        "Zip3": 91941,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25940,
+        "Gender": "M",
+        "Zip3": 920272886,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33803,
+        "Gender": "F",
+        "Zip3": 33186,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26232,
+        "Gender": "F",
+        "Zip3": 234567819,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30374,
+        "Gender": "M",
+        "Zip3": 92065,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32605,
+        "Gender": "M",
+        "Zip3": 92120,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29562,
+        "Gender": "M",
+        "Zip3": 921183244,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 19232,
+        "Gender": "M",
+        "Zip3": 20650,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25722,
+        "Gender": "M",
+        "Zip3": 23455,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27472,
+        "Gender": "M",
+        "Zip3": 92119,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26003,
+        "Gender": "M",
+        "Zip3": 92103,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28397,
+        "Gender": "M",
+        "Zip3": 92126,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34491,
+        "Gender": "M",
+        "Zip3": 335731209,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 20797,
+        "Gender": "M",
+        "Zip3": 92128,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23106,
+        "Gender": "M",
+        "Zip3": 27921,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28450,
+        "Gender": "M",
+        "Zip3": 23464,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29042,
+        "Gender": "M",
+        "Zip3": 91942,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29940,
+        "Gender": "F",
+        "Zip3": 92115,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24068,
+        "Gender": "M",
+        "Zip3": 91911,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31039,
+        "Gender": "M",
+        "Zip3": 47441,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29130,
+        "Gender": "M",
+        "Zip3": 91913,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29246,
+        "Gender": "M",
+        "Zip3": 91942,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27401,
+        "Gender": "M",
+        "Zip3": 22041,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35799,
+        "Gender": "F",
+        "Zip3": 20774,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29994,
+        "Gender": "F",
+        "Zip3": 20121,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34889,
+        "Gender": "M",
+        "Zip3": 77007,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 21408,
+        "Gender": "F",
+        "Zip3": 20748,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32618,
+        "Gender": "M",
+        "Zip3": 22079,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35747,
+        "Gender": "M",
+        "Zip3": 54942,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23122,
+        "Gender": "M",
+        "Zip3": 92071,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31403,
+        "Gender": "M",
+        "Zip3": 781550054,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31863,
+        "Gender": "M",
+        "Zip3": 23434,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27100,
+        "Gender": "M",
+        "Zip3": 221822022,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28162,
+        "Gender": "M",
+        "Zip3": 92120,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29736,
+        "Gender": "M",
+        "Zip3": 92127,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28372,
+        "Gender": "M",
+        "Zip3": 47501,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34642,
+        "Gender": "M",
+        "Zip3": 22304,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 22855,
+        "Gender": "F",
+        "Zip3": 234621742,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29990,
+        "Gender": "M",
+        "Zip3": 320437062,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29434,
+        "Gender": "M",
+        "Zip3": 23452,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 15587,
+        "Gender": "F",
+        "Zip3": 92629,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33708,
+        "Gender": "M",
+        "Zip3": 234543279,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 24467,
+        "Gender": "M",
+        "Zip3": 47553,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33152,
+        "Gender": "F",
+        "Zip3": 23502,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29797,
+        "Gender": "M",
+        "Zip3": 23323,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32821,
+        "Gender": "F",
+        "Zip3": 20024,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29261,
+        "Gender": "M",
+        "Zip3": 20124,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27055,
+        "Gender": "M",
+        "Zip3": 93035,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34887,
+        "Gender": "F",
+        "Zip3": 33035,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 27844,
+        "Gender": "F",
+        "Zip3": 75662,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30370,
+        "Gender": "F",
+        "Zip3": 75650,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26489,
+        "Gender": "M",
+        "Zip3": 75785,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 30578,
+        "Gender": "M",
+        "Zip3": 75601,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26549,
+        "Gender": "M",
+        "Zip3": 75663,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33072,
+        "Gender": "F",
+        "Zip3": 75670,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33998,
+        "Gender": "M",
+        "Zip3": 75602,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 31159,
+        "Gender": "F",
+        "Zip3": 75652,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32409,
+        "Gender": "F",
+        "Zip3": 75645,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28307,
+        "Gender": "M",
+        "Zip3": 75605,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 26320,
+        "Gender": "F",
+        "Zip3": 75792,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 22356,
+        "Gender": "M",
+        "Zip3": 75604,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28283,
+        "Gender": "M",
+        "Zip3": 75605,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32716,
+        "Gender": "F",
+        "Zip3": 78209,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32528,
+        "Gender": "F",
+        "Zip3": 75650,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33457,
+        "Gender": "M",
+        "Zip3": 75602,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33343,
+        "Gender": "F",
+        "Zip3": 75638,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 32705,
+        "Gender": "M",
+        "Zip3": 75702,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34230,
+        "Gender": "F",
+        "Zip3": 71854,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 23119,
+        "Gender": "F",
+        "Zip3": 75652,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28014,
+        "Gender": "F",
+        "Zip3": 75650,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 29699,
+        "Gender": "F",
+        "Zip3": 75603,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35643,
+        "Gender": "F",
+        "Zip3": 75604,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35149,
+        "Gender": "F",
+        "Zip3": 75640,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35351,
+        "Gender": "F",
+        "Zip3": 75693,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 33358,
+        "Gender": "F",
+        "Zip3": 75652,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 28189,
+        "Gender": "F",
+        "Zip3": 75602,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 25048,
+        "Gender": "F",
+        "Zip3": 75647,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 34731,
+        "Gender": "M",
+        "Zip3": 75662,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 35706,
+        "Gender": "M",
+        "Zip3": 75604,
+        "Employee": "Employee Only"
+    },
+    {
+        "CalendarYearBirth": 22911,
+        "Gender": "M",
+        "Zip3": 75604,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 20200,
+        "Gender": "F",
+        "Zip3": 75602,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 18035,
+        "Gender": "M",
+        "Zip3": 75668,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 26112,
+        "Gender": "F",
+        "Zip3": 75654,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 26333,
+        "Gender": "M",
+        "Zip3": 75604,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 30124,
+        "Gender": "F",
+        "Zip3": 75662,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 21160,
+        "Gender": "F",
+        "Zip3": 75703,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 19477,
+        "Gender": "M",
+        "Zip3": 75647,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 20156,
+        "Gender": "F",
+        "Zip3": 75602,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 23511,
+        "Gender": "M",
+        "Zip3": 75644,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 28289,
+        "Gender": "F",
+        "Zip3": 75693,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 18644,
+        "Gender": "M",
+        "Zip3": 75606,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 20587,
+        "Gender": "M",
+        "Zip3": 75606,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 28375,
+        "Gender": "M",
+        "Zip3": 75607,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 25001,
+        "Gender": "F",
+        "Zip3": 75650,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 29432,
+        "Gender": "M",
+        "Zip3": 75640,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 20127,
+        "Gender": "M",
+        "Zip3": 75662,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 21402,
+        "Gender": "F",
+        "Zip3": 75603,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 22234,
+        "Gender": "M",
+        "Zip3": 75601,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 19592,
+        "Gender": "M",
+        "Zip3": 75662,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 19879,
+        "Gender": "M",
+        "Zip3": 75601,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 19924,
+        "Gender": "M",
+        "Zip3": 75660,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 24343,
+        "Gender": "F",
+        "Zip3": 75606,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 26648,
+        "Gender": "M",
+        "Zip3": 75604,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 21614,
+        "Gender": "M",
+        "Zip3": 75604,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 23803,
+        "Gender": "M",
+        "Zip3": 75605,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 19388,
+        "Gender": "M",
+        "Zip3": 75650,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 22346,
+        "Gender": "F",
+        "Zip3": 75605,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 32919,
+        "Gender": "M",
+        "Zip3": 75662,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 23288,
+        "Gender": "F",
+        "Zip3": 75647,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 31269,
+        "Gender": "F",
+        "Zip3": 75605,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 24888,
+        "Gender": "F",
+        "Zip3": 75605,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 21974,
+        "Gender": "M",
+        "Zip3": 75662,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 21104,
+        "Gender": "M",
+        "Zip3": 75645,
+        "Employee": "Employee + Spouse"
+    },
+    {
+        "CalendarYearBirth": 33958,
+        "Gender": "M",
+        "Zip3": 75604,
+        "Employee": "Employee + Spouse"
+    }
+]
+        const object4 = [
             {
-                CalendarYearBirth: "10/10/2000",
+                CalendarYearBirth: "10/12/2006",
                 Gender: "M",
                 Zip3: 100,
                 Employee: "ALL",
@@ -273,7 +2796,7 @@
                 Employee: "Single",
             },
             {
-                dob: 36605,
+                dob: "10/12/2008",
                 Gender: "M",
                 "Zip Code": "76116",
                 Employee: "Single",
@@ -430,7 +2953,7 @@
 
                 function calculateValueOfLine4(C7, B20, B23, B28) {
                     if (C7 === 6) {
-                        return (B20 - 1) * (B23 - B28);
+                        return ((B20/100) - 1) * (B23 - B28);
                     } else {
                         return 0;
                     }
@@ -454,15 +2977,25 @@
                     // Return the corresponding age_gender value
                     return range ? range.value : null;
                 }
+
                 function calculateAge(birthDateStr, currentDateStr) {
-    const birthDate = new Date(birthDateStr);
-    const currentDate = new Date(currentDateStr);
+    // Split birth date and current date into arrays
+    const birthDateArr = birthDateStr.split('-').map(Number);
+    const currentDateArr = currentDateStr.split('-').map(Number);
 
-    // Calculate the difference in milliseconds between the two dates
-    const timeDiff = Math.abs(currentDate - birthDate);
+    // Check if either birth date or current date lacks year component
+    if (isNaN(birthDateArr[2]) || isNaN(currentDateArr[2])) {
+        return "No year";
+    }
 
-    // Convert the difference to years
-    const age = Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 365.25));
+    // Calculate age based on year difference
+    let age = currentDateArr[2] - birthDateArr[2];
+
+    // Adjust age based on month and day components
+    if (currentDateArr[1] < birthDateArr[1] || 
+        (currentDateArr[1] === birthDateArr[1] && currentDateArr[0] < birthDateArr[0])) {
+        age--;
+    }
 
     return age;
 }
@@ -472,16 +3005,16 @@
 
 
 
-                let Individual_Attachment_point = 5000;
+                let Individual_Attachment_point = 25000;
                 Annual_Maximum_Incl_attachment_point = 500000;
                 let plan = 6;
                 let runin_month = 100;
-                let runout_month = 105;
+                let runout_month = 103;
                 let annual_max = 500000;
                 let calendar_year = 200;
-                let coverage_next_5000 = 100;
+                let coverage_next_5000 = 80;
                 let EE_oop_max = 2000;
-                let industry = 1.005;
+                let industry = 1.050;
                 let dependent_participation_rate = 100;
                 let annual_stop_loss_limit = "none";
                 let type_of_UW = "Type II";
@@ -491,7 +3024,7 @@
 
                 // for the net primium value
 
-                let Industry_Factor = 1.025;
+                let Industry_Factor = 1.050;
                 let age_gender = 0;
                 let Dependent_Participation_Factor = calculateAgeGender(dependent_participation_rate);
 
@@ -585,17 +3118,18 @@
 
 
                 // here are the B9 
-                let B9 = runin_month;
-                let B20 = runout_month;
+                let B20 = runin_month;
+                let B9 = runout_month;
 
 
                 updatedObjects2.forEach((entry, index) => {
-
+              
                     switch (entry.Employee) {
+                        
                         case "EE":
                             entry.Member_count = 1;
                             break;
-                        case "ES":
+                        case "ES": 
                             entry.Member_count = 2.2;
                             break;
                         case "EC":
@@ -612,6 +3146,9 @@
                     // entry.Age_Last = parseInt(date_begins) - parseInt(entry.CalendarYearBirth);
                   entry.Age_Last= calculateAge(entry.CalendarYearBirth2, date_begins); 
                   
+
+
+                 console.log( entry.Age_Last ,entry.CalendarYearBirth2 ,date_begins ) ;
                     // added the age bucket 
 
                     if (entry.Age_Last < 30) {
@@ -656,20 +3193,21 @@
                         `${entry.Base_Net_Monthly_Prem_lookupvalue},${B37}`, plan - 1)
                     entry.S = calculateValueOF_O(entry.Q, entry.R, B36, B37, B35);
                 });
-
-
+                
                 let totalMemberCount = updatedObjects2.reduce(
+                    
                     (total, entry) => total + entry.Member_count,
                     0
-                );
+                    );
+                    
+                    console.log(totalMemberCount , 'totalMemberCount')
 
-
-                totalMemberCount *= 3;
+                totalMemberCount *= 1;
                 let roundedMemberCount =
                     totalMemberCount % 1 >= 0.5
                         ? Math.ceil(totalMemberCount)
                         : Math.floor(totalMemberCount);
-                employeeCount = updatedObjects2.length * 3;
+                employeeCount = updatedObjects2.length * 1;
 
 
                 const Net_Premium_before_OOP = calculateSumproduct(updatedObjects2);
@@ -733,14 +3271,13 @@
                     const countMale2 = countRowsByGenderAndAgeBucket2(updatedObjects2, "M", bucket);
                     const countFemale2 = countRowsByGenderAndAgeBucket2(updatedObjects2, "F", bucket);
 
-                    console.log(`Age Bucket: ${bucket}`);
-                    console.log(`Number of rows with Gender=M: ${countMale}`);
-                    console.log(`Number of rows with Gender=F: ${countFemale}`);
-                    console.log("--------");
-                    console.log(`Number of rows with Gender=M2: ${countMale2}`);
-                    console.log(`Number of rows with Gender=F2: ${countFemale2}`);
-                    console.log("--------");
-
+                    // console.log(`Age Bucket: ${bucket}`);
+                    // console.log(`Number of rows with Gender=M: ${countMale}`);
+                    // console.log(`Number of rows with Gender=F: ${countFemale}`);
+                    // console.log("--------");
+                    // console.log(`Number of rows with Gender=M2: ${countMale2}`);
+                    // console.log(`Number of rows with Gender=F2: ${countFemale2}`);
+                  
                     male_female_array.push([bucket, countMale, countFemale, countMale2, countFemale2]);
 
 
@@ -756,8 +3293,8 @@
 
                 const cal_count_factor_m_f = male_female_array.map((m1, index) => ({
 
-                    m1: male_female_array[index][3],
-                    f1: male_female_array[index][4],
+                    m1: male_female_array[index][1],
+                    f1: male_female_array[index][2],
                     m2: Age_Gender_Factor_1[index + 1][male_point],
                     f2: Age_Gender_Factor_1[index + 1][female_point]
                 }));
@@ -765,8 +3302,8 @@
 
                 const cal_count_factor_m_f_2 = male_female_array.map((m1, index) => ({
 
-                    m1: male_female_array[index][1],
-                    f1: male_female_array[index][2],
+                    m1: male_female_array[index][3],
+                    f1: male_female_array[index][4],
                     m2: Age_Gender_Factor_2[index + 1][male_point - 1],
                     f2: Age_Gender_Factor_2[index + 1][female_point - 1]
                 }));
@@ -801,17 +3338,14 @@
 
 
 
-                let age_gender_vector_sum = sumM1 + sumF1 + sum2M1 + sum2F1
+                let count_sum = sumM1 + sumF1 + sum2M1 + sum2F1
 
-                let count_sum = sumProductF2 + sumProductM2 + sumProduct2F2 + sumProduc2M2
+                let age_gender_vector_sum = sumProductF2 + sumProductM2 + sumProduct2F2 + sumProduc2M2
 
                 let factor = age_gender_vector_sum / count_sum;
 
+console.log(age_gender_vector_sum ,"count_sum" ,  count_sum  , '311')
 
-
-                console.log("Sum of the product of f1 and f2:", sumProductF2);
-                console.log("Sum of the product of m1 and m2:", sumProductM2);
-                console.log("factor:", factor);
 
                 age_gender = factor;
 
@@ -833,6 +3367,7 @@
                 console.log("Annual Stop Loss limit:", annual_stop_loss_limit);
                 console.log("Type of UW:", type_of_UW);
 
+                console.log("factor:", factor ," factor");
                 let adjustment_run_in = calculateValueOFLine3(plan, B9, adjacent_based_rate, B28_main);
 
                 let adjustment_run_out = calculateValueOfLine4(plan, B20, adjacent_based_rate, B28_main);

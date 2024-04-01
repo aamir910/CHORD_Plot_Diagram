@@ -112,7 +112,6 @@
                     const employeeValue = obj[updatedEmployekey].toLowerCase();
 
                     if (employeeValue.length > 2) {
-                        console.log(employeeValue)
                         if (
                             employeeValue.includes("family") ||
                             employeeValue.includes("all")
@@ -3148,7 +3147,6 @@ const object3 =[
                   
 
 
-                 console.log( entry.Age_Last ,entry.CalendarYearBirth2 ,date_begins ) ;
                     // added the age bucket 
 
                     if (entry.Age_Last < 30) {
@@ -3320,9 +3318,6 @@ const object3 =[
                 const sum2M1 = calculateSum(cal_count_factor_m_f_2, 'm1');
                 const sum2F1 = calculateSum(cal_count_factor_m_f_2, 'f1');
 
-
-                console.log("Sum of m1:", sum2M1);
-                console.log("Sum of f1:", sum2F1);
 
                 function calculateSumProduct(array, property1, property2) {
                     return array.reduce((acc, obj) => acc + (obj[property1] * obj[property2]), 0);

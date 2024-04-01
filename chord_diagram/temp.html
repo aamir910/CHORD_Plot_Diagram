@@ -3,46 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>US Map with Texas Label</title>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/maps/modules/map.js"></script>
-<script src="https://code.highcharts.com/mapdata/countries/us/us-all.js"></script>
+<title>Loading Animation</title>
+<style>
+  /* Center the loader */
+  .loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  /* Loader animation */
+  .loader {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
 </head>
 <body>
-
-<div id="container" style="height: 500px; min-width: 310px; max-width: 800px; margin: 0 auto"></div>
-
-<script>
-Highcharts.mapChart('container', {
-    chart: {
-        map: 'countries/us/us-all'
-    },
-    title: {
-        text: 'US Map with Texas Label'
-    },
-    series: [{
-        dataLabels: {
-            enabled: false,
-            format: '{point.name}',
-            style: {
-                textOutline: 'none' // Remove outline around labels
-            },
-            formatter: function() {
-                console.log('check')
-                if (this.point.name === 'US.TX') {
-                    return this.point.name;
-                }
-                return null; // Hide labels for other states
-            }
-        },
-        name: 'US States',
-        data: [{
-            'hc-key': 'us-tx',
-            value: 1
-        }]
-    }]
-});
-</script>
-
+  <div class="loader-container">
+    <div class="loader"></div>
+  </div>
 </body>
 </html>
